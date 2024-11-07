@@ -1,0 +1,24 @@
+{
+  "name": "bambuk/composer",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "config": {
+    "vendor-dir": "app/vendor"
+  },
+  "authors": [
+    {
+      "name": "Bambuk Dev Team",
+      "email": "dev@bambus.com.ua"
+    }
+  ],
+  "require": {
+    "vlucas/phpdotenv": "^5.5",
+    "guzzlehttp/guzzle": "^7.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "BambooCore\\" : "app/wp-content/themes/bamboo/BambooCore"
+    }
+  }
+}

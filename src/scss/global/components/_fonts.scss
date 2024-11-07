@@ -1,0 +1,26 @@
+// Font-faces
+// @include font-face("FixelBold", "FixelDisplay-Bold", 700);
+// @include font-face("FixelSemiBold", "FixelDisplay-SemiBold", 600);
+// @include font-face("FixelMedium", "FixelDisplay-Medium", 500);
+// @include font-face("FixelRegular", "FixelDisplay-Regular", 400);
+
+// @mixin fixel-100-semibold {
+//   @include use-font(var(--fixel-semibold), min-max(40, 100), 600, 100%, -2%);
+// }
+
+html,
+body,
+p {
+  // @include use-font(var(--fixel-regular), min-max(12, 16), 400, 1);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0;
+  margin: 0;
+}
