@@ -1,0 +1,141 @@
+// Flex layout
+@mixin flex($dir: row, $gap: 0) {
+  display: flex;
+  flex-direction: $dir;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// Grid layout
+@mixin grid($num: 4, $col-gap: 0, $row-gap: 0) {
+  display: grid;
+  grid-template-columns: repeat($num, 1fr);
+  @if $col-gap != 0 {
+    column-gap: $col-gap;
+  }
+  @if $row-gap != 0 {
+    row-gap: $row-gap;
+  }
+}
+
+// Center grid
+@mixin grid-center {
+  display: grid;
+  place-items: center;
+}
+
+// Flex with centered childs
+@mixin flex-c {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Full bg
+@mixin full-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+// Embeded svg
+@mixin svg-icon {
+  @include flex-c;
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@mixin obj-cover {
+  overflow: hidden;
+  img,
+  video,
+  iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@mixin obj-contain {
+  overflow: hidden;
+  img,
+  video,
+  iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+// Hide scrollbar
+@mixin no-scrollbar {
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+}
+
+// Check for AMP
+@mixin is-amp {
+  html.i-amphtml-singledoc &,
+  html[amp] & {
+    @content;
+  }
+}
+
+// Limit text block by lines num
+@mixin text-clamp($num: 0) {
+  @if $num == 0 {
+    display: initial;
+    overflow: visible;
+  } @else {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    -webkit-line-clamp: $num;
+    line-clamp: $num;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@mixin use-img(
+  $path,
+  $position: center center,
+  $size: contain,
+  $repeat: no-repeat
+) {
+  $newPath: if($env == "production", replace-extension($path, "webp"), $path);
+  background: url($newPath) $position / $size $repeat;
+}
+
+// @Fontface generator
+@mixin font-face(
+  $name,
+  $file-name,
+  $weight: null,
+  $style: normal,
+  $path: "../fonts/"
+) {
+  @font-face {
+    font-family: quote($name);
+    src: url(quote($path + $file-name + ".woff2")) format('woff2');
+    font-weight: $weight;
+    font-style: $style;
+    font-display: swap;
+  }
+}
+
+// Font declaration
+@mixin use-font($name, $size, $weight, $height: 1, $spacing: normal) {
+  font-family: $name;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $height;
+  letter-spacing: $spacing;
+}

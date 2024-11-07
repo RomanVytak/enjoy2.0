@@ -1,0 +1,91 @@
+// Ultrawide & 4K
+@mixin mq-min-4k {
+  @media (min-width: 2561px) {
+    @content;
+  }
+}
+
+// Large screens (up to 2k)
+@mixin mq-min-2k {
+  @media (min-width: 1921px) {
+    @content;
+  }
+}
+
+// FullHD devices
+@mixin mq-min-desktop {
+  @media (min-width: 1441px) {
+    @content;
+  }
+}
+
+@mixin mq-max-laptop {
+  @media (max-width: 1440px) {
+    @content;
+  }
+}
+
+@mixin mq-min-laptop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Max tablet
+@mixin mq-max-tablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+// Max small tablet
+@mixin mq-max-tablet-md {
+  @media (max-width: 960px) {
+    @content;
+  }
+}
+
+// Min tablet
+@mixin mq-min-tablet {
+  @media (min-width: 769px) {
+    @content;
+  }
+}
+
+
+// Max phone
+@mixin mq-max-phone {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+// Max medium phone
+@mixin mq-max-phone-md {
+  @media (max-width: 640px) {
+    @content;
+  }
+}
+
+// Max small phone
+@mixin mq-max-phone-sm {
+  @media (max-width: 375px) {
+    @content;
+  }
+}
+
+// Custom query
+@mixin mq-custom($string) {
+  @media ($string) {
+    @content;
+  }
+}
+
+// Hover only for pointer
+@mixin on-hover {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}

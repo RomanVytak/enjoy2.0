@@ -1,0 +1,62 @@
+{
+  "siteName": "{_projectName_}",
+  "themeName": "bamboo",
+  "appBase": "app",
+  "srcBase": "src",
+  "testServerPath": "/home/bambuky/bambus.com.ua/tests",
+  "url": {
+    "local": "http://{_projectName_}.loc",
+    "staging": "https://tests.bambus.com.ua/{_projectName_}",
+    "production": "https://"
+  },
+  "dbPrefix": "bb_",
+  "dbCollate": "utf8mb4_unicode_520_ci",
+  "dbCharSet": "utf8mb4",
+  "jsEntries": [
+    "index",
+    "page-home",
+    "page-404"
+  ],
+  "copyAssets": "atlas|avi|mp4|ogv|ogg|webm",
+  "images": {
+    "inputTypes": "png|jpg|jpeg|heif|tiff|webp|gif",
+    "outputTypes": "webp",
+    "skipConvert": "gif|webp",
+    "sizes": [],
+    "development": {
+      "jpeg": {
+        "progressive": true,
+        "force": false
+      },
+      "png": {
+        "compressionLevel": 0,
+        "effort": 1,
+        "force": false
+      },
+      "webp": {
+        "effort": 0
+      },
+      "avif": {
+        "effort": 0
+      }
+    },
+    "production": {
+      "jpeg": {
+        "quality": 100
+      },
+      "png": {
+        "quality": 100
+      },
+      "webp": {
+        "quality": 100,
+        "effort": 6,
+        "lossless": true
+      },
+      "avif": {
+        "quality": 80,
+        "lossless": false,
+        "effort": 6
+      }
+    }
+  }
+}

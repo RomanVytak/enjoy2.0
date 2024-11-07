@@ -1,0 +1,66 @@
+// Convert px to vw
+@function px2vw($px) {
+  // Default viewport width
+  $def_screen: 1920;
+
+  $vw: $def_screen * 0.01;
+  @return math.div($px, $vw) * 1vw;
+}
+
+// Convert px to %
+@function px2per($parent_axis, $px) {
+  @return percentage(math.div($px, $parent_axis));
+}
+
+// Define the min-max function
+@function min-max($min, $max: $min) {
+  $min-value: $min * 1px;
+  $max-value: $max * 1px;
+
+  @if $min == $max {
+    $min-value: $min * 0.8px;
+    // $min-value: px2vw($min);
+  }
+  @return clamp($min-value, px2vw($max), $max-value);
+}
+
+// String replace
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
+}
+
+// Replace the file extension in a path
+@function replace-extension($path, $new-ext) {
+  $dotIndex: 0;
+  $charIndex: 1;
+  $totalLength: str-length($path);
+
+  // Loop through all characters in $path
+  @while $charIndex <= $totalLength {
+    $char: str-slice($path, $charIndex, $charIndex);
+    @if $char == "." {
+      $dotIndex: $charIndex;
+    }
+    $charIndex: $charIndex + 1;
+  }
+
+  // Extract the part of the path before the last '.'
+  $base: str-slice($path, 1, $dotIndex - 1);
+
+  // Create a new path with the new extension
+  $newPath: $base + "." + $new-ext;
+
+  // Return the new path
+  @return $newPath;
+}

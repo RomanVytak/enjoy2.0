@@ -1,0 +1,66 @@
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+// Sections
+section {
+  position: relative;
+  @include flex-c;
+}
+
+// Section inner container
+.container {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width, 1920px);
+  z-index: 1;
+}
+
+// Flexboxes
+.flex-v {
+  @include flex(column);
+}
+
+.flex-h {
+  @include flex(row);
+}
+
+.flex-c {
+  @include flex-c;
+}
+
+.grid-center {
+  @include grid-center;
+}
+
+// Images, videos, iframes
+.obj-cover {
+  @include obj-cover;
+}
+
+.obj-contain {
+  @include obj-contain;
+}
+
+.svg-icon {
+  @include svg-icon;
+}
+
+// Other elements
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  min-width: 0;
+}
