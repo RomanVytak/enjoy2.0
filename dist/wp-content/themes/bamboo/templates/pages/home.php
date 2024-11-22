@@ -1,1 +1,0 @@
-<?php renderSection('home/welcome'); ?>
