@@ -1,12 +1,12 @@
 {
-  "siteName": "{_projectName_}",
+  "siteName": "enjoy",
   "themeName": "bamboo",
   "appBase": "app",
   "srcBase": "src",
   "testServerPath": "/home/bambuky/bambus.com.ua/tests",
   "url": {
-    "local": "http://{_projectName_}.loc",
-    "staging": "https://tests.bambus.com.ua/{_projectName_}",
+    "local": "http://enjoy.loc",
+    "staging": "https://tests.bambus.com.ua/enjoy",
     "production": "https://"
   },
   "dbPrefix": "bb_",
