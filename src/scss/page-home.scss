@@ -1,1 +1,74 @@
 @import "common";
+
+.intro {
+  .container {
+    min-height: clamp(1px, calc(100vh - clamp(64px, px2vw(64), 85px)), 1000px);
+    margin-top: clamp(64px, px2vw(64), 85px);
+    display: flex;
+
+    &-text {
+      padding: 60px min-max(16, 50);
+      background-color: var(--orange-1);
+      color: var(--white);
+      gap: min-max(24, 40);
+      justify-content: center;
+      align-items: flex-start;
+      width: 43%;
+      flex: none;
+      position: relative;
+
+      p {
+        max-width: 420px;
+      }
+
+      .link {
+        padding: min-max(12, 16) min-max(24, 32);
+        background-color: #195576;
+        border-radius: 100px;
+
+        @include on-hover {
+          background-color: #2b3f6c;
+        }
+      }
+    }
+
+    &-key {
+      flex: 1;
+    }
+
+    @include mq-max-768 {
+      flex-direction: column;
+
+      &-text {
+        width: 100%;
+        padding-block: 48px 120px;
+      }
+
+      &-key {
+        img {
+          aspect-ratio: 6 / 5;
+          max-height: 450px;
+          object-position: bottom;
+        }
+      }
+
+      .smile {
+        left: 50%;
+        top: 100%;
+        width: 150px;
+      }
+    }
+  }
+
+  .smile {
+    position: absolute;
+    aspect-ratio: 1;
+    width: min-max(100, 210);
+    background: url("../img/smile.svg") center/cover no-repeat;
+    position: absolute;
+    z-index: 1;
+    left: 100%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

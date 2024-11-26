@@ -3,17 +3,31 @@
   --white: #fff;
   --dark: #030409;
 
+  --footer: #001b2e;
+
+  --orange-1: #ff8a7c;
+  --orange-2: #f94754;
+
   // Effects
   --transition: 0.3s ease;
   // --transition-medium: 0.45s ease-in-out;
   // --transition-slow: 0.9s cubic-bezier(0.25, 1, 0.5, 1);
 
   // Fonts
-  // --fixel-bold: "FixelBold";
-  // --fixel-semibold: "FixelSemiBold";
-  // --fixel-medium: "FixelMedium";
-  // --fixel-regular: "FixelRegular";
+  --roboto-r: "Roboto Regular";
+  --roboto-m: "Roboto Medium";
+  --roboto-b: "Roboto Bold";
+  --roboto-con-sb: "Roboto Condensed SemiBold";
+  --roboto-con-m: "Roboto Condensed Medium";
+  --roboto-con-b: "Roboto Condensed Bold";
+  --size-sm: 16px;
+  --icon: 20px;
 
   // Layout
   --max-width: 1920px;
+
+  @include mq-max-768 {
+    --size-sm: 18px;
+    --icon: 24px;
+  }
 }

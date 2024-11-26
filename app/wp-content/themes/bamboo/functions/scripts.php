@@ -75,7 +75,7 @@ add_filter('wpcf7_load_css', '__return_false');
 // add_filter( 'wpcf7_load_js', '__return_false' );
 
 /// Remove unused WP СSS
-// add_action('wp_enqueue_scripts', 'bamboo_remove_needless_css', 100);
+add_action('wp_enqueue_scripts', 'bamboo_remove_needless_css', 100);
 function bamboo_remove_needless_css()
 {
   // Remove Gutenberg Block Library CSS

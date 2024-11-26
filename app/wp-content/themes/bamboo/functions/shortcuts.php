@@ -115,16 +115,12 @@ function getFileFromUrl(string $url = null)
 }
 
 // Show custom logo (image with link/image only at homepage)
-function renderLogo($logo_path)
+function renderLogo()
 {
   if (is_front_page()) {
-    echo '<div class="svg-icon" data-main-logo>';
-    renderSVG('img/logo');
-    echo '</div>';
+    echo '<div class="clip-logo"></div>';
   } else {
-    echo '<a href="' . home_url() . '" title="' . get_bloginfo('title') . '">';
-    renderSVG($logo_path);
-    echo '</a>';
+    echo '<a href="' . home_url() . '" class="clip-logo" title="' . get_bloginfo('title') . '"></a>';
   }
 }
 

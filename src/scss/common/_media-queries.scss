@@ -13,40 +13,33 @@
 }
 
 // FullHD devices
-@mixin mq-min-desktop {
+@mixin mq-min-1440 {
   @media (min-width: 1441px) {
     @content;
   }
 }
 
-@mixin mq-max-laptop {
+@mixin mq-max-1440 {
   @media (max-width: 1440px) {
     @content;
   }
 }
 
-@mixin mq-min-laptop {
+@mixin mq-min-1024 {
   @media (min-width: 1025px) {
     @content;
   }
 }
 
 // Max tablet
-@mixin mq-max-tablet {
+@mixin mq-max-1024 {
   @media (max-width: 1024px) {
     @content;
   }
 }
 
-// Max small tablet
-@mixin mq-max-tablet-md {
-  @media (max-width: 960px) {
-    @content;
-  }
-}
-
 // Min tablet
-@mixin mq-min-tablet {
+@mixin mq-min-768 {
   @media (min-width: 769px) {
     @content;
   }
@@ -54,22 +47,15 @@
 
 
 // Max phone
-@mixin mq-max-phone {
+@mixin mq-max-768 {
   @media (max-width: 768px) {
     @content;
   }
 }
 
 // Max medium phone
-@mixin mq-max-phone-md {
+@mixin mq-max-640 {
   @media (max-width: 640px) {
-    @content;
-  }
-}
-
-// Max small phone
-@mixin mq-max-phone-sm {
-  @media (max-width: 375px) {
     @content;
   }
 }
