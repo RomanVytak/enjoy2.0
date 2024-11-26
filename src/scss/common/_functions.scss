@@ -1,7 +1,7 @@
 // Convert px to vw
 @function px2vw($px) {
   // Default viewport width
-  $def_screen: 1920;
+  $def_screen: 1440;
 
   $vw: $def_screen * 0.01;
   @return math.div($px, $vw) * 1vw;
@@ -14,12 +14,11 @@
 
 // Define the min-max function
 @function min-max($min, $max: $min) {
-  $min-value: $min * 1px;
+  $min-value: if(type-of($min) == "string" and str-index($min, "var("), $min, $min * 1px);
   $max-value: $max * 1px;
 
   @if $min == $max {
     $min-value: $min * 0.8px;
-    // $min-value: px2vw($min);
   }
   @return clamp($min-value, px2vw($max), $max-value);
 }
@@ -29,12 +28,7 @@
   $index: str-index($string, $search);
 
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
   }
 
   @return $string;

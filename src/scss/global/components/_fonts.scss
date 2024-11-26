@@ -1,17 +1,45 @@
 // Font-faces
-// @include font-face("FixelBold", "FixelDisplay-Bold", 700);
-// @include font-face("FixelSemiBold", "FixelDisplay-SemiBold", 600);
-// @include font-face("FixelMedium", "FixelDisplay-Medium", 500);
-// @include font-face("FixelRegular", "FixelDisplay-Regular", 400);
+@include font-face("Roboto Regular", "Roboto-Regular-400", 400);
+@include font-face("Roboto Medium", "Roboto-Medium-500", 500);
+@include font-face("Roboto Bold", "Roboto-Bold-700", 700);
+@include font-face("Roboto Condensed SemiBold", "RobotoCondensed-SemiBold", 600);
+@include font-face("Roboto Condensed Medium", "RobotoCondensed-Medium-500", 500);
+@include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 70);
 
-// @mixin fixel-100-semibold {
-//   @include use-font(var(--fixel-semibold), min-max(40, 100), 600, 100%, -2%);
-// }
+@mixin roboto-18 {
+  @include use-font(var(--roboto-r), min-max(var(--size-sm), 18), 400, 140%);
+}
+@mixin roboto-48-B {
+  @include use-font(var(--roboto-b), clamp(42px, px2vw(48), 52px), 700, 110%);
+}
+@mixin roboto-38-B {
+  @include use-font(var(--roboto-con-b), clamp(32px, px2vw(38), 42px), 700, 110%);
+}
+@mixin roboto-18-B {
+  @include use-font(var(--roboto-con-b), min-max(var(--size-sm), 18), 700, 140%);
+}
+@mixin roboto-18-SB {
+  @include use-font(var(--roboto-con-m), min-max(var(--size-sm), 18), 500, 140%);
+}
 
-html,
-body,
 p {
-  // @include use-font(var(--fixel-regular), min-max(12, 16), 400, 1);
+  @include roboto-18;
+}
+
+.roboto-18 {
+  @include roboto-18;
+}
+.roboto-48 {
+  @include roboto-48-B;
+}
+.roboto-38 {
+  @include roboto-38-B;
+}
+.roboto-18-b {
+  @include roboto-18-B;
+}
+.roboto-18-sb {
+  @include roboto-18-SB;
 }
 
 h1,

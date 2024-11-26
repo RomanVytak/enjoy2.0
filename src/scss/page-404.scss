@@ -1,0 +1,51 @@
+@import "common";
+
+.intro {
+  .container {
+    min-height: calc(100vh - 64px);
+    margin-top: 64px;
+    display: flex;
+
+    &-text {
+      padding: 0 min-max(16, 50);
+      background-color: var(--orange-1);
+      color: var(--white);
+      gap: min-max(24, 40);
+      justify-content: center;
+      align-items: flex-start;
+      width: 43%;
+      flex: none;
+      position: relative;
+
+      p {
+        max-width: 420px;
+      }
+
+      .link {
+        padding: min-max(12, 16) min-max(24, 32);
+        background-color: #195576;
+        border-radius: 100px;
+
+        @include on-hover {
+          background-color: #2b3f6c;
+        }
+      }
+    }
+
+    &-key {
+      flex: 1;
+    }
+  }
+
+  .smile {
+    position: absolute;
+    aspect-ratio: 1;
+    width: min-max(150, 270);
+    background: url("../img/sad.svg") center/cover no-repeat;
+    position: absolute;
+    z-index: 1;
+    left: 100%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
