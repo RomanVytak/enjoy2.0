@@ -6,21 +6,7 @@
 @include font-face("Roboto Condensed Medium", "RobotoCondensed-Medium-500", 500);
 @include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 70);
 
-@mixin roboto-18 {
-  @include use-font(var(--roboto-r), min-max(var(--size-sm), 18), 400, 140%);
-}
-@mixin roboto-48-B {
-  @include use-font(var(--roboto-b), clamp(42px, px2vw(48), 52px), 700, 110%);
-}
-@mixin roboto-38-B {
-  @include use-font(var(--roboto-con-b), clamp(32px, px2vw(38), 42px), 700, 110%);
-}
-@mixin roboto-18-B {
-  @include use-font(var(--roboto-con-b), min-max(var(--size-sm), 18), 700, 140%);
-}
-@mixin roboto-18-SB {
-  @include use-font(var(--roboto-con-m), min-max(var(--size-sm), 18), 500, 140%);
-}
+
 
 p {
   @include roboto-18;
