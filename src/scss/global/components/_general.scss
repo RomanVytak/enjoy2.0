@@ -140,9 +140,15 @@ li {
   &_sale {
     background: url("../img/sale.svg") center/cover no-repeat;
   }
+  &_play {
+    width: min-max(50, 120);
+    background: url("../img/play.svg") center/cover no-repeat;
+  }
   &_arrow {
+    --arrow: var(--orange-2);
     width: 32px;
-    background: url("../img/arrow.svg") center/cover no-repeat;
+    mask: url("../img/arrow.svg") center/cover no-repeat;
+    background-color: var(--arrow);
   }
 }
 
