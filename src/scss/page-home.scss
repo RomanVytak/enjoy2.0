@@ -92,6 +92,8 @@
     gap: 12px;
     width: 100%;
     min-height: 100%;
+    z-index: 1;
+    overflow: hidden;
 
     &.product {
       padding-top: 56px;
@@ -118,11 +120,32 @@
     &.media {
       padding: 0;
       grid-column: span 2;
+      aspect-ratio: unset;
+
+      img {
+        min-height: 100%;
+        position: relative;
+      }
+    }
+    &.large {
+      grid-column: span 2;
+      aspect-ratio: 2/1;
     }
 
     &-icon {
       width: 100%;
       flex: 1;
+      position: relative;
+      overflow: visible;
+
+      img {
+        position: absolute;
+      }
+    }
+    &-video {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
     }
     &-info {
       flex: none;
@@ -147,11 +170,55 @@
       color: var(--orange-2);
       font-size: 14px;
       pointer-events: none;
+      transition: var(--transition);
     }
 
-    &.large {
-      grid-column: span 2;
-      aspect-ratio: 2/1;
+    &-play {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+
+      .icon {
+        transition: var(--transition);
+        opacity: 0;
+        transform: scale(1.6);
+      }
+
+      @include on-hover {
+        .icon {
+          opacity: 0.8;
+          transform: scale(1);
+        }
+      }
+    }
+
+    &-circle {
+      position: absolute;
+      width: 100%;
+      aspect-ratio: 1;
+      background-color: var(--circle);
+      z-index: -1;
+      border-radius: 100%;
+      transform: scale(0.8);
+      transition: 0.5s ease;
+    }
+
+    &.on-hover {
+      @include on-hover {
+        color: var(--white);
+
+        .icon_arrow {
+          --arrow: var(--white);
+        }
+        .product-item-sale {
+          border-color: var(--white);
+          color: var(--white);
+        }
+        .product-item-circle {
+          border-radius: 0%;
+          transform: scale(1.5);
+        }
+      }
     }
   }
 }

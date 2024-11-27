@@ -4,24 +4,38 @@ $products = [
   [
     "title" => "Крісло М’яч Classic",
     "price" => "2275",
-    "img" => "img/temp/product_1.jpg",
+    "img" => "img/temp/product_1.png",
     'sale' => false,
     'link' => '/',
-    'type' => 'product'
+    'type' => 'product',
+    'color' => '#95ae99'
+
+  ],
+  [
+    "title" => "Безкаркасні крісла",
+    "img" => "img/temp/product_1.png",
+    'link' => '/',
+    'type' => 'category',
+    'color' => '#ec7f54'
+
   ],
   [
     "title" => "Крісло М’яч Classic",
     "price" => "2275",
-    "img" => "img/temp/product_1.jpg",
+    "img" => "img/temp/product_1.png",
     'sale' => "-20% на готовий виріб",
     'link' => '/',
-    'type' => 'product'
+    'type' => 'product',
+    'color' => '#0c4f79'
   ],
+
   [
     "title" => "Груші та м’ячі",
-    "img" => "img/temp/product_2.jpg",
+    "img" => "img/temp/product_1.png",
     'link' => '/',
-    'type' => 'category'
+    'type' => 'category',
+    'color' => '#0c4f79'
+
   ],
   [
     "title" => "Аксесуари",
@@ -30,12 +44,7 @@ $products = [
     'type' => 'category',
     'size' => 'large',
   ],
-  [
-    "title" => "Безкаркасні крісла",
-    "img" => "img/temp/product_2.jpg",
-    'link' => '/',
-    'type' => 'category'
-  ],
+
   [
     "title" => "Крісло груша - як сідати?",
     "subtitle" => "Груша - найбільш універсальна модель серед безкаркасних меблів. Усі варіанти використання можна переглянути у відео",
@@ -43,6 +52,7 @@ $products = [
   ],
   [
     "img" => "img/temp/media_1.jpg",
+    'video' => "https://enjoy.ua/wp-content/uploads/2024/04/how-to-sit.mp4",
     'type' => 'media',
   ],
 ];
