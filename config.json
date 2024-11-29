@@ -15,6 +15,8 @@
   "jsEntries": [
     "index",
     "page-home",
+    "page-catalog",
+    "page-legal",
     "page-404"
   ],
   "copyAssets": "atlas|avi|mp4|ogv|ogg|webm",

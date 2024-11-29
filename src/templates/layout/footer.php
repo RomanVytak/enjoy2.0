@@ -1,8 +1,8 @@
 <footer class="footer">
   <div class="container flex h-center">
     <div class="footer-navs flex-v">
-      <a href="">Гарантія</a>
-      <a href="">Користувацька угода</a>
+      <a href="/warranty">Гарантія</a>
+      <a href="/user-agreement">Користувацька угода</a>
     </div>
     <div class="footer-navs flex-v">
       <a href="">Пуфи для шкіл</a>
