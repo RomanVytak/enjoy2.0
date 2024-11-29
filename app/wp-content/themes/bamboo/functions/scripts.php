@@ -74,6 +74,9 @@ add_action('admin_enqueue_scripts', function () {
 add_filter('wpcf7_load_css', '__return_false');
 // add_filter( 'wpcf7_load_js', '__return_false' );
 
+//remove <br> and <p> CF7
+add_filter('wpcf7_autop_or_not', '__return_false');
+
 /// Remove unused WP СSS
 add_action('wp_enqueue_scripts', 'bamboo_remove_needless_css', 100);
 function bamboo_remove_needless_css()
