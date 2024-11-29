@@ -24,7 +24,7 @@ class Front
             if (file_exists(self::$templates_root . $tpl_type . '/' . $tpl_name . '.php')) {
                 get_template_part('templates/' . $tpl_type . '/' . $tpl_name, '', $data);
             } else {
-                throw new \Exception("Template does not exist");
+                throw new \Exception('Template <strong>' . $tpl_name . '</strong> does not exist');
             }
         } catch (\Exception $e) {
             echo $e->getMessage() . '<br>' . $e->getFile() . ' in ' . $e->getLine();

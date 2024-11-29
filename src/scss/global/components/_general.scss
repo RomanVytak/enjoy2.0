@@ -10,6 +10,7 @@ body {
 
 main {
   padding-top: clamp(64px, px2vw(64), 85px);
+  min-height: 100vh;
 }
 
 // Sections
@@ -115,6 +116,12 @@ li {
   flex: none;
   transition: var(--transition);
 
+  &.large {
+    @include mq-min-1440 {
+      width: 32px;
+    }
+  }
+
   &_cart {
     mask: url("../img/cart.svg") center/cover no-repeat;
     background-color: #054f78;
@@ -149,6 +156,15 @@ li {
     width: 32px;
     mask: url("../img/arrow.svg") center/cover no-repeat;
     background-color: var(--arrow);
+  }
+  &_arrow_s {
+    --arrow: var(--orange-2);
+    mask: url("../img/arrow_2.svg") center/cover no-repeat;
+    background-color: var(--arrow);
+
+    &.left {
+      transform: rotateY(180deg);
+    }
   }
 }
 

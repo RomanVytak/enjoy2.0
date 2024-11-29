@@ -19,7 +19,7 @@
         <span class="txt">+38 (096) 540 29 92</span>
       </a>
       <div class="header-cart flex">
-        <button class="icon icon_cart"></button>
+        <button class="icon large icon_cart"></button>
       </div>
     </div>
   </div>

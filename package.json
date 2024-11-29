@@ -10,7 +10,9 @@
     "dev": "gulp",
     "build": "gulp build"
   },
-  "dependencies": { },
+  "dependencies": {
+    "swiper": "^11.1.15"
+  },
   "devDependencies": {
     "@babel/core": "^7.22.20",
     "@babel/plugin-transform-runtime": "^7.22.15",
