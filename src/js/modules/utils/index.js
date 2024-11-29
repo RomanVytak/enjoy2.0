@@ -119,52 +119,10 @@ const lazyLoadBg = () => {
   })
 }
 
-
-// Function to calculate the target position
-const getTargetTop = (element) => {
-  if (element.hash) {
-    // Handle ID-based target or 'body' for '#main'
-    const target = (element.hash === '#main') ? document.body : document.querySelector(element.hash);
-    return target ? target.offsetTop : 0;
-  } else if (element.dataset.scrollto) {
-    // Handle special strings or query selector
-    const scrollto = element.dataset.scrollto;
-    switch (scrollto) {
-      case 'bottom':
-        return document.documentElement.scrollHeight - window.innerHeight;
-      case 'top':
-        return 0;
-      default:
-        const target = document.querySelector(scrollto);
-        return target ? target.offsetTop : 0;
-    }
-  }
-  return 0;
-};
-
 // Function to perform the scroll using GSAP's scrollTo plugin
 const performScroll = (targetTop) => {
   gsap.to(window, { duration: 1, scrollTo: { y: targetTop, autoKill: false } });
 };
-
-// Event listener for all clicks on the document
-document.addEventListener('click', function (e) {
-
-  // Check for scrollable link or element
-  const scrollElement = e.target.closest('a[href^="#"], [data-scrollto]');
-  if (scrollElement) {
-    e.preventDefault();
-    const targetTop = getTargetTop(scrollElement);
-    performScroll(targetTop);
-  }
-
-  // Check for 'go back' element
-  if (e.target.closest('[data-goback]')) {
-    e.preventDefault();
-    window.history.back();
-    return; // Return early since we've handled this event
-  }
-});
 
 
 const copyLink = () => {
