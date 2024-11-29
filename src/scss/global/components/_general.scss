@@ -6,6 +6,13 @@ body {
   font-family: var(--roboto-r);
   font-size: min-max(var(--size-sm), 18);
   font-weight: 400;
+
+
+
+  &.no-scroll {
+    overflow: hidden !important;
+    height: 100dvh;
+  }
 }
 
 main {
@@ -119,6 +126,15 @@ li {
   &.large {
     @include mq-min-1440 {
       width: 32px;
+    }
+  }
+
+  &_close {
+    mask: url("../img/close.svg") center/cover no-repeat;
+    background-color: #717a8e;
+
+    @include on-hover {
+      background-color: var(--orange-2);
     }
   }
 
