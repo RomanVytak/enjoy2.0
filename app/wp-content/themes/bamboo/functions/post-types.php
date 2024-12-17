@@ -4,7 +4,7 @@ function custom_post_types() {
     $labels = array(
         'name'                  => _x( 'Banners', 'Post Type General Name', 'bamboo' ),
         'singular_name'         => _x( 'Banner', 'Post Type Singular Name', 'bamboo' ),
-        'menu_name'             => __( 'Home Banners', 'bamboo' ),
+        'menu_name'             => __( 'Банери на головну', 'bamboo' ),
         'name_admin_bar'        => __( 'Banner', 'bamboo' ),
         'archives'              => __( 'Banner Archives', 'bamboo' ),
         'attributes'            => __( 'Banner Attributes', 'bamboo' ),
