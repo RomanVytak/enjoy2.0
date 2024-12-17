@@ -1,16 +1,7 @@
 <?php
 
 $products = [
-  [
-    "title" => "Крісло М’яч Classic",
-    "price" => "2275",
-    "img" => "img/temp/product_1.png",
-    'sale' => false,
-    'link' => '/',
-    'type' => 'product',
-    'color' => '#95ae99'
-
-  ],
+  
   [
     "title" => "Безкаркасні крісла",
     "img" => "img/temp/product_1.png",
@@ -60,30 +51,29 @@ $products = [
 ?>
 
 
+<?php
+
+// Check value exists.
+if( have_rows('blocks') ):?>
 <section class="products">
   <div class="container">
+    <?php // Loop through rows.
+    while ( have_rows('blocks') ) : the_row();
 
+        // Case: Paragraph layout.
+        if( get_row_layout() == 'product' ):
 
-    <?php
-    foreach ($products as $product) {
-      $type = $product['type'] ?? false;
+            renderComponent("grid-product");
 
-      if (!$type) continue;
+        // Case: Download layout.
+        elseif( get_row_layout() == 'category' ): 
+            
+            renderComponent("grid-category");
 
-      switch ($type) {
-        case 'product':
-          renderComponent("grid-product", $product);
-          break;
-        case 'category':
-          renderComponent("grid-category", $product);
-          break;
-        case 'text':
-          renderComponent("grid-text", $product);
-          break;
-        case 'media':
-          renderComponent("grid-media", $product);
-          break;
-      }
-    }  ?>
+        endif;
+
+    // End loop.
+    endwhile;?>
   </div>
 </section>
+<?php endif;?>
