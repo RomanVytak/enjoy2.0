@@ -1,18 +1,18 @@
 <footer class="footer">
   <div class="container flex h-center">
     <div class="footer-navs flex-v">
-      <a href="/warranty">Гарантія</a>
-      <a href="/user-agreement">Користувацька угода</a>
+      <?php renderShortMenu('footer_menu_1');?>
     </div>
     <div class="footer-navs flex-v">
-      <a href="">Пуфи для шкіл</a>
-      <a href="">AR</a>
+    <?php renderShortMenu('footer_menu_2');?>
     </div>
     <div class="footer-navs flex-v">
       <a href="">Контакти</a>
       <div class="tells flex-v">
-        <a href="<?php echo phoneToLink("+38 (096) 540 29 92") ?>">+38 (096) 540 29 92</a>
-        <a href="<?php echo phoneToLink("+38 (095) 540 29 92") ?>">+38 (095) 540 29 92</a>
+      <?php $phone = get_field('phone', 'option');
+      $phone_2 = get_field('phone_2', 'option');?>
+        <?php if(!empty($phone)){?><a href="<?php echo phoneToLink($phone) ?>"><?php echo $phone;?></a><?php }?>
+        <?php if(!empty($phphone_2one)){?><a href="<?php echo phoneToLink($phone_2) ?>"><?php echo $phone_2;?></a><?php }?>
       </div>
     </div>
 

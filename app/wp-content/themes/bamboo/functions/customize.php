@@ -13,10 +13,11 @@ function customizeTheme()
     ]);
 
     // Register menu(s)
-    // register_nav_menus([
-    // 'header_menu' => 'Header menu',
-    // 'footer_menu' => 'Footer menu',
-    // ]);
+    register_nav_menus([
+        'header_menu' => 'Header menu',
+        'footer_menu_1' => 'Footer menu 1',
+        'footer_menu_2' => 'Footer menu 2',
+    ]);
 
     // Load textdomain
     // load_theme_textdomain('bamboo', get_template_directory() . '/languages');
@@ -45,7 +46,7 @@ function addDashboardStyles()
 // });
 
 // Add contact info to admin
-if (function_exists('acf_add_options_page')) {
+/*if (function_exists('acf_add_options_page')) {
     acf_add_options_page(array(
         'page_title' => 'Our contacts',
         'menu_title' => 'Our contacts',
@@ -55,4 +56,4 @@ if (function_exists('acf_add_options_page')) {
         'redirect'   => false,
         'autoload'   => true
     ));
-}
+}*/

@@ -1,18 +1,1 @@
-<!DOCTYPE html>
-<html <?php language_attributes(); ?>>
-<head>
-  <meta charset="<?php bloginfo('charset'); ?>">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <?php wp_head(); ?>
-  <!-- fontsPreload:woff2 -->
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Bold-700.woff2');?>" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Medium-500.woff2');?>" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Regular-400.woff2');?>" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-Bold-70.woff2');?>" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-Medium-500.woff2');?>" crossorigin>
-  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-SemiBold-600.woff2');?>" crossorigin>
-  <!-- endfontsPreload -->
-</head>
-<body <?php body_class(); ?>>
-  <?php renderLayout('header'); ?>
-  <main>
+<!DOCTYPE html><html <?php language_attributes(); ?>><head>  <meta charset="<?php bloginfo('charset'); ?>">  <meta name="viewport" content="width=device-width, initial-scale=1" />  <?php wp_head(); ?>  <!-- fontsPreload:woff2 -->  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Bold-700.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Medium-500.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/Roboto-Regular-400.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-Bold-70.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-Medium-500.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-SemiBold-600.woff2');?>" crossorigin>  <link rel="preload" as="font" type="font/woff2" href="<?php echo assets('fonts/RobotoCondensed-SemiBold.woff2');?>" crossorigin>  <!-- endfontsPreload --></head><body <?php body_class(); ?>>  <?php renderLayout('header'); ?>  <main>
