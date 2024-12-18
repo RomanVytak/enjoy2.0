@@ -1,13 +1,13 @@
 <?php
-$img = $args['img'] ?? false;
-$type = $args['type'];
-$video = $args['video'] ?? false;
+$img = wp_get_attachment_image_url(get_sub_field('img'), 'full') ?? false;
+$video = wp_get_attachment_url(get_sub_field('video')) ?? false;
+$type = get_row_layout();
 ?>
 
 <div class="product-item <?php echo $type ?>">
   <?php if ($img) {  ?>
     <div class="product-item-icon flex obj-cover">
-      <img src="<?php echo assets($img)  ?>" alt="">
+      <img src="<?php echo $img;  ?>" alt="">
     </div>
   <?php } ?>
   <?php if ($video) {  ?>
