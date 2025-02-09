@@ -28,3 +28,6 @@ require_once get_template_directory() . '/functions/seo.php';
 
 // SMTP
 // require_once get_template_directory() . '/functions/smtp.php';
+
+// Custom woocommerce
+require_once get_template_directory() . '/functions/custom-woocommerce.php';
