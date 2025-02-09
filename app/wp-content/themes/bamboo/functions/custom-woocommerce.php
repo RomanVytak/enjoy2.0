@@ -1,0 +1,460 @@
+<?php
+function woocommerce_custom_content()
+{
+
+  if (is_singular('product')) {
+
+    while (have_posts()) :
+      the_post();
+      wc_get_template_part('content', 'single-product');
+    endwhile;
+  } else {
+?>
+
+    <?php
+    // remove sorting
+    // remove_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);
+
+    // remove ress
+    remove_action('woocommerce_before_shop_loop', 'woocommerce_result_count', 20);
+
+    // remove empty woocommerce-notices-wrapper
+    remove_action('woocommerce_before_shop_loop', 'woocommerce_output_all_notices', 10);
+    ?>
+
+    <?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
+
+      <h2 class="catalog--title font_h2 w-full"><?php woocommerce_page_title(); ?></h2>
+
+    <?php endif; ?>
+
+    <?php if (woocommerce_product_loop()) : ?>
+
+      <?php do_action('woocommerce_before_shop_loop'); ?>
+
+
+
+      <?php woocommerce_product_loop_start(); ?>
+
+      <?php if (wc_get_loop_prop('total')) : ?>
+        <?php while (have_posts()) : ?>
+          <?php the_post(); ?>
+          <?php wc_get_template_part('content', 'product'); ?>
+        <?php endwhile; ?>
+      <?php endif; ?>
+
+      <?php woocommerce_product_loop_end(); ?>
+
+      <?php do_action('woocommerce_after_shop_loop'); ?>
+
+    <?php
+    else :
+      do_action('woocommerce_no_products_found');
+    endif;
+  }
+}
+
+// insert after description on single product page
+function face_code_after_single_excerpt()
+{
+  global $product, $post;
+
+  // Get the product attributes
+  $attributes = $product->get_attributes();
+
+  if (! empty($attributes)) {
+    echo '<div class="product-attributes">';
+
+    foreach ($attributes as $attribute) {
+      //print_r($attribute);
+      // Check if the attribute is not a variation
+      //if (! $attribute->get_variation() && $attribute['visible'] == '1') {
+      if ($attribute['visible'] == '1') {
+        // Get attribute name (taxonomy name)
+        $attribute_name = $attribute->get_name();
+        // Get attribute label (human-readable)
+        $attribute_label = wc_attribute_label($attribute_name);
+        // Get attribute values (term IDs)
+        $attribute_values = $attribute->get_options();
+        // print_r($attribute_values);
+        if ($attribute['id'] == 0) {
+          // Display attribute label and values
+          echo '<div class="attribute"><p class="font_body-l">' . esc_html($attribute_label) . ':</p>';
+          echo '<div class="attr">';
+          foreach ($attribute_values as $val) {
+            echo '<p>' . $val . '</p>';
+          }
+          echo '</div></div>';
+        } else {
+          // Convert term IDs to names dynamically using the attribute name
+          $attribute_term_names = array_map(function ($term_id) use ($attribute_name) {
+            $term = get_term_by('id', $term_id, $attribute_name);
+            return $term ? $term->name : '';
+          }, $attribute_values);
+          // Display attribute label and values
+          echo '<div class="attribute"><p class="font_body-l">' . esc_html($attribute_label) . ':</p>';
+          echo '<div class="attr">' . implode('', array_map(function ($term) {
+            return '<p>' . esc_html($term) . '</p>';
+          }, $attribute_term_names)) . '</div></div>';
+        }
+      }
+    }
+
+    echo '</div>';
+  }
+}
+add_action('woocommerce_single_product_summary', 'face_code_after_single_excerpt', 21);
+
+
+
+function get_custom_image_html($attachment_id, $main_image = false)
+{
+
+  if (empty($attachment_id)) {
+    return '<div class="swiper-slide image cover">' . wc_placeholder_img() . '</div>';
+  }
+  $flexslider        = (bool) apply_filters('woocommerce_single_product_flexslider_enabled', get_theme_support('wc-product-gallery-slider'));
+  $gallery_thumbnail = wc_get_image_size('gallery_thumbnail');
+  $thumbnail_size    = apply_filters('woocommerce_gallery_thumbnail_size', array($gallery_thumbnail['width'], $gallery_thumbnail['height']));
+  $image_size        = apply_filters('woocommerce_gallery_image_size', $flexslider || $main_image ? 'woocommerce_single' : $thumbnail_size);
+  $full_size         = apply_filters('woocommerce_gallery_full_size', apply_filters('woocommerce_product_thumbnails_large_size', 'full'));
+  $full_src          = wp_get_attachment_image_src($attachment_id, $full_size);
+  $image             = wp_get_attachment_image(
+    $attachment_id,
+    $full_size,
+    false,
+    apply_filters(
+      'woocommerce_gallery_image_html_attachment_image_params',
+      array(
+        'title'                   => _wp_specialchars(get_post_field('post_title', $attachment_id), ENT_QUOTES, 'UTF-8', true),
+        'data-caption'            => _wp_specialchars(get_post_field('post_excerpt', $attachment_id), ENT_QUOTES, 'UTF-8', true),
+        'data-src'                => esc_url($full_src[0]),
+        'data-large_image'        => esc_url($full_src[0]),
+        'class'                   => esc_attr($main_image ? 'wp-post-image' : ''),
+      ),
+      $attachment_id,
+      $image_size,
+      $main_image
+    )
+  );
+
+  return '<div class="swiper-slide image cover"><a href="' . esc_url($full_src[0]) . '" target="_blank">' . $image . '</a></div>';
+}
+
+// Remove default thumbnail output
+remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+
+// Custom thumbnail size for WooCommerce loop
+add_action('woocommerce_before_shop_loop_item_title', 'face_woocommerce_thumbnail_size', 10);
+function face_woocommerce_thumbnail_size()
+{
+  // Set the custom size you want ('full', 'medium', 'large', or any custom size)
+  echo woocommerce_get_product_thumbnail('large'); // Change 'medium' to the desired size
+}
+
+// add new tabs & remove default
+function face_woocommerce_new_tab($tabs)
+{
+  global $product, $post;
+  $rows = get_field('tabs', $post->ID);
+  if ($rows) {
+    $i = 1;
+    foreach ($rows as $row) {
+      //$row['title']
+      $tabs['tab_' . $i] = array(
+        'title'    => $row['title'],
+        'priority' => 50, // Adjust the position of the tab
+        'callback' => function () use ($row) {
+          echo $row['text'];
+        },
+      );
+
+      $i++;
+    }
+  }
+
+
+  unset($tabs['additional_information']); // Remove the additional information tab
+
+  return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'face_woocommerce_new_tab');
+
+
+// buy one click
+function add_buy_now_button()
+{
+  global $product;
+
+  // Get the product ID
+  $product_id = $product->get_id();
+
+  // Create the Buy Now button
+  echo '<a href="' . esc_url(add_query_arg('buy_now', $product_id, home_url('/checkout/'))) . '" class="single_by_now_button button custom border-black md buy-now-button">Швидка покупка</a>';
+}
+add_action('woocommerce_after_add_to_cart_button', 'add_buy_now_button', 30);
+
+function handle_buy_now_button()
+{
+  if (isset($_GET['buy_now'])) {
+    $product_id = absint($_GET['buy_now']);
+
+    // Ensure the product exists
+    if ($product_id && wc_get_product($product_id)) {
+      // Clear the cart first
+      WC()->cart->empty_cart();
+
+      // Add the product to the cart
+      WC()->cart->add_to_cart($product_id);
+
+      // Redirect to the checkout page
+      wp_safe_redirect(wc_get_checkout_url());
+      exit;
+    }
+  }
+}
+add_action('template_redirect', 'handle_buy_now_button');
+
+
+// Hook into 'woocommerce_before_shop_loop'
+add_action('woocommerce_before_shop_loop', 'face_code_before_shop_loop', 5);
+
+function face_code_before_shop_loop()
+{
+  // Your custom code here
+  if (is_active_sidebar('woocommerce-filters')) : ?>
+    <div class="catalog--filters flex">
+      <label class="custom toggle toggle-filters flex-c font_caps-lock-m">
+        <input type="checkbox">
+        <div class="flex v-center">
+          <div class="icon-filters flex-c ratio icon-24"></div>
+          <div class="txt">
+            ФІЛЬТРИ
+          </div>
+          <div class="icon-plus flex-c ratio icon-24"></div>
+        </div>
+      </label>
+
+      <div id="woocommerce-filters" class="widget-area custom-popup-filters" data-close-filters="true">
+        <div class="overflow-wrapper">
+          <div class="mobile-row flex h-between v-center">
+            <p class="font_title-l">Фільтри</p>
+            <button class="close icon-close" data-close-filters="true"></button>
+          </div>
+          <?php dynamic_sidebar('woocommerce-filters'); ?>
+        </div>
+      </div>
+    </div>
+
+  <?php endif;
+  if (is_active_sidebar('woocommerce-active-filters')) : ?>
+    <div class="catalog--selected-filters">
+      <div id="woocommerce-active-filters" class="widget-area">
+        <?php dynamic_sidebar('woocommerce-active-filters'); ?>
+      </div>
+    </div>
+
+<?php endif;
+}
+
+
+// кастомна ціна
+function custom_subtotal_price()
+{
+  echo '<p class="custom-total-price-title font_title-m t">' . esc_html__('Subtotal:', 'woocommerce') . '</p> ';
+  echo '<p class="custom-total-price-number font_title-s n">' . WC()->cart->get_cart_subtotal() . '</p> ';
+}
+function custom_to_checkout()
+{
+  echo '<a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward custom back-black md">' . esc_html__('Checkout', 'woocommerce') . '</a>';
+}
+
+
+function custom_to_view_cart()
+{
+  echo '<a href="' . esc_url(wc_get_cart_url()) . '" class="button wc-forward custom border-black md">' . esc_html__('View cart', 'woocommerce') . '</a>';
+}
+
+// new - popular tag for product
+function face_code_before_shop_loop_item()
+{
+  global $post, $product;
+
+  echo '<div class="spetial_offer tags flex ">';
+  if ($product->is_on_sale()) {
+    echo '<span class="tag custom border-black sm onsale">' . esc_html__('Sale!', 'woocommerce') . '</span>';
+  }
+  if (get_field('new', $post->ID) == '1') {
+    echo '<span class="tag custom border-black sm">New</span>';
+  }
+  if (get_field('popular', $post->ID) == '1') {
+    echo '<span class="tag custom border-black sm">Bestseller</span>';
+  }
+  echo '</div>';
+}
+add_action('woocommerce_before_shop_loop_item', 'face_code_before_shop_loop_item');
+
+
+
+// Add plus/minus buttons in mini cart
+add_filter('woocommerce_widget_cart_item_quantity', 'custom_minicart_quantity', 10, 3);
+function custom_minicart_quantity($html, $cart_item, $cart_item_key)
+{
+  $product = $cart_item['data'];
+  $product_price = WC()->cart->get_product_price($product); // Get product price including tax
+
+  $product_quantity = woocommerce_quantity_input(array(
+    'input_name'  => "cart[{$cart_item_key}][qty]",
+    'input_value' => $cart_item['quantity'],
+    'max_value'   => $cart_item['data']->get_max_purchase_quantity(),
+    'min_value'   => '1',
+    'product_name' => $cart_item['data']->get_name(),
+  ), $cart_item['data'], false);
+
+  // Wrap the quantity input with plus/minus buttons
+  return '<div class="custom-minicart-quantity">' . $product_quantity . '<span class="quantity custom-product-price font_body-l">' . $product_price . '</span></div>';
+}
+
+add_action('wp_ajax_woocommerce_update_cart', 'custom_woocommerce_update_cart');
+add_action('wp_ajax_nopriv_woocommerce_update_cart', 'custom_woocommerce_update_cart');
+
+function custom_woocommerce_update_cart()
+{
+  if (isset($_POST['cart_item_key']) && isset($_POST['quantity'])) {
+    WC()->cart->set_quantity($_POST['cart_item_key'], $_POST['quantity'], true);
+    WC()->cart->calculate_totals();
+  }
+
+  // Return fragments for mini cart update
+  WC_AJAX::get_refreshed_fragments();
+  wp_die();
+}
+
+
+function extract_key_from_string($str)
+{
+  if (preg_match('/cart\[(.*?)\]/', $str, $matches)) {
+    return $matches[1];
+  }
+  return "";
+}
+
+
+
+/**
+ * Change a currency symbol
+ */
+add_filter('woocommerce_currency_symbol', 'change_existing_currency_symbol', 10, 2);
+
+function change_existing_currency_symbol($currency_symbol, $currency)
+{
+  switch ($currency) {
+    case 'UAH':
+      $currency_symbol = 'грн';
+      break;
+  }
+  return $currency_symbol;
+}
+
+// Change Add to Cart button text in WooCommerce loop
+add_filter('woocommerce_product_add_to_cart_text', 'face_woocommerce_add_to_cart_text', 10, 2);
+
+function face_woocommerce_add_to_cart_text($text, $product)
+{
+  if ($product->is_type('simple')) {
+    // For simple products
+    if (face_out_of_stock()) {
+      return 'Переглянути товар';
+    } else {
+      return 'Додати в кошик'; // Default text
+    }
+  } elseif ($product->is_type('variable')) {
+    // For variable products
+    return 'Переглянути товар';
+  } else {
+    if (face_out_of_stock()) {
+      return 'Переглянути товар';
+    } else {
+      return 'Додати в кошик'; // Default text
+    }
+  }
+}
+
+
+
+// chech if out of stock
+function face_out_of_stock()
+{
+  global $post, $product;
+  if ($product && !$product->is_in_stock() || $product && !$product->get_price()) :
+    return true;
+  else:
+    return false;
+  endif;
+}
+
+// order out of stock
+add_filter('posts_clauses', 'order_by_stock_status');
+function order_by_stock_status($posts_clauses)
+{
+  global $wpdb;
+  // only change query on WooCommerce loops
+  if (is_woocommerce() && (is_shop() || is_product_category() || is_product_tag() || is_product_taxonomy())) {
+    $posts_clauses['join'] .= " INNER JOIN $wpdb->postmeta istockstatus ON ($wpdb->posts.ID = istockstatus.post_id) ";
+    $posts_clauses['orderby'] = " istockstatus.meta_value ASC, " . $posts_clauses['orderby'];
+    $posts_clauses['where'] = " AND istockstatus.meta_key = '_stock_status' AND istockstatus.meta_value <> '' " . $posts_clauses['where'];
+  }
+  return $posts_clauses;
+}
+
+
+add_filter('woocommerce_pagination_args', 'custom_woocommerce_pagination_args');
+function custom_woocommerce_pagination_args($args) {
+    // Кількість сторінок, які відображаються перед і після поточної сторінки
+    $args['end_size'] = 1; // Кількість сторінок на початку і в кінці пагінації
+    $args['mid_size'] = 1; // Кількість сторінок перед і після поточної сторінки (між ними)
+    return $args;
+}
+
+// redirect thank you page
+add_action( 'template_redirect', 'woo_custom_redirect_after_purchase' );
+function woo_custom_redirect_after_purchase() {
+	global $wp;
+	if ( is_checkout() && !empty( $wp->query_vars['order-received'] ) ) {
+		wp_redirect( '/thank-you/' );
+		exit;
+	}
+}
+
+
+// fix price default variation
+add_filter( 'woocommerce_variable_sale_price_html', 'wc_custom_show_sale_price', 10, 2 );
+add_filter( 'woocommerce_variable_price_html', 'wc_custom_show_sale_price', 10, 2 );
+
+function wc_custom_show_sale_price( $price, $product ) {
+// Main Price
+$prices = array( $product->get_variation_price( 'min', true ), $product->get_variation_price( 'max', true ) );
+$price = $prices[0] !== $prices[1] ? sprintf( __( '%1$s', 'woocommerce' ), wc_price( $prices[0] ) ) : wc_price( $prices[0] );
+
+// Sale Price
+$prices = array( $product->get_variation_regular_price( 'min', true ), $product->get_variation_regular_price( 'max', true ) );
+sort( $prices );
+$saleprice = $prices[0] !== $prices[1] ? sprintf( __( '%1$s', 'woocommerce' ), wc_price( $prices[0] ) ) : wc_price( $prices[0] );
+
+if ( $price !== $saleprice ) {
+$price = '<del>' . $saleprice . '</del> <ins>' . $price . '</ins>';
+}
+
+return $price;
+}
+
+
+
+// Remove default up-sells and related products
+remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+
+// Add up-sells before related products
+add_action( 'woocommerce_after_single_product', 'woocommerce_upsell_display', 15 );
+
+
+
