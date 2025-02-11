@@ -29,5 +29,11 @@ require_once get_template_directory() . '/functions/seo.php';
 // SMTP
 // require_once get_template_directory() . '/functions/smtp.php';
 
+
+function enjoy_add_woocommerce_support() {
+	add_theme_support( 'woocommerce' );
+}
+add_action( 'after_setup_theme', 'enjoy_add_woocommerce_support' );
+
 // Custom woocommerce
 require_once get_template_directory() . '/functions/custom-woocommerce.php';
