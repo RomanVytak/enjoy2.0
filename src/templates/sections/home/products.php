@@ -1,19 +1,5 @@
 <?php
 
-$products = [
-
-  [
-    "img" => "img/temp/media_1.jpg",
-    'video' => "https://enjoy.ua/wp-content/uploads/2024/04/how-to-sit.mp4",
-    'type' => 'media',
-  ],
-];
-
-?>
-
-
-<?php
-
 // Check value exists.
 if( have_rows('blocks') ):?>
 <section class="products">

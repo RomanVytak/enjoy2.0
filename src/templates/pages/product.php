@@ -43,20 +43,24 @@ while (have_posts()) :
       ?>
     </div>
   </section>
+  
+  <?php renderSection('home/products');?>
+  
 <?php
 
   do_action('woocommerce_after_single_product');
 
 endwhile;
 
-renderSection('product/tabs');
+// renderSection('product/tabs');
 
 // section related products
-if (function_exists('woocommerce_output_related_products')) {
+/*if (function_exists('woocommerce_output_related_products')) {
   woocommerce_output_related_products();
-}
+}*/
 
-renderSection('choose-tool');
+//renderSection('choose-tool');
+
 
 
 get_footer();
