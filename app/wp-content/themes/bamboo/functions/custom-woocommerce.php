@@ -506,3 +506,34 @@ function change_slug_structure( $query ) {
   }
 }
 add_action( 'pre_get_posts', 'change_slug_structure', 99 );
+
+
+// <form class="variations_form cart"  enctype="multipart/form-data" data-product_id="83" data-product_variations="">
+add_filter('woocommerce_available_variation', 'customize_product_variations', 10, 3);
+
+function customize_product_variations($variation_data, $product, $variation) {
+    // Приклад зміни атрибуту 'price_html'
+    //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
+
+    // Додати новий ключ у data-product_variations
+    if (isset($variation_data['attributes']['attribute_pa_material'])) {
+        $material_slug = $variation_data['attributes']['attribute_pa_material'];
+        
+        // Отримуємо термін за slug у таксономії pa_material
+        $material_term = get_term_by('slug', $material_slug, 'pa_material');
+        
+        if ($material_term) {
+            $material_id = $material_term->term_id; // ID терміна
+            $colors = get_field('colors', 'pa_material_'.$material_id);
+            foreach($colors as $color){
+              $term = get_term($color, 'pa_kolory');
+              $color_img = get_field('photo', 'pa_kolory_'.$color);
+              $variation_data['material_colors'][$color]['name']=$term->name;
+              $variation_data['material_colors'][$color]['image']=$color_img;
+            }
+        }
+        
+    }
+
+    return $variation_data;
+}
