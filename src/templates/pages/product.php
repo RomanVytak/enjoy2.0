@@ -44,8 +44,8 @@ while (have_posts()) :
     </div>
   </section>
   
-  <?php renderSection('home/products');?>
-  
+  <?php //renderSection('home/products');?>
+
 <?php
 
   do_action('woocommerce_after_single_product');

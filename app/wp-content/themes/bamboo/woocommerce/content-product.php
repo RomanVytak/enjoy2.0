@@ -24,44 +24,82 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 	return;
 }
 ?>
-<li <?php wc_product_class( '', $product ); ?>>
-	<?php
-	/**
-	 * Hook: woocommerce_before_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_open - 10
-	 */
-	do_action( 'woocommerce_before_shop_loop_item' );
 
-	/**
-	 * Hook: woocommerce_before_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_show_product_loop_sale_flash - 10
-	 * @hooked woocommerce_template_loop_product_thumbnail - 10
-	 */
-	do_action( 'woocommerce_before_shop_loop_item_title' );
+<?php
+$product_cats = wp_get_post_terms( $product->get_id(), 'product_cat' );
+if ( ! empty( $product_cats ) && ! is_wp_error( $product_cats ) ) {
+    // Отримати першу категорію (якщо їх декілька)
+    $main_category = $product_cats[0]; 
+    // Вивести назву категорії
+    $product_category = $main_category->name;
+	$product_category_id = $product_cats[0]->term_id;
+}
+$color = get_field('product_color', 'product_cat_'.$product_category_id);
+?>
 
-	/**
-	 * Hook: woocommerce_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_template_loop_product_title - 10
-	 */
-	do_action( 'woocommerce_shop_loop_item_title' );
+	<div class="product-item">
+          <div class="product-item-slider flex w-full">
+            <div class="product-item-slider-navs flex w-full h-between">
+              <button class="nav prev flex-c">
+                <div class="icon icon_arrow_s left"></div>
+              </button>
+              <button class="nav next flex-c">
+                <div class="icon icon_arrow_s right"></div>
+              </button>
 
-	/**
-	 * Hook: woocommerce_after_shop_loop_item_title.
-	 *
-	 * @hooked woocommerce_template_loop_rating - 5
-	 * @hooked woocommerce_template_loop_price - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item_title' );
+            </div>
+            <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="swiper" data-product-images>
+              <div class="swiper-wrapper">
 
-	/**
-	 * Hook: woocommerce_after_shop_loop_item.
-	 *
-	 * @hooked woocommerce_template_loop_product_link_close - 5
-	 * @hooked woocommerce_template_loop_add_to_cart - 10
-	 */
-	do_action( 'woocommerce_after_shop_loop_item' );
-	?>
-</li>
+                <div class="swiper-slide product-item-icon obj-contain">
+                  <?php echo $product->get_image();?>
+                  <?php if ($color) { ?>
+                    <div class="product-item-circle" style="--circle: <?php echo $color ?>;"></div>
+                  <?php } ?>
+                </div>
+
+				<?php 
+				$gallery_image_ids = $product->get_gallery_image_ids(); // Отримуємо всі ID зображень із галереї продукту
+
+				if ( !empty($gallery_image_ids) ) {
+					foreach ( $gallery_image_ids as $image_id ) {
+						$image_url = wp_get_attachment_image_url( $image_id, 'full' ); // Отримуємо URL зображення
+						?>
+						<div class="swiper-slide product-item-icon obj-contain">
+							<?php echo '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( get_post_meta( $image_id, '_wp_attachment_image_alt', true ) ) . '" />';?>
+							<?php if ($color) { ?>
+								<div class="product-item-circle" style="--circle: <?php echo $color ?>;"></div>
+							<?php } ?>
+						</div>						
+					<?php
+					}
+				}
+				?>
+				
+              </div>
+            </a>
+          </div>
+          <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="product-item-info flex-v">
+            <p class="name roboto-38"><?php echo $product->get_name();?></p>
+            <p class="category roboto-18-sb"><?php echo $product_category;?></p>
+          </a>
+          <div class="product-item-price flex-v">
+            <div class="flex w-full h-between">
+              <p class="price roboto-38">
+                <?php echo $product->get_price_html(); ?>
+              </p>
+            </div>
+
+            <div class="payment-icons flex v-center">
+              <div class="group flex v-center">
+                <div class="itt pr"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/pr.svg" alt=""></div>
+                <div class="itt mon"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/mon.svg" alt=""></div>
+              </div>
+              <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="link roboto-18-b flex-c" title="Обрати дизайн">
+                Обрати дизайн
+              </a>
+            </div>
+
+          </div>
+
+        </div>

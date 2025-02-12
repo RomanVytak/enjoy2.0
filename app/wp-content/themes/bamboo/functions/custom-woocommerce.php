@@ -23,30 +23,32 @@ function woocommerce_custom_content()
     remove_action('woocommerce_before_shop_loop', 'woocommerce_output_all_notices', 10);
     ?>
 
-    <?php if (apply_filters('woocommerce_show_page_title', true)) : ?>
-
-      <h2 class="catalog--title font_h2 w-full"><?php woocommerce_page_title(); ?></h2>
-
-    <?php endif; ?>
-
     <?php if (woocommerce_product_loop()) : ?>
 
-      <?php do_action('woocommerce_before_shop_loop'); ?>
+      <?php //do_action('woocommerce_before_shop_loop'); ?>
 
-
-
-      <?php woocommerce_product_loop_start(); ?>
+      <?php //woocommerce_product_loop_start(); ?>
 
       <?php if (wc_get_loop_prop('total')) : ?>
         <?php while (have_posts()) : ?>
           <?php the_post(); ?>
-          <?php wc_get_template_part('content', 'product'); ?>
+          <?php          
+          // wp-content/themes/bamboo/woocommerce/content-product.php
+          wc_get_template_part('content', 'product'); ?>
         <?php endwhile; ?>
       <?php endif; ?>
 
-      <?php woocommerce_product_loop_end(); ?>
+      <?php //woocommerce_product_loop_end(); ?>
 
-      <?php do_action('woocommerce_after_shop_loop'); ?>
+      <?php //do_action('woocommerce_after_shop_loop'); ?>
+      
+      <?php 
+      if ( function_exists( 'woocommerce_pagination' ) ) {
+          echo '<div class="woo-pagination">';
+          woocommerce_pagination();
+          echo '</div>';
+      }
+      ?>
 
     <?php
     else :
@@ -460,4 +462,47 @@ remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_d
 add_action( 'woocommerce_after_single_product', 'woocommerce_upsell_display', 15 );
 
 
+// remove /product-category/ from url
+add_filter('request', function( $vars ) {
+	global $wpdb;
+	if( ! empty( $vars['pagename'] ) || ! empty( $vars['category_name'] ) || ! empty( $vars['name'] ) || ! empty( $vars['attachment'] ) ) {
+		$slug = ! empty( $vars['pagename'] ) ? $vars['pagename'] : ( ! empty( $vars['name'] ) ? $vars['name'] : ( !empty( $vars['category_name'] ) ? $vars['category_name'] : $vars['attachment'] ) );
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT t.term_id FROM $wpdb->terms t LEFT JOIN $wpdb->term_taxonomy tt ON tt.term_id = t.term_id WHERE tt.taxonomy = 'product_cat' AND t.slug = %s" ,array( $slug )));
+		if( $exists ){
+			$old_vars = $vars;
+			$vars = array('product_cat' => $slug );
+			if ( !empty( $old_vars['paged'] ) || !empty( $old_vars['page'] ) )
+				$vars['paged'] = ! empty( $old_vars['paged'] ) ? $old_vars['paged'] : $old_vars['page'];
+			if ( !empty( $old_vars['orderby'] ) )
+	 	        	$vars['orderby'] = $old_vars['orderby'];
+      			if ( !empty( $old_vars['order'] ) )
+ 			        $vars['order'] = $old_vars['order'];	
+		}
+	}
+	return $vars;
+});
 
+
+// remove /product/ from url
+function wsp_remove_slug( $post_link, $post, $leavename ) {
+  if ( 'product' != $post->post_type || 'publish' != $post->post_status ) {
+      return $post_link;
+  }
+  $post_link = str_replace( '/product/', '/', $post_link );
+  return $post_link;
+}
+add_filter( 'post_type_link', 'wsp_remove_slug', 10, 3 );
+
+function change_slug_structure( $query ) {
+  if ( ! $query->is_main_query() || 2 != count( $query->query ) || ! isset( $query->query['page'] ) ) {
+      return;
+  }
+  if ( ! empty( $query->query['name'] ) ) {
+      $query->set( 'post_type', array( 'post', 'product', 'page' ) );
+  } elseif ( ! empty( $query->query['pagename'] ) && false === strpos( $query->query['pagename'], '/' ) ) {
+      $query->set( 'post_type', array( 'post', 'product', 'page' ) );
+      // We also need to set the name query var since redirect_guess_404_permalink() relies on it.
+      $query->set( 'name', $query->query['pagename'] );
+  }
+}
+add_action( 'pre_get_posts', 'change_slug_structure', 99 );
