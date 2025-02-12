@@ -72,3 +72,17 @@ function get_image_sizes($unset_disabled = true)
     return $sizes;
 }
 
+function allow_svg_upload($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'allow_svg_upload');
+
+// Очищення SVG для безпеки
+function sanitize_svg($data, $file, $filename, $mimes) {
+    if ($data['type'] === 'image/svg+xml') {
+        $data['type'] = 'image/svg+xml';
+    }
+    return $data;
+}
+add_filter('wp_check_filetype_and_ext', 'sanitize_svg', 10, 4);
