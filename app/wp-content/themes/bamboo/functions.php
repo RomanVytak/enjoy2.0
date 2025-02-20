@@ -37,3 +37,13 @@ add_action( 'after_setup_theme', 'enjoy_add_woocommerce_support' );
 
 // Custom woocommerce
 require_once get_template_directory() . '/functions/custom-woocommerce.php';
+
+// disable Gutenberg 
+add_filter('use_block_editor_for_post', '__return_false');
+
+remove_theme_support('core-block-patterns');
+
+function disable_block_patterns() {
+    wp_deregister_script('wp-block-library');
+}
+add_action('wp_enqueue_scripts', 'disable_block_patterns');
