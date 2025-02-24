@@ -24,8 +24,25 @@
         <div class="icon icon_tell"></div>
         <span class="txt"><?php echo $phone;?></span>
       </a><?php }?>
-      <div class="header-cart flex">
-        <button class="icon large icon_cart" data-toggle-cart title="Кошик"></button>
+      <div class="header--bag flex">
+        <?php if (!is_cart()) {
+          $total = WC()->cart->get_cart_total();
+          $cart_items = WC()->cart->get_cart();
+          $total_items = count($cart_items);
+        ?>
+          <button class="flex-c flex-v" data-toggle-cart>
+            <div class="relative flex">
+              <div class="icon large icon_cart" data-toggle-cart title="Кошик"></div>
+              <div class="header--bag-count flex-c font_body-s <?php echo $total_items > 0 ? "" : "flex-n" ?>" data-psd="<?php echo $total_items ?>">
+                <?php echo $total_items ?>
+              </div>
+            </div>
+            <p class="header--bag-price font_body-s <?php echo $total_items > 0 ? "" : "flex-n" ?>">
+              <?php echo $total ?>
+            </p>
+          </button>
+        <?php } ?>
+
       </div>
     </div>
   </div>
