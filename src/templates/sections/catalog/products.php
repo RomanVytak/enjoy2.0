@@ -52,13 +52,10 @@ $categories = [
 <section class="products">
   <div class="container">
 
-    <div class="grid w-full">
+    
       <?php
       woocommerce_custom_content();
       ?>
 
-      
-
-    </div>
   </div>
 </section>

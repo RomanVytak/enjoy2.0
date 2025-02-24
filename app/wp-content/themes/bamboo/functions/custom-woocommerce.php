@@ -25,10 +25,10 @@ function woocommerce_custom_content()
 
     <?php if (woocommerce_product_loop()) : ?>
 
-      <?php //do_action('woocommerce_before_shop_loop'); ?>
+      <?php do_action('woocommerce_before_shop_loop'); ?>
 
       <?php //woocommerce_product_loop_start(); ?>
-
+      <div class="grid w-full">
       <?php if (wc_get_loop_prop('total')) : ?>
         <?php while (have_posts()) : ?>
           <?php the_post(); ?>
@@ -37,24 +37,33 @@ function woocommerce_custom_content()
           wc_get_template_part('content', 'product'); ?>
         <?php endwhile; ?>
       <?php endif; ?>
-
+      </div>
       <?php //woocommerce_product_loop_end(); ?>
 
-      <?php //do_action('woocommerce_after_shop_loop'); ?>
+      <?php do_action('woocommerce_after_shop_loop'); ?>
       
-      <?php 
-      if ( function_exists( 'woocommerce_pagination' ) ) {
-          echo '<div class="woo-pagination">';
-          woocommerce_pagination();
-          echo '</div>';
-      }
-      ?>
 
     <?php
     else :
       do_action('woocommerce_no_products_found');
     endif;
   }
+}
+
+// 1-12 з 17 товарів
+add_action('woocommerce_before_shop_loop', 'enjoy_echo_product_range', 5);
+
+function enjoy_echo_product_range() {
+    global $wp_query;
+
+    $total = $wp_query->found_posts; // Загальна кількість товарів
+    $per_page = $wp_query->query_vars['posts_per_page']; // Кількість товарів на сторінку
+    $current_page = max(1, get_query_var('paged')); // Поточна сторінка
+
+    $start = ($current_page - 1) * $per_page + 1;
+    $end = min($start + $per_page - 1, $total);
+
+    echo '<p class="product-count">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
 }
 
 // insert after description on single product page
