@@ -66,58 +66,6 @@ function enjoy_echo_product_range() {
     echo '<p class="product-count">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
 }
 
-// insert after description on single product page
-function face_code_after_single_excerpt()
-{
-  global $product, $post;
-
-  // Get the product attributes
-  $attributes = $product->get_attributes();
-
-  if (! empty($attributes)) {
-    echo '<div class="product-attributes">';
-
-    foreach ($attributes as $attribute) {
-      //print_r($attribute);
-      // Check if the attribute is not a variation
-      //if (! $attribute->get_variation() && $attribute['visible'] == '1') {
-      if ($attribute['visible'] == '1') {
-        // Get attribute name (taxonomy name)
-        $attribute_name = $attribute->get_name();
-        // Get attribute label (human-readable)
-        $attribute_label = wc_attribute_label($attribute_name);
-        // Get attribute values (term IDs)
-        $attribute_values = $attribute->get_options();
-        // print_r($attribute_values);
-        if ($attribute['id'] == 0) {
-          // Display attribute label and values
-          echo '<div class="attribute"><p class="font_body-l">' . esc_html($attribute_label) . ':</p>';
-          echo '<div class="attr">';
-          foreach ($attribute_values as $val) {
-            echo '<p>' . $val . '</p>';
-          }
-          echo '</div></div>';
-        } else {
-          // Convert term IDs to names dynamically using the attribute name
-          $attribute_term_names = array_map(function ($term_id) use ($attribute_name) {
-            $term = get_term_by('id', $term_id, $attribute_name);
-            return $term ? $term->name : '';
-          }, $attribute_values);
-          // Display attribute label and values
-          echo '<div class="attribute"><p class="font_body-l">' . esc_html($attribute_label) . ':</p>';
-          echo '<div class="attr">' . implode('', array_map(function ($term) {
-            return '<p>' . esc_html($term) . '</p>';
-          }, $attribute_term_names)) . '</div></div>';
-        }
-      }
-    }
-
-    echo '</div>';
-  }
-}
-add_action('woocommerce_single_product_summary', 'face_code_after_single_excerpt', 21);
-
-
 
 function get_custom_image_html($attachment_id, $main_image = false)
 {
@@ -150,6 +98,7 @@ function get_custom_image_html($attachment_id, $main_image = false)
     )
   );
 
+
   return '<div class="swiper-slide image cover"><a href="' . esc_url($full_src[0]) . '" target="_blank">' . $image . '</a></div>';
 }
 
@@ -163,34 +112,6 @@ function face_woocommerce_thumbnail_size()
   // Set the custom size you want ('full', 'medium', 'large', or any custom size)
   echo woocommerce_get_product_thumbnail('large'); // Change 'medium' to the desired size
 }
-
-// add new tabs & remove default
-function face_woocommerce_new_tab($tabs)
-{
-  global $product, $post;
-  $rows = get_field('tabs', $post->ID);
-  if ($rows) {
-    $i = 1;
-    foreach ($rows as $row) {
-      //$row['title']
-      $tabs['tab_' . $i] = array(
-        'title'    => $row['title'],
-        'priority' => 50, // Adjust the position of the tab
-        'callback' => function () use ($row) {
-          echo $row['text'];
-        },
-      );
-
-      $i++;
-    }
-  }
-
-
-  unset($tabs['additional_information']); // Remove the additional information tab
-
-  return $tabs;
-}
-add_filter('woocommerce_product_tabs', 'face_woocommerce_new_tab');
 
 
 // buy one click
@@ -227,47 +148,6 @@ function handle_buy_now_button()
 }
 add_action('template_redirect', 'handle_buy_now_button');
 
-
-// Hook into 'woocommerce_before_shop_loop'
-add_action('woocommerce_before_shop_loop', 'face_code_before_shop_loop', 5);
-
-function face_code_before_shop_loop()
-{
-  // Your custom code here
-  if (is_active_sidebar('woocommerce-filters')) : ?>
-    <div class="catalog--filters flex">
-      <label class="custom toggle toggle-filters flex-c font_caps-lock-m">
-        <input type="checkbox">
-        <div class="flex v-center">
-          <div class="icon-filters flex-c ratio icon-24"></div>
-          <div class="txt">
-            ФІЛЬТРИ
-          </div>
-          <div class="icon-plus flex-c ratio icon-24"></div>
-        </div>
-      </label>
-
-      <div id="woocommerce-filters" class="widget-area custom-popup-filters" data-close-filters="true">
-        <div class="overflow-wrapper">
-          <div class="mobile-row flex h-between v-center">
-            <p class="font_title-l">Фільтри</p>
-            <button class="close icon-close" data-close-filters="true"></button>
-          </div>
-          <?php dynamic_sidebar('woocommerce-filters'); ?>
-        </div>
-      </div>
-    </div>
-
-  <?php endif;
-  if (is_active_sidebar('woocommerce-active-filters')) : ?>
-    <div class="catalog--selected-filters">
-      <div id="woocommerce-active-filters" class="widget-area">
-        <?php dynamic_sidebar('woocommerce-active-filters'); ?>
-      </div>
-    </div>
-
-<?php endif;
-}
 
 
 // кастомна ціна
@@ -430,6 +310,7 @@ function custom_woocommerce_pagination_args($args) {
     return $args;
 }
 
+/*
 // redirect thank you page
 add_action( 'template_redirect', 'woo_custom_redirect_after_purchase' );
 function woo_custom_redirect_after_purchase() {
@@ -439,6 +320,7 @@ function woo_custom_redirect_after_purchase() {
 		exit;
 	}
 }
+*/
 
 
 // fix price default variation
@@ -545,4 +427,52 @@ function customize_product_variations($variation_data, $product, $variation) {
     }
 
     return $variation_data;
+}
+
+// replace product title
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_title', 5);
+
+add_action('woocommerce_single_product_summary', 'enjoy_woocommerce_single_title', 5);
+function enjoy_woocommerce_single_title() {
+    global $post;
+    echo '<div class="enjoy-product-title">';
+    echo '<h1 class="product-title">';
+    echo esc_html($post->post_title); // Вивід заголовка
+    echo '</h1>';
+    if (function_exists('get_field')) {
+      $rows = get_field('promo');
+      $i = 0;
+      if( $rows ) {
+          foreach( $rows as $row ) {
+              if($i==0){
+                echo '<div class="promo-box">';
+                if($row['url']){echo'<a href="'.$row['url'].'">';}
+                echo '<span>'.$row['name'].'</span>';
+                if($row['url']){echo'</a>';}
+                echo'</div>';
+              }
+              $i++;
+          }
+      }
+    }
+    echo '</div>';
+}
+
+// woocommerce_template_single_excerpt  replace excerpt to the_content
+remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20);
+
+add_action('woocommerce_single_product_summary', 'enjoy_replace_excerpt_with_content', 20);
+function enjoy_replace_excerpt_with_content() {
+    global $post;
+    echo '<div class="woocommerce-product-content">' . apply_filters('the_content', $post->post_content) . '</div>';
+    if (function_exists('get_field')) {
+      if(get_field('instruct_name')){
+        echo'
+        <div class="woocommerce-product-instruction">
+          <div class="instruction-title">'.get_field('instruct_name').'</div>
+          <div class="instruction-text">'.get_field('instruct_text').'</div>
+        </div>
+        ';
+      }
+    }
 }

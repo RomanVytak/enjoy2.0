@@ -74,9 +74,13 @@ function get_image_sizes($unset_disabled = true)
 
 function allow_svg_upload($mimes) {
     $mimes['svg'] = 'image/svg+xml';
+    $mimes['usdz'] = 'model/vnd.usdz+zip'; // Додаємо підтримку .usdz
+    $mimes['glb'] = 'model/gltf-binary';   // Додаємо підтримку .glb
     return $mimes;
 }
 add_filter('upload_mimes', 'allow_svg_upload');
+
+
 
 // Очищення SVG для безпеки
 function sanitize_svg($data, $file, $filename, $mimes) {
@@ -86,3 +90,5 @@ function sanitize_svg($data, $file, $filename, $mimes) {
     return $data;
 }
 add_filter('wp_check_filetype_and_ext', 'sanitize_svg', 10, 4);
+
+
