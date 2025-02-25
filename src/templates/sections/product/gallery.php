@@ -36,6 +36,23 @@
 
     ?>
     <div class="woocommerce-gallery">
+      <div class="promo-box">
+      <?php if (function_exists('get_field')) {
+        $rows = get_field('promo');
+        $i = 0;
+        if( $rows ) {
+            foreach( $rows as $row ) {
+                  echo '<div class="promo-box">';
+                  if($row['url']){echo'<a href="'.$row['url'].'">';}
+                  if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
+                  echo '<span>'.$row['name'].'</span>';
+                  if($row['url']){echo'</a>';}
+                  echo'</div>';
+                $i++;
+            }
+        }
+      }?>
+      </div>
       <div class="swiper lg">
         <div class="swiper-wrapper">
           <?php
