@@ -37,7 +37,8 @@ $categories = [
       <?php foreach ($categories as $category) :
         $icon = $category['icon'] ?? null;
       ?>
-        <a href="<?= $category['link'] ?>" class="tab">
+        <a href="<?= $category['link'] ?>" class="tab <?php if ($category['link'] === $_SERVER['REQUEST_URI']) {
+    echo "active";}?>">
           <?php if ($icon) :  ?>
             <div class="icon flex large" style="mask-image: url(<?= assets($icon)  ?>);">
             </div>

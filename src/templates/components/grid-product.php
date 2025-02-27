@@ -1,7 +1,7 @@
 <?php
 $product_id = get_sub_field('product');
 $product = wc_get_product($product_id);
-$sale = get_sub_field('sale');
+
 $type = get_row_layout();
 
 $product_cats = wp_get_post_terms( $product->get_id(), 'product_cat' );
@@ -16,12 +16,23 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
 ?>
 
 <a href="<?php echo get_permalink($product_id); ?>" class="product-item <?php echo $type ?> <?php echo $color ? 'on-hover' : '' ?>">
-  <?php if ($sale) { ?>
-    <div class="product-item-sale flex-c roboto-18-sb">
-      <div class="icon icon_sale"></div>
-      <div><?php echo $sale ?></div>
-    </div>
-  <?php } ?>
+    <?php
+          if (function_exists('get_field')) {
+            $rows = get_field('promo', $product_id);
+            $i = 0;
+            if( $rows ) {
+                foreach( $rows as $row ) {
+                    if($i==0){
+                      echo '<div class="product-item-sale flex-c roboto-18-sb">';
+                      if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
+                      echo '<span>'.$row['name'].'</span>';
+                      echo'</div>';
+                    }
+                    $i++;
+                }
+            }
+          }
+          ?>
 
   <div class="product-item-icon flex-c obj-contain">
     <?php echo $product->get_image();?>

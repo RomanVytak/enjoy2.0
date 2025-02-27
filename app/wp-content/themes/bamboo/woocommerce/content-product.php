@@ -38,6 +38,25 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
 ?>
 
 	<div class="product-item">
+          <?php
+          if (function_exists('get_field')) {
+            $rows = get_field('promo');
+            $i = 0;
+            if( $rows ) {
+                foreach( $rows as $row ) {
+                    if($i==0){
+                      echo '<div class="product-item-sale flex-c roboto-18-sb">';
+                      if($row['url']){echo'<a href="'.$row['url'].'">';}
+                      if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
+                      echo '<span>'.$row['name'].'</span>';
+                      if($row['url']){echo'</a>';}
+                      echo'</div>';
+                    }
+                    $i++;
+                }
+            }
+          }
+          ?>
           <div class="product-item-slider flex w-full">
             <div class="product-item-slider-navs flex w-full h-between">
               <button class="nav prev flex-c">

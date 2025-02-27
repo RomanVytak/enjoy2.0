@@ -422,6 +422,15 @@ function customize_product_variations($variation_data, $product, $variation) {
               $variation_data['material_colors'][$color]['name']=$term->name;
               $variation_data['material_colors'][$color]['image']=$color_img;
             }
+
+            $options = get_field('options', 'pa_material_'.$material_id);
+            $i=0;
+            if (!empty($options) && is_array($options)) {                
+              foreach($options as $option){
+                $variation_data['material_options'][$i]=$option;
+                $i++;
+              }
+            }
         }
         
     }
