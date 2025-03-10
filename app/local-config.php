@@ -52,8 +52,8 @@ function setupConfig(string $environment): void
     switch ($environment) {
         case 'local':
             define('WP_ENVIRONMENT_TYPE', 'local');
-            define('WP_DEBUG', true);
-            define('WP_DEBUG_DISPLAY', true);
+            define('WP_DEBUG', false );
+            define('WP_DEBUG_DISPLAY', false );
             define('WP_DEBUG_LOG', true);
             break;
         case 'staging':

@@ -21,6 +21,12 @@ p {
 .roboto-38 {
   @include roboto-38-B;
 }
+.roboto-32 {
+  @include use-font(var(--roboto-con-sb), min-max(24, 32), 600, 120%);
+}
+.roboto-28 {
+  @include use-font(var(--roboto-m), min-max(18, 28), 500, 130%);
+}
 .roboto-18-b {
   @include roboto-18-B;
 }
