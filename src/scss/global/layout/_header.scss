@@ -16,6 +16,7 @@
   .container {
     height: clamp(64px, px2vw(64), 85px);
     padding: 0 min-max(16, 50);
+    gap: min-max(24, 40);
     justify-content: space-between;
   }
 
@@ -70,6 +71,28 @@
   &-right {
     gap: min-max(16, 40);
   }
+  &-menu {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: min-max(16, 32);
+
+      a {
+        font-size: min-max(12, 16);
+        transition: var(--transition);
+        color: #054f78;
+        @include on-hover {
+          color: var(--orange-1);
+        }
+      }
+    }
+  }
 
   &-tell {
     .icon {
@@ -80,6 +103,23 @@
     @include on-hover {
       color: var(--orange-2);
     }
+  }
+
+  &-count {
+    color: var(--white);
+    height: 23px;
+    min-width: 23px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 3px;
+    background: var(--orange-1);
+    align-self: center;
+    border-radius: 50%;
+    font-family: var(--roboto-m);
+    font-weight: 500;
+    margin-left: 4px;
   }
 
   @include mq-max-1024 {
