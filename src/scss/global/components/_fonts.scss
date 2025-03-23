@@ -6,8 +6,6 @@
 @include font-face("Roboto Condensed Medium", "RobotoCondensed-Medium-500", 500);
 @include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 70);
 
-
-
 p {
   @include roboto-18;
 }
@@ -32,6 +30,9 @@ p {
 }
 .roboto-18-sb {
   @include roboto-18-SB;
+}
+.roboto-16-sb {
+  @include use-font(var(--roboto-m), min-max(14, 16), 500, 140%);
 }
 
 h1,

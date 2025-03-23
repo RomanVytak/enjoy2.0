@@ -29,7 +29,7 @@ if ( ! is_a( $product, WC_Product::class ) || ! $product->is_visible() ) {
 $product_cats = wp_get_post_terms( $product->get_id(), 'product_cat' );
 if ( ! empty( $product_cats ) && ! is_wp_error( $product_cats ) ) {
     // Отримати першу категорію (якщо їх декілька)
-    $main_category = $product_cats[0]; 
+    $main_category = $product_cats[0];
     // Вивести назву категорії
     $product_category = $main_category->name;
 	$product_category_id = $product_cats[0]->term_id;
@@ -67,7 +67,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
               </button>
 
             </div>
-            <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="swiper" data-product-images>
+            <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="swiper swiper-images" data-product-images>
               <div class="swiper-wrapper">
 
                 <div class="swiper-slide product-item-icon obj-contain">
@@ -77,7 +77,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                   <?php } ?>
                 </div>
 
-				<?php 
+				<?php
 				$gallery_image_ids = $product->get_gallery_image_ids(); // Отримуємо всі ID зображень із галереї продукту
 
 				if ( !empty($gallery_image_ids) ) {
@@ -89,12 +89,12 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
 							<?php if ($color) { ?>
 								<div class="product-item-circle" style="--circle: <?php echo $color ?>;"></div>
 							<?php } ?>
-						</div>						
+						</div>
 					<?php
 					}
 				}
 				?>
-				
+
               </div>
             </a>
           </div>

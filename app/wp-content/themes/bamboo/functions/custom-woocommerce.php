@@ -63,7 +63,7 @@ function enjoy_echo_product_range() {
     $start = ($current_page - 1) * $per_page + 1;
     $end = min($start + $per_page - 1, $total);
 
-    echo '<p class="product-count">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
+    echo '<p class="product-count custom_product-count roboto-16-sb">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
 }
 
 

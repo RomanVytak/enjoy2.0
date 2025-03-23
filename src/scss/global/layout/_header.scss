@@ -75,6 +75,7 @@
     display: flex;
     flex: 1;
     align-items: center;
+
     ul {
       list-style-type: none;
       padding: 0;
@@ -89,6 +90,32 @@
         color: #054f78;
         @include on-hover {
           color: var(--orange-1);
+        }
+      }
+    }
+
+    @include mq-max-1024 {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      top: 100%;
+      padding: 0 min-max(16, 50);
+      justify-content: center;
+      height: calc(100dvh - 100%);
+      background: var(--white);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+
+        a {
+          font-size: 14px;
         }
       }
     }
@@ -137,6 +164,20 @@
             }
           }
         }
+      }
+
+      .header-menu {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
+    .header-tell {
+      .icon {
+        display: flex;
+      }
+      .txt {
+        display: none;
       }
     }
   }
