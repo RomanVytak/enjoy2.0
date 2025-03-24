@@ -89,6 +89,12 @@ function bamboo_remove_needless_css()
   // Remove theme.json
   wp_dequeue_style('global-styles');
   wp_dequeue_style('classic-theme-styles');
+
+  // Remove WooCommerce block CSS WOOOOOOOOOOO
+  wp_dequeue_style('wc-block-style');
+  wp_dequeue_style('woocommerce-general');
+  wp_dequeue_style('woocommerce-layout');
+  wp_dequeue_style('woo-variation-swatches');
 }
 
 // Remove WP FSE Scripts & styles

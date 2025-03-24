@@ -1,18 +1,16 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   color: var(--blackC4);
   font-family: var(--roboto-r);
   font-size: min-max(var(--size-sm), 18);
   font-weight: 400;
 
-
-
-  &.no-scroll {
-    overflow: hidden !important;
-    height: 100dvh;
-  }
+  // &.no-scroll {
+  //   overflow: hidden !important;
+  //   height: 100dvh;
+  // }
 }
 
 main {
@@ -55,6 +53,10 @@ section {
 
 .flex-c {
   @include flex-c;
+}
+
+.flex-n {
+  display: none;
 }
 
 .v-center {
@@ -137,6 +139,14 @@ li {
       background-color: var(--orange-2);
     }
   }
+  &_trash {
+    mask: url("../img/trash.svg") center/cover no-repeat;
+    background-color: #2b3f6c;
+
+    @include on-hover {
+      background-color: var(--orange-2);
+    }
+  }
 
   &_cart {
     mask: url("../img/cart.svg") center/cover no-repeat;
@@ -181,6 +191,18 @@ li {
     &.left {
       transform: rotateY(180deg);
     }
+  }
+  &_plus {
+    width: 24px;
+    aspect-ratio: 1;
+    flex: none;
+    background: url("../img/plus.svg") center/cover no-repeat;
+  }
+  &_minus {
+    width: 24px;
+    aspect-ratio: 1;
+    flex: none;
+    background: url("../img/minus.svg") center/cover no-repeat;
   }
 }
 

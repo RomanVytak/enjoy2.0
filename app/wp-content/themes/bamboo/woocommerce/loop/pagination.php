@@ -28,7 +28,7 @@ if ( $total <= 1 ) {
 	return;
 }
 ?>
-<nav class="woocommerce-pagination" aria-label="<?php esc_attr_e( 'Product Pagination', 'woocommerce' ); ?>">
+<nav class="woocommerce-pagination catalog--pagination">
 	<?php
 	echo paginate_links(
 		apply_filters(
@@ -39,8 +39,8 @@ if ( $total <= 1 ) {
 				'add_args'  => false,
 				'current'   => max( 1, $current ),
 				'total'     => $total,
-				'prev_text' => is_rtl() ? '&rarr;' : '&larr;',
-				'next_text' => is_rtl() ? '&larr;' : '&rarr;',
+				'prev_text' => "",
+				'next_text' => "",
 				'type'      => 'list',
 				'end_size'  => 3,
 				'mid_size'  => 3,

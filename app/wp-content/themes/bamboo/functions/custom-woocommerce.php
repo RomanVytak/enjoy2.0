@@ -32,7 +32,7 @@ function woocommerce_custom_content()
       <?php if (wc_get_loop_prop('total')) : ?>
         <?php while (have_posts()) : ?>
           <?php the_post(); ?>
-          <?php          
+          <?php
           // wp-content/themes/bamboo/woocommerce/content-product.php
           wc_get_template_part('content', 'product'); ?>
         <?php endwhile; ?>
@@ -41,7 +41,7 @@ function woocommerce_custom_content()
       <?php //woocommerce_product_loop_end(); ?>
 
       <?php do_action('woocommerce_after_shop_loop'); ?>
-      
+
 
     <?php
     else :
@@ -63,7 +63,7 @@ function enjoy_echo_product_range() {
     $start = ($current_page - 1) * $per_page + 1;
     $end = min($start + $per_page - 1, $total);
 
-    echo '<p class="product-count">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
+    echo '<p class="product-count custom_product-count roboto-16-sb">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
 }
 
 
@@ -245,7 +245,7 @@ function change_existing_currency_symbol($currency_symbol, $currency)
       $currency_symbol = 'грн';
       break;
   }
-  return $currency_symbol;
+  return '<span class="custom_symbol">' . $currency_symbol . '</span>';
 }
 
 // Change Add to Cart button text in WooCommerce loop
@@ -367,7 +367,7 @@ add_filter('request', function( $vars ) {
 			if ( !empty( $old_vars['orderby'] ) )
 	 	        	$vars['orderby'] = $old_vars['orderby'];
       			if ( !empty( $old_vars['order'] ) )
- 			        $vars['order'] = $old_vars['order'];	
+ 			        $vars['order'] = $old_vars['order'];
 		}
 	}
 	return $vars;
@@ -409,10 +409,10 @@ function customize_product_variations($variation_data, $product, $variation) {
     // Додати новий ключ у data-product_variations
     if (isset($variation_data['attributes']['attribute_pa_material'])) {
         $material_slug = $variation_data['attributes']['attribute_pa_material'];
-        
+
         // Отримуємо термін за slug у таксономії pa_material
         $material_term = get_term_by('slug', $material_slug, 'pa_material');
-        
+
         if ($material_term) {
             $material_id = $material_term->term_id; // ID терміна
             // додаткові дані матеріалу
@@ -432,14 +432,14 @@ function customize_product_variations($variation_data, $product, $variation) {
 
             $options = get_field('options', 'pa_material_'.$material_id);
             $i=0;
-            if (!empty($options) && is_array($options)) {                
+            if (!empty($options) && is_array($options)) {
               foreach($options as $option){
                 $variation_data['material_options'][$i]=$option;
                 $i++;
               }
             }
         }
-        
+
     }
 
     return $variation_data;
