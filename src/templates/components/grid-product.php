@@ -7,7 +7,7 @@ $type = get_row_layout();
 $product_cats = wp_get_post_terms( $product->get_id(), 'product_cat' );
 if ( ! empty( $product_cats ) && ! is_wp_error( $product_cats ) ) {
     // Отримати першу категорію (якщо їх декілька)
-    $main_category = $product_cats[0]; 
+    $main_category = $product_cats[0];
     // Вивести назву категорії
     $product_category = $main_category->name;
 	$product_category_id = $product_cats[0]->term_id;
@@ -24,8 +24,10 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                 foreach( $rows as $row ) {
                     if($i==0){
                       echo '<div class="product-item-sale flex-c roboto-18-sb">';
+                      echo '<div class="custom-pr-sale">';
                       if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
                       echo '<span>'.$row['name'].'</span>';
+                      echo'</div>';
                       echo'</div>';
                     }
                     $i++;

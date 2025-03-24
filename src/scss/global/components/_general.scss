@@ -220,3 +220,22 @@ li {
     }
   }
 }
+
+
+.custom-pr-sale {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--orange-2);
+  pointer-events: all;
+  border-radius: min-max(8, 10);
+  padding: min-max(6, 8);
+  border: 1px solid var(--orange-2);
+  background: var(--white);
+  font-size: min-max(14, 18);
+
+  img {
+    width: min-max(20, 24);
+    height: auto;
+  }
+}

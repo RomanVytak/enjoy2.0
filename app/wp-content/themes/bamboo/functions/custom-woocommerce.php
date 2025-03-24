@@ -54,16 +54,16 @@ function woocommerce_custom_content()
 add_action('woocommerce_before_shop_loop', 'enjoy_echo_product_range', 5);
 
 function enjoy_echo_product_range() {
-    global $wp_query;
+  global $wp_query;
 
-    $total = $wp_query->found_posts; // Загальна кількість товарів
-    $per_page = $wp_query->query_vars['posts_per_page']; // Кількість товарів на сторінку
-    $current_page = max(1, get_query_var('paged')); // Поточна сторінка
+  $total = $wp_query->found_posts; // Загальна кількість товарів
+  $per_page = $wp_query->query_vars['posts_per_page']; // Кількість товарів на сторінку
+  $current_page = max(1, get_query_var('paged')); // Поточна сторінка
 
-    $start = ($current_page - 1) * $per_page + 1;
-    $end = min($start + $per_page - 1, $total);
+  $start = ($current_page - 1) * $per_page + 1;
+  $end = min($start + $per_page - 1, $total);
 
-    echo '<p class="product-count custom_product-count roboto-16-sb">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
+  echo '<p class="product-count custom_product-count roboto-16-sb">' . $start . '-' . $end . ' з ' . $total . ' товарів</p>';
 }
 
 
@@ -449,29 +449,37 @@ function customize_product_variations($variation_data, $product, $variation) {
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_title', 5);
 
 add_action('woocommerce_single_product_summary', 'enjoy_woocommerce_single_title', 5);
-function enjoy_woocommerce_single_title() {
-    global $post;
-    echo '<div class="enjoy-product-title">';
-    echo '<h1 class="product-title">';
-    echo esc_html($post->post_title); // Вивід заголовка
-    echo '</h1>';
-    if (function_exists('get_field')) {
-      $rows = get_field('promo');
-      $i = 0;
-      if( $rows ) {
-          foreach( $rows as $row ) {
-              if($i==0){
-                echo '<div class="promo-box">';
-                if($row['url']){echo'<a href="'.$row['url'].'">';}
-                echo '<span>'.$row['name'].'</span>';
-                if($row['url']){echo'</a>';}
-                echo'</div>';
-              }
-              $i++;
+function enjoy_woocommerce_single_title()
+{
+  global $post;
+  echo '<div class="enjoy-product-title flex-v">';
+  echo '<h1 class="product-title roboto-38">';
+  echo esc_html($post->post_title); // Вивід заголовка
+  echo '</h1>';
+  if (function_exists('get_field')) {
+    $rows = get_field('promo');
+    $i = 0;
+    if ($rows) {
+      foreach ($rows as $row) {
+        if ($i == 0) {
+          echo '<div class="promo-box">';
+          if ($row['url']) {
+            echo '<a href="' . $row['url'] . '">';
           }
+          echo '<div class="custom-pr-sale">';
+
+          echo '<span>' . $row['name'] . '</span>';
+          echo '</div>';
+          if ($row['url']) {
+            echo '</a>';
+          }
+          echo '</div>';
+        }
+        $i++;
       }
     }
-    echo '</div>';
+  }
+  echo '</div>';
 }
 
 // woocommerce_template_single_excerpt  replace excerpt to the_content

@@ -25,7 +25,7 @@ while (have_posts()) :
   }
 ?>
   <section id="product-<?php the_ID(); ?>" class="single_product">
-    <div class="grid-container gap">
+    <div class="container">
 
 
       <?php renderSection('product/gallery'); ?>
@@ -43,7 +43,7 @@ while (have_posts()) :
       ?>
     </div>
   </section>
-  
+
   <?php //renderSection('home/products');?>
 
 <?php

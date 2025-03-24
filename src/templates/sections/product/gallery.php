@@ -44,8 +44,10 @@
             foreach( $rows as $row ) {
                   echo '<div class="product-item-sale flex-c roboto-18-sb">';
                   if($row['url']){echo'<a href="'.$row['url'].'">';}
+                  echo '<div class="custom-pr-sale">';
                   if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
                   echo '<span>'.$row['name'].'</span>';
+                  echo'</div>';
                   if($row['url']){echo'</a>';}
                   echo'</div>';
                 $i++;
