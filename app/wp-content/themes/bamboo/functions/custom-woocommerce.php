@@ -417,10 +417,10 @@ function customize_product_variations($variation_data, $product, $variation) {
             $material_id = $material_term->term_id; // ID терміна
             // додаткові дані матеріалу
             $material_img = get_field('image', 'pa_material_'.$material_id);
-            $variation_data['material_details'][0]['id']=$material_term->term_id;
-            $variation_data['material_details'][0]['slug']=$material_term->slug;
-            $variation_data['material_details'][0]['name']=$material_term->name;
-            $variation_data['material_details'][0]['image']=$material_img;
+            $variation_data['material_details']['id']=$material_term->term_id;
+            $variation_data['material_details']['slug']=$material_term->slug;
+            $variation_data['material_details']['name']=$material_term->name;
+            $variation_data['material_details']['image']=$material_img;
 
             $colors = get_field('colors', 'pa_material_'.$material_id);
             foreach($colors as $color){
@@ -428,6 +428,7 @@ function customize_product_variations($variation_data, $product, $variation) {
               $color_img = get_field('photo', 'pa_kolory_'.$color);
               $variation_data['material_colors'][$color]['name']=$term->name;
               $variation_data['material_colors'][$color]['image']=$color_img;
+              $variation_data['material_colors'][$color]['id']=$color;
             }
 
             $options = get_field('options', 'pa_material_'.$material_id);

@@ -32,7 +32,7 @@
     width: 16px;
     flex: none;
     mask: url("../img/delimiter.svg") center/cover no-repeat;
-    background: #4C5C66;
+    background: #4c5c66;
   }
 }
 
@@ -40,6 +40,7 @@
   .container {
     padding: 0 min-max(16, 50);
     @include grid(12, min-max(24, 48));
+    padding-bottom: min-max(60, 200);
   }
 
   .woocommerce-gallery {
@@ -63,9 +64,36 @@
 
     .swiper {
       width: 100%;
+      position: relative;
 
       &-slide {
         display: flex;
+
+        &-navs {
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          z-index: 2;
+          pointer-events: none;
+          padding-inline: min-max(12, 16);
+
+          .nav {
+            pointer-events: all;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--white);
+
+            &.swiper-button-lock {
+              display: none;
+            }
+
+            &:active {
+              transform: scale(1.2);
+            }
+          }
+        }
 
         a {
           display: flex;
@@ -115,7 +143,7 @@
     }
   }
 
-  .woocommerce-product-content{
+  .woocommerce-product-content {
     > * {
       margin-top: 1em;
 
@@ -136,6 +164,7 @@
   .enjoy-product-title {
     gap: min-max(10, 16);
     align-items: flex-start;
+    order: -1;
   }
 
   .short-description {
@@ -273,11 +302,300 @@
     color: var(--white);
   }
 
-  // .custom-price {
-  //   p {
-  //     @include font_title-l;
-  //   }
-  // }
+  .custom-woo-data {
+    gap: 8px;
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: min-max(16, 24);
+      padding: min-max(12, 16) min-max(16, 24);
+      background: #f9f9f9;
+      border-radius: min-max(16, 24);
+
+      img {
+        user-select: none;
+      }
+
+      &_material {
+        display: flex;
+        flex-direction: column;
+        gap: min-max(12, 16);
+
+        .top {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .materials {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px 16px;
+
+          .material {
+            display: flex;
+            width: 32px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            position: relative;
+
+            &::before {
+              content: "";
+              position: absolute;
+              // inset: 0;
+              width: 100%;
+              height: 100%;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              border-radius: 50%;
+              border: 2px solid transparent;
+              pointer-events: none;
+              transition: var(--transition);
+            }
+
+            @include on-hover {
+              &::before {
+                border-color: var(--orange-2);
+              }
+            }
+
+            &.active {
+              &::before {
+                border-color: var(--orange-2);
+                transform: translate(-50%, -50%) scale(1.3);
+              }
+            }
+
+            img {
+              pointer-events: none;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+            }
+          }
+        }
+
+        .params {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          &:has(.hidden) {
+            display: none;
+          }
+
+          &-params {
+            display: flex;
+            gap: 8px;
+
+            .param {
+              display: flex;
+              width: min-max(28, 32);
+              aspect-ratio: 1;
+
+              img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+          }
+        }
+      }
+      &_color {
+        display: flex;
+        flex-direction: column;
+        gap: min-max(12, 16);
+
+        .colors {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px 16px;
+
+          .color {
+            display: flex;
+            width: 32px;
+            aspect-ratio: 1;
+            cursor: pointer;
+            position: relative;
+
+            &::before {
+              content: "";
+              position: absolute;
+              // inset: 0;
+              width: 100%;
+              height: 100%;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              border-radius: 50%;
+              border: 2px solid transparent;
+              pointer-events: none;
+              transition: var(--transition);
+            }
+
+            @include on-hover {
+              &::before {
+                border-color: var(--orange-2);
+              }
+            }
+
+            &.active {
+              &::before {
+                border-color: var(--orange-2);
+                transform: translate(-50%, -50%) scale(1.3);
+              }
+            }
+
+            img {
+              pointer-events: none;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+            }
+          }
+        }
+      }
+      &_sizes {
+        display: flex;
+        flex-direction: column;
+        gap: min-max(12, 16);
+
+        .top {
+          display: flex;
+          align-items: center;
+          gap: min-max(12, 16);
+          flex-wrap: wrap;
+          min-height: min-max(20, 24);
+
+          .params {
+            display: flex;
+            align-items: center;
+            gap: min-max(12, 16);
+
+            .param {
+              display: flex;
+              align-items: center;
+              font-size: min-max(12, 14);
+              gap: min-max(2, 4);
+
+              &::before {
+                content: "";
+                display: block;
+                width: min-max(20, 24);
+                aspect-ratio: 1;
+                flex: none;
+              }
+              &.length {
+                &::before {
+                  background: url("../img/length.svg") center/cover no-repeat;
+                }
+              }
+              &.height {
+                &::before {
+                  background: url("../img/height.svg") center/cover no-repeat;
+                }
+              }
+              &.width {
+                &::before {
+                  background: url("../img/width.svg") center/cover no-repeat;
+                }
+              }
+            }
+          }
+        }
+
+        .sizes {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 8px 16px;
+
+          .size {
+            cursor: pointer;
+            font-weight: 400;
+            font-family: var(--roboto-r);
+            display: flex;
+            font-size: min-max(14, 16);
+            align-items: center;
+            min-height: min-max(32, 40);
+            padding: 0 min-max(12, 16);
+            border-radius: min-max(10, 12);
+            border: 1px solid #adb6c4;
+            transition: var(--transition);
+            color: hsla(225, 56%, 22%, 0.6);
+
+            @include on-hover {
+              color: var(--orange-2);
+              border-color: var(--orange-2);
+            }
+
+            &.active {
+              background: var(--orange-2);
+              color: var(--white);
+              border-color: var(--orange-2);
+            }
+          }
+        }
+      }
+
+      &_sent {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &_nav {
+          display: flex;
+
+          button {
+            font-size: min-max(16, 18);
+            font-weight: 700;
+            font-family: var(--roboto-b);
+            color: var(--white);
+            padding: min-max(12, 14) min-max(32, 46);
+            border-radius: min-max(12, 16);
+            background: var(--orange-2);
+            transition: var(--transition);
+
+            @include on-hover {
+              background: var(--orange-1);
+            }
+
+            &:disabled {
+              background: #c9c9c9;
+            }
+          }
+        }
+
+        &_price {
+          color: var(--blackC4);
+          .price {
+            @include roboto-38-B;
+          }
+          .currency {
+            @include roboto-18;
+            font-size: min-max(32, 38);
+          }
+        }
+      }
+    }
+
+    .top {
+      p {
+        span {
+          font-weight: 400;
+          font-family: var(--roboto-r);
+        }
+      }
+    }
+  }
 }
 
 .product_tabs {

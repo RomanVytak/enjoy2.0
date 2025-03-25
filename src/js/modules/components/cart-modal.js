@@ -7,7 +7,7 @@ export default function toggleCartPopup() {
 
   const buttons = document.querySelectorAll("[data-toggle-cart]");
   const wrapper = cart.querySelector(".wrapper");
-  const config = { childList: true, subtree: true };
+  const config = { childList: true,  };
   const headerCount = document.querySelector(".header-count");
 
   const closeCart = (e) => {
@@ -31,10 +31,12 @@ export default function toggleCartPopup() {
   buttons.forEach((button) => button.addEventListener("click", toggleCart));
 
   const checkTotalProductsInCart = () => {
-    const widget = wrapper.querySelector(".product_list_widget");
+    const widget = wrapper.querySelector("[data-mini-cart-wrapper]");
+    console.log(widget);
     const count = widget ? widget.children.length : 0;
     headerCount.textContent = count;
     headerCount.classList.toggle("flex-n", !count);
+
   };
 
   const observer = new MutationObserver(checkTotalProductsInCart);

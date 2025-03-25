@@ -37,23 +37,29 @@
     ?>
     <div class="woocommerce-gallery">
       <div class="promo-box">
-      <?php if (function_exists('get_field')) {
-        $rows = get_field('promo');
-        $i = 0;
-        if( $rows ) {
-            foreach( $rows as $row ) {
-                  echo '<div class="product-item-sale flex-c roboto-18-sb">';
-                  if($row['url']){echo'<a href="'.$row['url'].'">';}
-                  echo '<div class="custom-pr-sale">';
-                  if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
-                  echo '<span>'.$row['name'].'</span>';
-                  echo'</div>';
-                  if($row['url']){echo'</a>';}
-                  echo'</div>';
-                $i++;
+        <?php if (function_exists('get_field')) {
+          $rows = get_field('promo');
+          $i = 0;
+          if ($rows) {
+            foreach ($rows as $row) {
+              echo '<div class="product-item-sale flex-c roboto-18-sb">';
+              if ($row['url']) {
+                echo '<a href="' . $row['url'] . '">';
+              }
+              echo '<div class="custom-pr-sale">';
+              if ($row['ico']['url']) {
+                echo '<img src="' . $row['ico']['url'] . '" alt="icon" />';
+              }
+              echo '<span>' . $row['name'] . '</span>';
+              echo '</div>';
+              if ($row['url']) {
+                echo '</a>';
+              }
+              echo '</div>';
+              $i++;
             }
-        }
-      }?>
+          }
+        } ?>
       </div>
       <div class="swiper lg">
         <div class="swiper-wrapper">
@@ -62,6 +68,16 @@
           echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
           do_action('woocommerce_product_thumbnails');
           ?>
+        </div>
+
+        <div class="swiper-slide-navs flex w-full h-between">
+          <button class="nav prev flex-c">
+            <div class="icon icon_arrow_s left"></div>
+          </button>
+          <button class="nav next flex-c">
+            <div class="icon icon_arrow_s right"></div>
+          </button>
+
         </div>
       </div>
       <div class="swiper sm">

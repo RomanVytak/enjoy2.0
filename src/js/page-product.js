@@ -1,4 +1,5 @@
 import createProductData from "./modules/components/product-data";
+import Swiper from "swiper/bundle";
 
 const section = document.querySelector("section.single_product");
 
@@ -34,6 +35,11 @@ const thumbsGallarySlider = () => {
   const lg = sliderWrapper.querySelector(".swiper.lg");
   const sm = sliderWrapper.querySelector(".swiper.sm");
 
+  const prev = sliderWrapper.querySelector("button.prev");
+  const next = sliderWrapper.querySelector("button.next");
+
+  console.log(next, prev);
+
   const swiper = new Swiper(sm, {
     modules: [Thumbs],
     spaceBetween: 10,
@@ -45,6 +51,10 @@ const thumbsGallarySlider = () => {
     spaceBetween: 10,
     modules: [Thumbs],
     thumbs: { swiper },
+    navigation: {
+      nextEl: next,
+      prevEl: prev,
+    },
   });
 };
 

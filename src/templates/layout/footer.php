@@ -21,3 +21,8 @@
     </div>
   </div>
 </footer>
+
+<div class="handle-added-msg">
+  <div class="wrapper flex-v">
+  </div>
+</div>
