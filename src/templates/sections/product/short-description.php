@@ -5,10 +5,10 @@
     <div class="wrapper">
       <div class="wrapper_material">
         <div class="top">
-          <p class="roboto-16-sb">Матеріал <span data-material-name></span> </p>
+          <p class="roboto-16-sb wrapper-name">Матеріал <span data-material-name></span> </p>
 
           <div class="params flex-v">
-            <p class="roboto-16-sb params-title">Переваги Матеріалу</p>
+            <p class="roboto-16-sb params-title wrapper-name">Переваги Матеріалу</p>
             <div class="params-params flex-h hidden" data-material-params></div>
           </div>
         </div>
@@ -17,7 +17,7 @@
       </div>
       <div class="wrapper_color">
         <div class="top">
-          <p class="roboto-16-sb">Колір <span data-color-name></span> </p>
+          <p class="roboto-16-sb wrapper-name">Колір <span data-color-name></span> </p>
         </div>
         <div class="colors" data-colors></div>
       </div>
@@ -25,7 +25,7 @@
     <div class="wrapper">
       <div class="wrapper_sizes">
         <div class="top">
-          <p class="roboto-16-sb">Розмір </p>
+          <p class="roboto-16-sb wrapper-name">Розмір </p>
           <div class="params flex-h" data-size-params></div>
         </div>
         <div class="sizes" data-sizes></div>

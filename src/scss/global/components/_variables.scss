@@ -29,7 +29,7 @@
   --max-width: 1920px;
 
   @include mq-max-768 {
-    --size-sm: 18px;
+    // --size-sm: 14px;
     --icon: 24px;
   }
 }

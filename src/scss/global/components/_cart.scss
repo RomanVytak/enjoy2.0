@@ -129,6 +129,7 @@
     &__name {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
 
       .remove_from_cart_button {
         width: 24px;

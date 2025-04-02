@@ -12,6 +12,7 @@
   white-space: nowrap;
   padding: min-max(24, 32) min-max(16, 50) min-max(16, 24);
   color: #878787;
+  overflow: hidden;
 
   a {
     color: #054f78;
@@ -39,8 +40,13 @@
 .single_product {
   .container {
     padding: 0 min-max(16, 50);
-    @include grid(12, min-max(24, 48));
+    @include grid(12, min-max(24, 48), 24px);
     padding-bottom: min-max(60, 200);
+
+    @include mq-max-1024 {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   .woocommerce-gallery {
@@ -405,6 +411,12 @@
               }
             }
           }
+
+          @include mq-max-1024 {
+            &-title {
+              display: none;
+            }
+          }
         }
       }
       &_color {
@@ -509,6 +521,20 @@
                 }
               }
             }
+
+            @include mq-max-1024 {
+              flex-wrap: wrap;
+              gap: 16px;
+
+              .param {
+                width: calc(100% / 2 - 12px);
+                font-size: 14px;
+
+                &::before {
+                  width: 24px;
+                }
+              }
+            }
           }
         }
 
@@ -578,11 +604,38 @@
           color: var(--blackC4);
           .price {
             @include roboto-38-B;
+            font-size: 38px;
           }
           .currency {
             @include roboto-18;
-            font-size: min-max(32, 38);
+            font-size: 38px;
           }
+        }
+
+        @include mq-max-1024 {
+          flex-direction: column;
+          align-items: flex-start;
+
+          &_price {
+            &:has(.price) {
+              margin-bottom: 24px;
+            }
+          }
+
+          &_nav {
+            width: 100%;
+
+            button {
+              width: 100%;
+              justify-content: center;
+            }
+          }
+        }
+      }
+
+      @include mq-max-1024 {
+        &-name {
+          font-size: 16px;
         }
       }
     }
@@ -652,5 +705,65 @@
   .shop_attributes {
     width: 100%;
     text-align: left;
+  }
+}
+
+section.details {
+  display: flex;
+  flex-direction: column;
+
+  .container {
+    padding: 60px 0;
+    flex-direction: column;
+    gap: min-max(24, 48);
+
+    .rows {
+      gap: min-max(24, 60);
+      padding-inline: min-max(16, 50);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: min-max(16, 120);
+
+      &-text {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        width: 100%;
+        max-width: 410px;
+        flex: none;
+      }
+
+      &-key {
+        display: flex;
+        flex: 1;
+        border-radius: min-max(12, 24);
+      }
+
+      &:nth-child(even) {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  .medias {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow: hidden;
+    border-radius: min-max(12, 24);
+
+    img {
+      height: auto;
+
+      &:nth-child(2n + 1) {
+        width: 60%;
+      }
+      &:nth-child(2n) {
+        width: 40%;
+      }
+    }
   }
 }

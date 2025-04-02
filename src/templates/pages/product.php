@@ -44,7 +44,7 @@ while (have_posts()) :
     </div>
   </section>
 
-  <?php //renderSection('home/products');?>
+  <?php renderSection('product/details'); ?>
 
 <?php
 

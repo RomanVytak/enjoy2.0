@@ -38,14 +38,17 @@ const thumbsGallarySlider = () => {
   const prev = sliderWrapper.querySelector("button.prev");
   const next = sliderWrapper.querySelector("button.next");
 
-  console.log(next, prev);
-
   const swiper = new Swiper(sm, {
     modules: [Thumbs],
     spaceBetween: 10,
-    slidesPerView: "auto",
+    slidesPerView: 4,
     freeMode: true,
     watchSlidesProgress: true,
+    breakpoints: {
+      1024: {
+        slidesPerView: "auto",
+      },
+    },
   });
   new Swiper(lg, {
     spaceBetween: 10,
