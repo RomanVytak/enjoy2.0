@@ -7,7 +7,7 @@
     <?php renderShortMenu('footer_menu_2');?>
     </div>
     <div class="footer-navs flex-v">
-      <a href="">Контакти</a>
+      <a href="<?php echo home_url(); ?>/kontakty">Контакти</a>
       <div class="tells flex-v">
       <?php $phone = get_field('phone', 'option');
       $phone_2 = get_field('phone_2', 'option');?>
