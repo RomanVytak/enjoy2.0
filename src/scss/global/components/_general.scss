@@ -318,11 +318,19 @@ li {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+
   .icon {
     transition: var(--transition);
     opacity: 0;
     transform: scale(1.6);
     position: absolute;
+  }
+
+  @include mq-max-1024 {
+    .icon {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   @include on-hover {

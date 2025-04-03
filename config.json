@@ -19,6 +19,7 @@
     "page-contacts",
     "page-product",
     "page-legal",
+    "page-default",
     "page-404"
   ],
   "copyAssets": "atlas|avi|mp4|ogv|ogg|webm",
