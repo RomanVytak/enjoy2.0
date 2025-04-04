@@ -1,10 +1,11 @@
 <?php
 $img = wp_get_attachment_image_url(get_sub_field('img'), 'full') ?? false;
 $video = wp_get_attachment_url(get_sub_field('video')) ?? false;
+$size = get_sub_field('size');
 $type = get_row_layout();
 ?>
 
-<div class="product-item <?php echo $type ?>">
+<div class="product-item <?php echo $type ?> <?php echo $size ?>">
   <?php if ($img) {  ?>
     <div class="product-item-icon flex obj-cover">
       <img src="<?php echo $img;  ?>" alt="">

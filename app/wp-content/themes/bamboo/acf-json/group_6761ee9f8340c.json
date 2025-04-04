@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_6761ee9ff4817",
-            "label": "Блоки",
+            "label": "Page Builder",
             "name": "blocks",
             "aria-label": "",
             "type": "flexible_content",
@@ -142,7 +142,7 @@
                     "key": "layout_6762bc5105c45",
                     "name": "text",
                     "label": "Текст",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_6762bc5105c46",
@@ -154,7 +154,7 @@
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": "",
+                                "width": "40",
                                 "class": "",
                                 "id": ""
                             },
@@ -171,11 +171,11 @@
                             "name": "subtitle",
                             "aria-label": "",
                             "type": "textarea",
-                            "instructions": "",
+                            "instructions": "class=\"roboto-38\" - виділити текст",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": "",
+                                "width": "40",
                                 "class": "",
                                 "id": ""
                             },
@@ -184,14 +184,14 @@
                             "allow_in_bindings": 0,
                             "rows": "",
                             "placeholder": "",
-                            "new_lines": ""
+                            "new_lines": "br"
                         },
                         {
-                            "key": "field_6762bd4c0fda1",
-                            "label": "Фото",
-                            "name": "img",
+                            "key": "field_67f054430f48c",
+                            "label": "Розмір блоку",
+                            "name": "size",
                             "aria-label": "",
-                            "type": "image",
+                            "type": "select",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -200,17 +200,18 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "return_format": "id",
-                            "library": "all",
-                            "min_width": "",
-                            "min_height": "",
-                            "min_size": "",
-                            "max_width": "",
-                            "max_height": "",
-                            "max_size": "",
-                            "mime_types": "",
+                            "choices": {
+                                "landscape": "широкий",
+                                "square": "квадратний"
+                            },
+                            "default_value": "square",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
                             "allow_in_bindings": 0,
-                            "preview_size": "medium"
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
                         }
                     ],
                     "min": "",
@@ -220,7 +221,7 @@
                     "key": "layout_6762bdbd4558d",
                     "name": "media",
                     "label": "Медіа",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_6762bdbd45590",
@@ -232,7 +233,7 @@
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": "",
+                                "width": "15",
                                 "class": "",
                                 "id": ""
                             },
@@ -258,7 +259,7 @@
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
-                                "width": "",
+                                "width": "15",
                                 "class": "",
                                 "id": ""
                             },
@@ -268,6 +269,33 @@
                             "max_size": "",
                             "mime_types": "",
                             "allow_in_bindings": 0
+                        },
+                        {
+                            "key": "field_67f00425d9c08",
+                            "label": "Розмір зображення",
+                            "name": "size",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "40",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "landscape": "прямокутне (4:2)",
+                                "square": "квадратне"
+                            },
+                            "default_value": "square",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "allow_in_bindings": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
                         }
                     ],
                     "min": "",
@@ -293,6 +321,13 @@
                 "operator": "==",
                 "value": "product"
             }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
         ]
     ],
     "menu_order": 0,
@@ -304,5 +339,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1739479093
+    "modified": 1743803633
 }
