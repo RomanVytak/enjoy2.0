@@ -4,6 +4,7 @@
   .container {
     @include grid(3);
     margin-bottom: -1px;
+    border-top: 1px solid #ced5dd;
 
     @include mq-max-1024 {
       @include grid(2);
@@ -56,11 +57,21 @@
     &.text {
       padding-block: min-max(24, 40);
       justify-content: center;
+      aspect-ratio: unset;
 
       .text-content {
         display: flex;
         flex-direction: column;
         gap: min-max(16, 24);
+      }
+
+      .promo-icon {
+        width: 100%;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
       }
 
       @include mq-max-640 {
@@ -78,6 +89,17 @@
       padding: 0;
       grid-column: span 2;
       aspect-ratio: unset;
+      flex-direction: row;
+
+      .landscape {
+        aspect-ratio: 2/1;
+        flex: auto;
+      }
+
+      .square {
+        aspect-ratio: 1;
+        flex: auto;
+      }
 
       @include mq-max-1024 {
         grid-column: span 1;

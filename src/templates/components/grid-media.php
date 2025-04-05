@@ -5,9 +5,9 @@ $size = get_sub_field('size');
 $type = get_row_layout();
 ?>
 
-<div class="product-item <?php echo $type ?> <?php echo $size ?>">
+<div class="product-item <?php echo $type ?> ">
   <?php if ($img) {  ?>
-    <div class="product-item-icon flex obj-cover">
+    <div class="product-item-icon flex obj-cover <?php echo $size ?>">
       <img src="<?php echo $img;  ?>" alt="">
     </div>
   <?php } ?>
