@@ -63,6 +63,10 @@
         display: flex;
         flex-direction: column;
         gap: min-max(16, 24);
+
+        a {
+          color: var(--orange-1);
+        }
       }
 
       .promo-icon {
