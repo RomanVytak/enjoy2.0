@@ -4,15 +4,19 @@
 if (have_rows('blocks')): ?>
   <section class="products">
     <div class="container">
-      <div class="product-item text">
-        <div class="text-content">
-          <h2 class="roboto-38">Безкаркасні меблі</h2>
-          <div class="promo-icon flex">
-            <img src="<?php assets('img/promo.svg')  ?>" alt="">
+
+      <!-- promo block got Home Page -->
+      <?php if (is_front_page()) { ?>
+        <div class="product-item text">
+          <div class="text-content">
+            <h2 class="roboto-38">Безкаркасні меблі</h2>
+            <div class="promo-icon flex">
+              <img src="<?php assets('img/promo.svg')  ?>" alt="">
+            </div>
+            <p>Один з лідерів продажів – крісло-м’яч стане чудовим подарунком для чоловіків будь-якого віку, від малого до великого.</p>
           </div>
-          <p>Один з лідерів продажів – крісло-м’яч стане чудовим подарунком для чоловіків будь-якого віку, від малого до великого.</p>
         </div>
-      </div>
+      <?php } ?>
 
       <?php // Loop through rows.
       while (have_rows('blocks')) : the_row();
