@@ -2,6 +2,7 @@
 $cat_id = get_sub_field('category');
 $type = get_row_layout();
 $size = get_sub_field('size') ?? "";
+$place = get_sub_field('image_place');
 $color = get_field('product_color', 'product_cat_'.$cat_id);
 $img = get_field('photo', 'product_cat_'.$cat_id);
 
@@ -9,7 +10,7 @@ $term = get_term($cat_id, 'product_cat' );
 $term_link = get_term_link( $term );
 ?>
 
-<a href="<?php echo $term_link ?>" class="product-item <?php echo $type, " ", $size ?><?php echo $color ? ' on-hover' : '' ?>">
+<a href="<?php echo $term_link ?>" class="product-item <?php echo $type, " ", $size ?><?php echo $color ? ' on-hover' : '' ?> <?php echo $place ?>">
   <div class="product-item-info info flex h-between w-full v-center">
     <h2 class="roboto-38"><?php echo $term->name ?></h2>
     <div class="icon icon_arrow"></div>

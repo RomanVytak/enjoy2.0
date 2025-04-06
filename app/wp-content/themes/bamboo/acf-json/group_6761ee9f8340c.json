@@ -21,7 +21,7 @@
                     "key": "layout_6761eec8cf011",
                     "name": "product",
                     "label": "Продукт",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_67ae3ac061877",
@@ -79,7 +79,7 @@
                     "key": "layout_6761f734e71e5",
                     "name": "category",
                     "label": "Категорія",
-                    "display": "block",
+                    "display": "row",
                     "sub_fields": [
                         {
                             "key": "field_67ae57f5d0d74",
@@ -126,6 +126,33 @@
                                 "large": "large"
                             },
                             "default_value": false,
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "allow_in_bindings": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        },
+                        {
+                            "key": "field_67f294ff01c40",
+                            "label": "Розміщення зображення",
+                            "name": "image_place",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "right": "праворуч",
+                                "left": "ліворуч"
+                            },
+                            "default_value": "left",
                             "return_format": "value",
                             "multiple": 0,
                             "allow_null": 0,
@@ -339,5 +366,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1743803633
+    "modified": 1743968691
 }
