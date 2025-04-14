@@ -7,7 +7,7 @@
   // }
 
   while (have_posts()) : the_post(); ?>
-    <section class="single-page" data-page="<?php echo is_cart();  ?>">
+    <section class="single-page <?php echo is_checkout() ? 'page-checkout' : ''  ?>" data-page>
       <div class="container">
 
         <!-- <h1 class="roboto-48">?php the_title(); ?></h1> -->
