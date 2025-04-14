@@ -245,7 +245,7 @@ function change_existing_currency_symbol($currency_symbol, $currency)
       $currency_symbol = 'грн';
       break;
   }
-  return is_checkout() ? $currency_symbol : '<span class="custom_symbol">' . $currency_symbol . '</span>';
+  return $currency_symbol;
 }
 
 // Change Add to Cart button text in WooCommerce loop

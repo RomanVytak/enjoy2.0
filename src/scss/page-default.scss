@@ -35,9 +35,13 @@
   }
 }
 
-section.page-checkout {
+section.page-custom {
   .container {
     max-width: 1200px;
+
+    a {
+      color: var(--blackC4);
+    }
   }
 
   .wp-block-woocommerce-filled-cart-block,
@@ -86,8 +90,8 @@ section.page-checkout {
     }
   }
 
-  .container {
-    .wp-block-woocommerce-cart-line-items-block {
+  div.container {
+    table.wp-block-woocommerce-cart-line-items-block {
       .wc-block-cart-items__header th {
         @include roboto-18-SB;
       }
@@ -102,14 +106,14 @@ section.page-checkout {
       .wc-block-cart-item__image {
         display: flex;
         align-items: center;
+        margin: 0;
+
         a {
           display: flex;
           width: 100%;
           min-width: min-max(64, 130);
           aspect-ratio: 1;
           @include obj-cover;
-          border-radius: min-max(12, 16);
-          border: 1px solid #adb6c4;
           align-items: center;
 
           img {
@@ -135,38 +139,21 @@ section.page-checkout {
       display: flex;
       align-items: center;
       gap: 8px;
+      margin: 0;
+      width: auto;
+      padding: 6px;
+      border: 1px solid #e0e8ec;
+      border-radius: min-max(10, 14);
 
       &__button {
-        width: min-max(28, 40);
-        aspect-ratio: 1;
-        border-radius: 50%;
-        border: 1px solid #adb6c4;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition:
-          border-color var(--transition),
-          opacity var(--transition);
+        width: 24px;
+        aspect-ratio: 1;
+        flex: none;
         color: transparent;
-        position: relative;
-
-        &::before,
-        &::after {
-          position: absolute;
-          pointer-events: none;
-          content: "";
-          height: min-max(1, 2);
-          width: 39%;
-          // max-width: 20px;
-          border-radius: 10px;
-          background-color: var(--black);
-          transition:
-            background-color var(--transition),
-            transform var(--transition);
-        }
-        &::after {
-          transform: rotate(90deg);
-        }
+        min-width: auto;
 
         @include on-hover {
           border-color: var(--black);
@@ -182,25 +169,27 @@ section.page-checkout {
         }
         &--minus {
           order: -1;
-          &::after {
-            content: none;
-          }
+          background: url("../img/minus.svg") center/cover no-repeat;
+        }
+        &--plus {
+          background: url("../img/plus.svg") center/cover no-repeat;
         }
       }
       &__input {
         align-self: stretch;
-        border-radius: 1000px;
         align-items: center;
         display: flex;
-        text-align: center;
-        border: 1px solid #adb6c4;
-        width: min-max(70, 100);
+        width: min-max(40, 50);
         outline: none !important;
         transition: border-color var(--transition);
+        border: none;
+        background: none;
+        padding: 0;
+        text-align: center;
+      }
 
-        &:focus {
-          border-color: var(--black);
-        }
+      &::after {
+        content: none !important;
       }
     }
     .wc-block-components-product-details {
@@ -238,12 +227,13 @@ section.page-checkout {
       position: absolute;
       top: 24px;
       right: 0;
-      word-break: break-all;
-      color: transparent;
-      pointer-events: none;
+      word-break: break-all !important;
+      color: transparent !important;
+      pointer-events: none !important;
       width: min-max(24, 40);
       height: min-max(24, 40);
       display: flex;
+      overflow: hidden;
 
       @include mq-max-768 {
         top: 16px;
@@ -253,14 +243,15 @@ section.page-checkout {
         content: "";
         position: absolute;
         inset: 0;
-        mask: url("../img/icons/trash.svg") center/ min-max(20, 24) no-repeat;
+        mask: url("../img/trash.svg") center/ min-max(20, 24) no-repeat;
         background-color: var(--black);
+        background-color: #2b3f6c;
         transition: background-color var(--transition);
-        pointer-events: all;
+        pointer-events: all !important;
       }
       @include on-hover {
         &::after {
-          background-color: var(--red);
+          background-color: var(--orange-2);
         }
       }
     }
@@ -456,31 +447,27 @@ section.page-checkout {
       margin-top: min-max(12, 24);
       &-container {
         .wc-block-cart__submit-button {
-          min-height: auto;
-          --bg-color: var(--black);
-          --color: var(--white);
           display: flex;
           justify-content: center;
           align-items: center;
-          transition: var(--transition);
-          background-color: var(--bg-color);
-          border: none;
-          color: var(--color);
-          border-radius: 80px;
-          position: relative;
-          cursor: pointer;
-          padding: min-max(8, 10) min-max(28, 36) min-max(12, 23);
-          @include use-font(var(--roboto-b), min-max(20, 28), bold, 100%, 0px);
-
+          flex: 1;
+          width: 100%;
+          font-size: min-max(16, 18);
+          font-family: var(--roboto-con-b);
+          font-weight: 700;
+          color: var(--white);
+          background-color: var(--orange-2);
+          min-height: min-max(42, 48);
+          border-radius: min-max(12, 16);
+          transition: background-color var(--transition);
           outline: none !important;
-          box-shadow: none !important;
 
           @include on-hover {
-            --bg-color: var(--beige-minus-1);
+            background-color: var(--orange-1);
           }
           &:disabled,
           &.loading {
-            --bg-color: #adb6c4;
+            background-color: #adb6c4;
             pointer-events: none;
           }
         }
@@ -494,7 +481,7 @@ section.page-checkout {
       border: none !important;
       border-radius: unset !important;
     }
-    .wc-block-components-totals-item{
+    .wc-block-components-totals-item {
       padding: 0 !important;
     }
   }
