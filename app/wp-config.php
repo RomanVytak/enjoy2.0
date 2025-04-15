@@ -24,6 +24,9 @@ if (file_exists(dirname(__FILE__) . '/local-config.php')) {
 	include(dirname(__FILE__) . '/local-config.php');
 }
 
+define('WP_HOME','http://localhost/');
+define('WP_SITEURL','http://localhost/');
+
 /**#@+
  * Authentication unique keys and salts.
  *
