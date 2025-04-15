@@ -13,6 +13,8 @@ export default function createProductData(section) {
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
 
+  console.log(variations);
+
   const product_name = form.dataset.productName;
 
   const input_size = form.querySelector("input[name='attribute_pa_rozmiry']");
