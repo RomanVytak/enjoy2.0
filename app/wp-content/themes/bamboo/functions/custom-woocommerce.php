@@ -517,3 +517,16 @@ function enjoy_replace_excerpt_with_content() {
       }
     }
 }
+
+// переклад сортувалки
+add_filter( 'woocommerce_catalog_orderby', 'custom_woocommerce_catalog_orderby' );
+function custom_woocommerce_catalog_orderby( $sortby ) {
+    $sortby['menu_order'] = 'Сортування за замовчуванням';
+    $sortby['popularity'] = 'За популярністю';
+    $sortby['rating'] = 'За середньою оцінкою';
+    $sortby['date'] = 'Спочатку нові';
+    $sortby['price'] = 'За ціною: від дешевих';
+    $sortby['price-desc'] = 'За ціною: від дорогих';
+
+    return $sortby;
+}
