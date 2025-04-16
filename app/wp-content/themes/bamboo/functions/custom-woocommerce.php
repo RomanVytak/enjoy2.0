@@ -406,7 +406,23 @@ function customize_product_variations($variation_data, $product, $variation) {
     // Приклад зміни атрибуту 'price_html'
     //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
 
-    // Додати новий ключ у data-product_variations
+    // Додати новий ключ у data-product_variations    
+    if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
+      $sertyfikaty_slug = $variation_data['attributes']['attribute_pa_sertyfikaty'];
+      
+      // Отримуємо термін за slug у таксономії pa_material
+      $sertyfikaty_term = get_term_by('slug', $sertyfikaty_slug, 'pa_sertyfikaty');
+      if ($sertyfikaty_term) {
+        $sertyfikaty_id = $sertyfikaty_term->term_id; // ID терміна
+        // додаткові дані матеріалу
+        $sertyfikaty_img = get_field('image', 'pa_sertyfikaty_'.$sertyfikaty_id);
+        $variation_data['sertyfikat_details']['id']=$sertyfikaty_term->term_id;
+        $variation_data['sertyfikat_details']['slug']=$sertyfikaty_term->slug;
+        $variation_data['sertyfikat_details']['name']=$sertyfikaty_term->name;
+        $variation_data['sertyfikat_details']['image']=$sertyfikaty_img;
+      }
+
+    }
     if (isset($variation_data['attributes']['attribute_pa_material'])) {
         $material_slug = $variation_data['attributes']['attribute_pa_material'];
 
