@@ -1,6 +1,7 @@
 const _SIZE = "data-size";
 const _MATERIAL = "data-material";
 const _COLOR = "data-color";
+const _SERT = "data-sert";
 
 const _SIZES = {
   height: "Висота",
@@ -12,8 +13,9 @@ export default function createProductData(section) {
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
+  const isProduct = form.dataset.productType === "product";
 
-  console.log(variations);
+  console.log("variations", variations);
 
   const product_name = form.dataset.productName;
 
@@ -40,6 +42,8 @@ export default function createProductData(section) {
   const size_params = wrapper.querySelector("[data-size-params]");
 
   const wrapper_price = form.querySelector("[data-custom-price]");
+
+  const wrapper_sertyfikat = wrapper.querySelector("[data-sertyfikat]");
 
   const onAdded = onAddedToCart();
 
@@ -84,7 +88,6 @@ export default function createProductData(section) {
       }
     });
     size_params.innerHTML = html.join("");
-
   };
 
   const createMaterials = (materials) => {
@@ -130,67 +133,28 @@ export default function createProductData(section) {
     });
     wrapper_sizes.innerHTML = html.join("");
   };
+  const createSertyfikat = (arr) => {
+    wrapper_sertyfikat.innerHTML = "";
+    const html = arr.map((s) => {
+      const sert = s.sertyfikat_details;
+      const id = sert.id;
+      const name = sert.name;
 
-  const updateProductData = () => {
-    let filteredVariations = [...variations];
-    data_colors = [];
-    data_sizes = [];
-    data_materials = [];
-
-    if (selectedData.color) {
-      filteredVariations = filteredVariations.filter((variation) => {
-        const colors = Object.values(variation.material_colors);
-        return colors.some((color) => color.id == selectedData.color);
-      });
-    }
-    if (selectedData.size && selectedData.material && selectedData.color) {
-      filteredVariations = filteredVariations.filter(
-        (variation) =>
-          variation.attributes.attribute_pa_rozmiry == selectedData.size
-      );
-    }
-    if (selectedData.material) {
-      filteredVariations = filteredVariations.filter(
-        (variation) => variation.material_details.id == selectedData.material
-      );
-    }
-
-    filteredVariations.forEach((variation) => {
-      const material = variation.material_details;
-      const colors = Object.values(variation.material_colors);
-      const size = variation.attributes.attribute_pa_rozmiry;
-
-      if (material) {
-        if (!data_materials.some((m) => m?.id === material.id)) {
-          material.options = variation?.material_options ?? null;
-          data_materials.push(material);
-        }
-      }
-      if (size) {
-        if (!data_sizes.some((m) => m?.id === size)) {
-          const data = {
-            id: size,
-            dimensions: variation?.dimensions ?? null,
-          };
-          data_sizes.push(data);
-        }
-      }
-      if (colors.length) {
-        colors.forEach((color) => {
-          if (!data_colors.some((c) => c?.id === color.id)) {
-            data_colors.push(color);
-          }
-        });
-      }
+      return `<div class="size ${
+        selectedData.sertyfikat == id ? " active" : ""
+      }" ${_SERT}="${id}"  title="${name} грн">
+        ${name}
+      </div>`;
     });
+    wrapper_sertyfikat.innerHTML = html.join("");
+  };
 
-    if (Object.keys(selectedData).every((key) => selectedData[key])) {
-      const variation = filteredVariations[0];
-      console.log("variation", variation);
+  const showVariatorPrice = (boo, variation) => {
+    if (boo) {
+      if (!variation) return;
       input_variation_id.value = variation.variation_id;
       input_product_id.value = variation.variation_id;
       ajaxButton.disabled = false;
-
       wrapper_price.innerHTML = `<span class='price'>${variation.display_price} </span><span class='currency'>грн</span>`;
       selectedVariation = variation;
     } else {
@@ -200,50 +164,136 @@ export default function createProductData(section) {
       ajaxButton.disabled = true;
       selectedVariation = null;
     }
+  };
 
-    createMaterials(data_materials);
-    createColors(data_colors);
-    createSizes(data_sizes);
+  const updateProductData = () => {
+    let filteredVariations = [...variations];
+
+    if (isProduct) {
+      data_colors = [];
+      data_sizes = [];
+      data_materials = [];
+
+      if (selectedData.color) {
+        filteredVariations = filteredVariations.filter((variation) => {
+          const colors = Object.values(variation.material_colors);
+          return colors.some((color) => color.id == selectedData.color);
+        });
+      }
+      if (selectedData.size && selectedData.material && selectedData.color) {
+        filteredVariations = filteredVariations.filter(
+          (variation) =>
+            variation.attributes.attribute_pa_rozmiry == selectedData.size
+        );
+      }
+      if (selectedData.material) {
+        filteredVariations = filteredVariations.filter(
+          (variation) => variation.material_details.id == selectedData.material
+        );
+      }
+
+      filteredVariations.forEach((variation) => {
+        const material = variation?.material_details;
+        const colors = Object.values(variation?.material_colors || {});
+        const size = variation?.attributes?.attribute_pa_rozmiry;
+
+        if (material) {
+          if (!data_materials.some((m) => m?.id === material.id)) {
+            material.options = variation?.material_options ?? null;
+            data_materials.push(material);
+          }
+        }
+        if (size) {
+          if (!data_sizes.some((m) => m?.id === size)) {
+            const data = {
+              id: size,
+              dimensions: variation?.dimensions ?? null,
+            };
+            data_sizes.push(data);
+          }
+        }
+        if (colors.length) {
+          colors.forEach((color) => {
+            if (!data_colors.some((c) => c?.id === color.id)) {
+              data_colors.push(color);
+            }
+          });
+        }
+      });
+
+      const isSelected = Object.keys(selectedData).every(
+        (key) => selectedData[key]
+      );
+
+      showVariatorPrice(isSelected, filteredVariations[0]);
+
+      wrapper_materials && createMaterials(data_materials);
+      wrapper_colors && createColors(data_colors);
+      wrapper_sizes && createSizes(data_sizes);
+    } else {
+      wrapper_sertyfikat && createSertyfikat(filteredVariations);
+
+      const variation = filteredVariations.find(
+        (f) => f.sertyfikat_details.id == selectedData.sertyfikat
+      );
+
+      showVariatorPrice(selectedData.sertyfikat, variation);
+    }
   };
 
   const handleSelectData = (e) => {
     const element = e.target;
-    [_SIZE, _MATERIAL, _COLOR].forEach((attr) => {
-      const value = element.hasAttribute(attr)
-        ? element.getAttribute(attr)
+
+    if (isProduct) {
+      [_SIZE, _MATERIAL, _COLOR].forEach((attr) => {
+        const value = element.hasAttribute(attr)
+          ? element.getAttribute(attr)
+          : null;
+
+        if (!value) return;
+        const isActive = element.classList.contains("active");
+
+        switch (attr) {
+          case _SIZE:
+            selectedData.size = isActive ? null : value;
+            input_size.value = isActive ? "" : value;
+            createSizesParams(
+              !isActive ? data_sizes.find((m) => m.id == value) : null
+            );
+            break;
+          case _MATERIAL:
+            selectedData.material = isActive ? null : value;
+            material_name.innerHTML = isActive ? "" : element.title;
+            input_material.value = isActive ? "" : value;
+            createMaterialParams(
+              !isActive ? data_materials.find((m) => m.id == value) : null
+            );
+            break;
+          case _COLOR:
+            selectedData.color = isActive ? null : value;
+            color_name.innerHTML = isActive ? "" : element.title;
+            input_color.value = isActive ? "" : value;
+            break;
+        }
+        updateProductData();
+      });
+    } else {
+      const value = element.hasAttribute(_SERT)
+        ? element.getAttribute(_SERT)
         : null;
-
       if (!value) return;
-      const isActive = element.classList.contains("active");
 
-      switch (attr) {
-        case _SIZE:
-          selectedData.size = isActive ? null : value;
-          input_size.value = isActive ? "" : value;
-          createSizesParams(
-            !isActive ? data_sizes.find((m) => m.id == value) : null
-          );
-          break;
-        case _MATERIAL:
-          selectedData.material = isActive ? null : value;
-          material_name.innerHTML = isActive ? "" : element.title;
-          input_material.value = isActive ? "" : value;
-          createMaterialParams(
-            !isActive ? data_materials.find((m) => m.id == value) : null
-          );
-          break;
-        case _COLOR:
-          selectedData.color = isActive ? null : value;
-          color_name.innerHTML = isActive ? "" : element.title;
-          input_color.value = isActive ? "" : value;
-          break;
-      }
+      const isActive = element.classList.contains("active");
+      selectedData.sertyfikat = isActive ? null : value;
+      input_size.value = isActive ? "" : value;
+      createSertyfikat([...variations]);
       updateProductData();
-    });
+    }
   };
 
   const handleAddToCart = () => {
     // URL WooCommerce для AJAX-запиту
+    const selected = selectedVariation;
     const ajaxUrl = wc_add_to_cart_params.wc_ajax_url.replace(
       "%%endpoint%%",
       "add_to_cart"
@@ -260,19 +310,15 @@ export default function createProductData(section) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
-
-        onAdded &&
-          onAdded(
-            `${product_name} - ${selectedVariation.attributes.attribute_pa_rozmiry.toUpperCase()}, ${
-              selectedVariation.material_details.name
-            }`
-          );
+        const name = isProduct
+          ? selected.attributes.attribute_pa_rozmiry.toUpperCase()
+          : selected.sertyfikat_details.name + " грн";
+        const material = isProduct ? selected.material_details.name : "";
+        onAdded && onAdded(`${product_name} - ${name}, ${material}`);
         ajaxButton.disabled = false;
 
         if (data && data.fragments) {
           $.each(data.fragments, function (key, value) {
-            console.log(key);
             $(key).replaceWith(value);
           });
         }
@@ -284,9 +330,26 @@ export default function createProductData(section) {
       });
   };
 
+  const checkIsSelectedSertyfikaty = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const value = urlParams.get("attribute_pa_sertyfikaty");
+
+    if (value) {
+      const variation = [...variations].find(
+        (f) => f.attributes.attribute_pa_sertyfikaty == value
+      );
+      variation && (selectedData.sertyfikat = variation.sertyfikat_details.id);
+      // showVariatorPrice(selectedData.sertyfikat, variation);
+    }
+  };
+
   wrapper.addEventListener("click", handleSelectData);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);
+  !isProduct && checkIsSelectedSertyfikaty();
   updateProductData();
+  setTimeout(() => {
+    wrapper.classList.remove("loading");
+  }, 100);
 }
 
 function onAddedToCart() {

@@ -32,7 +32,6 @@ export default function toggleCartPopup() {
 
   const checkTotalProductsInCart = () => {
     const widget = wrapper.querySelector("[data-mini-cart-wrapper]");
-    console.log(widget);
     const count = widget ? widget.children.length : 0;
     headerCount.textContent = count;
     headerCount.classList.toggle("flex-n", !count);

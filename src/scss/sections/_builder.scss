@@ -155,10 +155,17 @@
         font-weight: 700;
       }
 
-      span {
-        font-family: var(--roboto-r);
-        font-weight: 400;
+      .price{
+        font-family: var(--roboto-con-b);
+        font-weight: 700;
+
+        .woocommerce-Price-currencySymbol {
+          font-family: var(--roboto-r);
+          font-weight: 400;
+        }
       }
+
+
     }
     &-sale {
       position: absolute;

@@ -406,10 +406,10 @@ function customize_product_variations($variation_data, $product, $variation) {
     // Приклад зміни атрибуту 'price_html'
     //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
 
-    // Додати новий ключ у data-product_variations    
+    // Додати новий ключ у data-product_variations
     if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
       $sertyfikaty_slug = $variation_data['attributes']['attribute_pa_sertyfikaty'];
-      
+
       // Отримуємо термін за slug у таксономії pa_material
       $sertyfikaty_term = get_term_by('slug', $sertyfikaty_slug, 'pa_sertyfikaty');
       if ($sertyfikaty_term) {
@@ -504,18 +504,22 @@ remove_action('woocommerce_single_product_summary', 'woocommerce_template_single
 
 add_action('woocommerce_single_product_summary', 'enjoy_replace_excerpt_with_content', 20);
 function enjoy_replace_excerpt_with_content() {
-    global $post;
+  global $post;
+
+  if (!empty($post->post_content)) {
     echo '<div class="woocommerce-product-content">' . apply_filters('the_content', $post->post_content) . '</div>';
-    if (function_exists('get_field')) {
-      if(get_field('instruct_name')){
-        echo'
+  }
+
+  if (function_exists('get_field')) {
+    if (get_field('instruct_name')) {
+      echo '
         <div class="woocommerce-product-instruction">
-          <div class="instruction-title">'.get_field('instruct_name').'</div>
-          <div class="instruction-text">'.get_field('instruct_text').'</div>
+          <div class="instruction-title">' . get_field('instruct_name') . '</div>
+          <div class="instruction-text">' . get_field('instruct_text') . '</div>
         </div>
         ';
-      }
     }
+  }
 }
 
 // переклад сортувалки

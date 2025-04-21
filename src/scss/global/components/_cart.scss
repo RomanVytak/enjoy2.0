@@ -192,7 +192,8 @@
       color: #001b2e;
     }
 
-    .custom_symbol {
+    .custom_symbol,
+    .woocommerce-Price-currencySymbol {
       font-size: min-max(14, 16);
       font-weight: 400;
       font-family: var(--roboto-r);
@@ -208,7 +209,8 @@
     .amount {
       font-size: min-max(24, 32);
 
-      .custom_symbol {
+      .custom_symbol,
+      .woocommerce-Price-currencySymbol {
         font-size: min-max(14, 16);
         font-weight: 400;
         font-family: var(--roboto-r);
