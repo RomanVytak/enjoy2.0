@@ -1,7 +1,15 @@
 <section class="feedback">
   <div class="container flex h-between">
 
-    <h1 class="roboto-48"><?php the_title(); ?></h1>
+    <div class="text-content">
+      <h1 class="roboto-48"><?php the_title(); ?></h1>
+
+      <div class="content">
+        <?php the_content();?>
+      </div>
+
+    </div>
+
 
     <div class="feedback-form">
       <?php

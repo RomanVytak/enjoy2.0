@@ -91,6 +91,11 @@
         @include on-hover {
           color: var(--orange-1);
         }
+
+        &[aria-current] {
+          color: var(--orange-1);
+          pointer-events: none;
+        }
       }
     }
 

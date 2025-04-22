@@ -3,9 +3,42 @@
 .feedback {
   padding: 60px min-max(16, 50);
 
+  .container {
+    gap: min-max(24, 100);
+  }
+
   &-form {
     max-width: 600px;
     width: 100%;
+  }
+
+  .text-content {
+    .content {
+      margin-top: min-max(20, 30);
+
+      & > * {
+        margin: 1em 0;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      ul,
+      ol {
+        padding-left: 1.5em;
+
+        li {
+          line-height: 140%;
+          color: #054f78;
+        }
+      }
+      p {
+        color: #054f78;
+      }
+      a {
+        color: var(--orange-2);
+      }
+    }
   }
 
   form {
@@ -151,7 +184,6 @@
   @include mq-max-1024 {
     .container {
       flex-direction: column;
-      gap: 24px;
     }
 
     &-form {

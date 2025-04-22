@@ -22,6 +22,10 @@
     @include on-hover {
       color: var(--orange-2);
     }
+    &[aria-current] {
+      color: var(--orange-2);
+      pointer-events: none;
+    }
   }
 
   .tells {
