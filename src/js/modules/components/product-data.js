@@ -15,15 +15,12 @@ export default function createProductData(section) {
   const variations = JSON.parse(form.dataset.product_variations);
   const isProduct = form.dataset.productType === "product";
 
-  console.log("variations", variations);
-
   const product_name = form.dataset.productName;
 
   const input_size = form.querySelector("input[name='attribute_pa_rozmiry']");
   const input_material = form.querySelector(
     "input[name='attribute_pa_material']"
   );
-  const input_quantity = form.querySelector("input[name='quantity']");
   const input_color = form.querySelector("input[name='custom_data[color]']");
   const input_variation_id = form.querySelector("input[name='variation_id']");
   const input_product_id = form.querySelector("input[name='product_id']");
@@ -48,6 +45,7 @@ export default function createProductData(section) {
   const onAdded = onAddedToCart();
 
   const selectedData = { color: null, size: null, material: null };
+  const htmlElements = {};
 
   let data_colors = [];
   let data_sizes = [];
@@ -166,31 +164,18 @@ export default function createProductData(section) {
     }
   };
 
-  const updateProductData = () => {
+  const NEW_getElementsByAttr = (attr) => {
+    const elements = wrapper.querySelectorAll(`[${attr}]`);
+    htmlElements[attr] = elements;
+  };
+
+  const NEW_createHTMLData = () => {
     let filteredVariations = [...variations];
 
     if (isProduct) {
       data_colors = [];
       data_sizes = [];
       data_materials = [];
-
-      if (selectedData.color) {
-        filteredVariations = filteredVariations.filter((variation) => {
-          const colors = Object.values(variation.material_colors);
-          return colors.some((color) => color.id == selectedData.color);
-        });
-      }
-      if (selectedData.size && selectedData.material && selectedData.color) {
-        filteredVariations = filteredVariations.filter(
-          (variation) =>
-            variation.attributes.attribute_pa_rozmiry == selectedData.size
-        );
-      }
-      if (selectedData.material) {
-        filteredVariations = filteredVariations.filter(
-          (variation) => variation.material_details.id == selectedData.material
-        );
-      }
 
       filteredVariations.forEach((variation) => {
         const material = variation?.material_details;
@@ -221,24 +206,131 @@ export default function createProductData(section) {
         }
       });
 
+      wrapper_materials && createMaterials(data_materials);
+      wrapper_colors && createColors(data_colors);
+      wrapper_sizes && createSizes(data_sizes);
+
+      [_SIZE, _MATERIAL, _COLOR].forEach(NEW_getElementsByAttr);
+    } else {
+      wrapper_sertyfikat && createSertyfikat(filteredVariations);
+      NEW_getElementsByAttr(_SERT);
+    }
+  };
+
+  const NEW_updateFilteredVar = (filtered) => {
+    if (isProduct) {
+      data_colors = [];
+      data_sizes = [];
+      data_materials = [];
+      const selectedLength = Object.values(selectedData).filter(
+        (v) => v !== null
+      ).length;
+
+      filtered.forEach((variation) => {
+        const material = variation?.material_details;
+        const colors = Object.values(variation?.material_colors || {});
+        const size = variation?.attributes?.attribute_pa_rozmiry;
+
+        if (material) {
+          if (!data_materials.some((m) => m?.id === material.id)) {
+            material.options = variation?.material_options ?? null;
+            data_materials.push(material);
+          }
+        }
+        if (size) {
+          if (!data_sizes.some((m) => m?.id === size)) {
+            const data = {
+              id: size,
+              dimensions: variation?.dimensions ?? null,
+            };
+            data_sizes.push(data);
+          }
+        }
+        if (colors.length) {
+          colors.forEach((color) => {
+            if (!data_colors.some((c) => c?.id === color.id)) {
+              data_colors.push(color);
+            }
+          });
+        }
+      });
+
+      const dataMap = {
+        [_SIZE]: { selected: selectedData.size, list: data_sizes },
+        [_MATERIAL]: { selected: selectedData.material, list: data_materials },
+        [_COLOR]: { selected: selectedData.color, list: data_colors },
+      };
+
+      [_SIZE, _MATERIAL, _COLOR].forEach((attr) => {
+        const elements = htmlElements[attr];
+        if (!elements) return;
+
+        const { selected, list } = dataMap[attr];
+
+        elements.forEach((el) => {
+          const value = el.getAttribute(attr);
+          const isActive = selected == value;
+          const isEnabled =
+            (selectedLength === 1 && selected) ||
+            list.some((item) => item.id == value);
+
+          el.classList.toggle("active", isActive);
+          el.classList.toggle("disabled", !isEnabled);
+        });
+      });
+    } else {
+      const elements = htmlElements[_SERT];
+      if (!elements) return;
+
+      const selected = selectedData.sertyfikat;
+
+      elements.forEach((el) => {
+        const value = el.getAttribute(_SERT);
+        const isActive = selected == value;
+        el.classList.toggle("active", isActive);
+      });
+    }
+  };
+
+  const updateProductData = () => {
+    let filteredVariations = [...variations];
+
+    if (isProduct) {
+      // filter variations by color
+      if (selectedData.color) {
+        filteredVariations = filteredVariations.filter((variation) => {
+          const colors = Object.values(variation.material_colors);
+          return colors.some((color) => color.id == selectedData.color);
+        });
+      }
+
+      // filter variations by size
+      if (selectedData.size) {
+        filteredVariations = filteredVariations.filter(
+          (variation) =>
+            variation.attributes.attribute_pa_rozmiry == selectedData.size
+        );
+      }
+
+      // filter variations by material
+      if (selectedData.material) {
+        filteredVariations = filteredVariations.filter(
+          (variation) => variation.material_details.id == selectedData.material
+        );
+      }
+
       const isSelected = Object.keys(selectedData).every(
         (key) => selectedData[key]
       );
 
       showVariatorPrice(isSelected, filteredVariations[0]);
-
-      wrapper_materials && createMaterials(data_materials);
-      wrapper_colors && createColors(data_colors);
-      wrapper_sizes && createSizes(data_sizes);
     } else {
-      wrapper_sertyfikat && createSertyfikat(filteredVariations);
-
-      const variation = filteredVariations.find(
+      filteredVariations = filteredVariations.find(
         (f) => f.sertyfikat_details.id == selectedData.sertyfikat
       );
-
-      showVariatorPrice(selectedData.sertyfikat, variation);
+      showVariatorPrice(selectedData.sertyfikat, filteredVariations);
     }
+    NEW_updateFilteredVar(filteredVariations);
   };
 
   const handleSelectData = (e) => {
@@ -251,6 +343,7 @@ export default function createProductData(section) {
           : null;
 
         if (!value) return;
+
         const isActive = element.classList.contains("active");
 
         switch (attr) {
@@ -275,8 +368,8 @@ export default function createProductData(section) {
             input_color.value = isActive ? "" : value;
             break;
         }
-        updateProductData();
       });
+
     } else {
       const value = element.hasAttribute(_SERT)
         ? element.getAttribute(_SERT)
@@ -286,9 +379,9 @@ export default function createProductData(section) {
       const isActive = element.classList.contains("active");
       selectedData.sertyfikat = isActive ? null : value;
       input_size.value = isActive ? "" : value;
-      createSertyfikat([...variations]);
-      updateProductData();
     }
+    updateProductData();
+
   };
 
   const handleAddToCart = () => {
@@ -346,6 +439,7 @@ export default function createProductData(section) {
   wrapper.addEventListener("click", handleSelectData);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);
   !isProduct && checkIsSelectedSertyfikaty();
+  NEW_createHTMLData();
   updateProductData();
   setTimeout(() => {
     wrapper.classList.remove("loading");
@@ -403,3 +497,110 @@ function onAddedToCart() {
 
   return onAdded;
 }
+
+const variations = [
+  {
+    attributes: {
+      attribute_pa_rozmiry: "",
+      attribute_pa_material: "",
+    },
+    dimensions: {
+      length: "",
+      width: "",
+      height: "",
+    },
+    display_price: 99,
+    image: {},
+    variation_id: 84,
+    material_details: {
+      id: 21,
+      slug: "",
+      name: "",
+      image: false,
+      options: [
+        {
+          ico: {},
+          description: "",
+        },
+        {
+          ico: {},
+          description: "",
+        },
+      ],
+    },
+    material_colors: {
+      23: {
+        name: "",
+        image: "",
+        id: 23,
+      },
+      24: {
+        name: "",
+        image: "",
+        id: 24,
+      },
+    },
+    material_options: [
+      {
+        ico: {},
+        description: null,
+      },
+      {
+        ico: {},
+        description: null,
+      },
+    ],
+  },
+  {
+    attributes: {
+      attribute_pa_rozmiry: "",
+      attribute_pa_material: "",
+    },
+    dimensions: {
+      length: "",
+      width: "",
+      height: "",
+    },
+    display_price: 99,
+    image: {},
+    variation_id: 84,
+    material_details: {
+      id: 21,
+      slug: "",
+      name: "",
+      image: false,
+      options: [
+        {
+          ico: {},
+          description: "",
+        },
+        {
+          ico: {},
+          description: "",
+        },
+      ],
+    },
+    material_colors: {
+      23: {
+        name: "",
+        image: "",
+        id: 23,
+      },
+      24: {
+        name: "",
+        image: "",
+        id: 24,
+      },
+    },
+    material_options: [
+      {
+        ico: {},
+        description: null,
+      },
+      {
+        ico: {},
+        description: null,
+      },
+    ],
+  },
+];
