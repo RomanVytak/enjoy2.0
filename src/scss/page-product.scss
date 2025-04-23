@@ -165,6 +165,21 @@
     flex-direction: column;
     gap: min-max(16, 20);
     width: 100%;
+
+    .variations_form {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-woo-data {
+      width: 100%;
+
+      &.pinned {
+        position: fixed;
+        z-index: 1;
+        bottom: 0;
+      }
+    }
   }
 
   .enjoy-product-title {

@@ -99,7 +99,7 @@ function get_custom_image_html($attachment_id, $main_image = false)
   );
 
 
-  return '<div class="swiper-slide image cover"><a href="' . esc_url($full_src[0]) . '" target="_blank">' . $image . '</a></div>';
+  return '<div class="swiper-slide image obj-cover">' . $image . '</div>';
 }
 
 // Remove default thumbnail output

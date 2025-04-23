@@ -11,6 +11,7 @@
     "build": "gulp build"
   },
   "dependencies": {
+    "gsap": "^3.12.7",
     "swiper": "^11.1.15"
   },
   "devDependencies": {

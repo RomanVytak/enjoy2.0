@@ -52,6 +52,8 @@ export default function createProductData(section) {
   let data_materials = [];
   let selectedVariation = null;
 
+ form.removeAttribute("data-product_variations");
+
   const createMaterialParams = (material) => {
     if (!material || !material?.options) {
       material_params.innerHTML = "";

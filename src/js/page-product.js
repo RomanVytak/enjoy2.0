@@ -5,6 +5,7 @@ const section = document.querySelector("section.single_product");
 
 const quantity = section?.querySelector("[data-quantity-wrapper]");
 const sliderWrapper = section?.querySelector(".woocommerce-gallery");
+const pinWrapper = section?.querySelector("[data-pin-parrent]");
 
 const handleQuantityAmount = () => {
   const buttons = quantity.querySelectorAll("button[data-quantity-button]");
@@ -61,6 +62,31 @@ const thumbsGallarySlider = () => {
   });
 };
 
+const pinBuyButton = () => {
+  const form = pinWrapper.querySelector("[data-product-form-data]");
+  const pin = form.querySelector(".custom-woo-data");
+
+  const refresh = () => {
+    pinned.refresh(true);
+    form.style.minHeight = `${pin.offsetHeight}px`;
+    pin.style.maxWidth = `${form.offsetWidth}px`;
+
+  };
+
+  const pinned = ScrollTrigger.create({
+    trigger: pinWrapper,
+    start: "top bottom",
+    end: `bottom bottom`,
+    // markers: true,
+    onToggle: (self) => {
+      pin.classList.toggle("pinned", self.isActive);
+    },
+  });
+  const resize = new ResizeObserver(refresh);
+  resize.observe(pinWrapper);
+};
+
 quantity && handleQuantityAmount();
 sliderWrapper && thumbsGallarySlider();
 section && createProductData(section);
+pinWrapper && pinBuyButton();
