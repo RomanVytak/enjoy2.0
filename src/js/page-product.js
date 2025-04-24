@@ -67,10 +67,10 @@ const pinBuyButton = () => {
   const pin = form.querySelector(".custom-woo-data");
 
   const refresh = () => {
-    pinned.refresh(true);
     form.style.minHeight = `${pin.offsetHeight}px`;
     pin.style.maxWidth = `${form.offsetWidth}px`;
 
+    setTimeout(() => pinned.refresh(), 100);
   };
 
   const pinned = ScrollTrigger.create({
@@ -83,7 +83,7 @@ const pinBuyButton = () => {
     },
   });
   const resize = new ResizeObserver(refresh);
-  resize.observe(pinWrapper);
+  resize.observe(pin);
 };
 
 quantity && handleQuantityAmount();
