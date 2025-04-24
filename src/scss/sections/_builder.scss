@@ -49,7 +49,7 @@
         }
 
         @include mq-max-640 {
-          flex-direction: column;
+          flex-direction: column !important;
 
           .info {
             flex: unset;
