@@ -52,23 +52,50 @@ export default function createProductData(section) {
   let data_materials = [];
   let selectedVariation = null;
 
- form.removeAttribute("data-product_variations");
+  form.removeAttribute("data-product_variations");
 
   const createMaterialParams = (material) => {
     if (!material || !material?.options) {
-      material_params.innerHTML = "";
+      // material_params.innerHTML = "";
       material_params.classList.add("hidden");
       return;
     }
     material_params.classList.remove("hidden");
     const html = material.options.map((option) => {
       const img = option.ico.url;
-      return `<div class="param" title="${option.description}">
+      return `<div class="param">
+            <div class="title">${option.description}</div>
             ${img ? `<img src="${img}" alt="${option.description}">` : ""}
       </div>`;
     });
     material_params.innerHTML = html.join("");
   };
+  const createMaterialInfo = (isActive, element) => {
+    if (isActive) {
+      material_name.innerHTML = "";
+      return;
+    }
+    const title = element.title;
+    const description = element.dataset.description;
+
+    material_name.innerHTML = `
+    ${title}
+    ${
+      description
+        ? `<span class="info">
+          <span class="icon"></span><span class="text"><span class='d'>${description}</span></span></span>`
+        : ""
+    }
+    `;
+
+    if (!description) return;
+    const icon = material_name.querySelector(".icon");
+    const text = material_name.querySelector(".text");
+
+    icon.addEventListener("click", (e) => text.classList.add("active"));
+    text.addEventListener("click", (e) => text.classList.remove("active"));
+  };
+
   const createSizesParams = (size) => {
     const dimensions = size ? size?.dimensions : null;
 
@@ -96,10 +123,12 @@ export default function createProductData(section) {
     const html = materials.map((material) => {
       const img = material.image.url;
       const name = material.name;
+      const description = material?.description ?? "";
       const id = material.id;
+
       return `<div class="material${
         selectedData.material == id ? " active" : ""
-      }" ${_MATERIAL}="${id}" title="${name}">
+      }" ${_MATERIAL}="${id}" title="${name}" data-description="${description}">
         ${img ? `<img src="${img}" alt="${name}">` : ""}
       </div>`;
     });
@@ -175,10 +204,6 @@ export default function createProductData(section) {
     let filteredVariations = [...variations];
 
     if (isProduct) {
-      data_colors = [];
-      data_sizes = [];
-      data_materials = [];
-
       filteredVariations.forEach((variation) => {
         const material = variation?.material_details;
         const colors = Object.values(variation?.material_colors || {});
@@ -221,9 +246,10 @@ export default function createProductData(section) {
 
   const NEW_updateFilteredVar = (filtered) => {
     if (isProduct) {
-      data_colors = [];
-      data_sizes = [];
-      data_materials = [];
+      let data_colors = [];
+      let data_sizes = [];
+      let data_materials = [];
+
       const selectedLength = Object.values(selectedData).filter(
         (v) => v !== null
       ).length;
@@ -358,7 +384,7 @@ export default function createProductData(section) {
             break;
           case _MATERIAL:
             selectedData.material = isActive ? null : value;
-            material_name.innerHTML = isActive ? "" : element.title;
+            createMaterialInfo(isActive, element);
             input_material.value = isActive ? "" : value;
             createMaterialParams(
               !isActive ? data_materials.find((m) => m.id == value) : null
@@ -371,7 +397,6 @@ export default function createProductData(section) {
             break;
         }
       });
-
     } else {
       const value = element.hasAttribute(_SERT)
         ? element.getAttribute(_SERT)
@@ -383,7 +408,6 @@ export default function createProductData(section) {
       input_size.value = isActive ? "" : value;
     }
     updateProductData();
-
   };
 
   const handleAddToCart = () => {

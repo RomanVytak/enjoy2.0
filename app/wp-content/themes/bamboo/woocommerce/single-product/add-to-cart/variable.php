@@ -45,11 +45,14 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
     <div class="wrapper">
       <div class="wrapper_material">
         <div class="top">
-          <p class="roboto-16-sb wrapper-name">Матеріал <span data-material-name></span> </p>
+          <p class="roboto-16-sb wrapper-name">Матеріал <span data-material-name class="name"></span> </p>
 
           <div class="params flex-v">
             <p class="roboto-16-sb params-title wrapper-name">Переваги Матеріалу</p>
-            <div class="params-params flex-h hidden" data-material-params></div>
+            <div class="params-params flex-h hidden" data-material-params>
+              <div class="param">
+              </div>
+            </div>
           </div>
         </div>
         <div class="materials" data-materials>
