@@ -418,6 +418,23 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['sertyfikat_details']['image']=$sertyfikaty_img;
       }
 
+    } 
+    if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
+      $rozmiry_slug = $variation_data['attributes']['attribute_pa_rozmiry'];
+
+      // Отримуємо термін за slug у таксономії pa_material
+      $rozmiry_term = get_term_by('slug', $rozmiry_slug, 'pa_rozmiry');
+      if ($rozmiry_term) {
+        $rozmiry_id = $rozmiry_term->term_id; // ID терміна
+        // додаткові дані матеріалу
+        $variation_data['rozmiry_details']['id']=$rozmiry_term->term_id;
+        $variation_data['rozmiry_details']['slug']=$rozmiry_term->slug;
+        $variation_data['rozmiry_details']['name']=$rozmiry_term->name;
+        $variation_data['rozmiry_details']['height']=get_field('height', 'pa_rozmiry_'.$rozmiry_id);
+        $variation_data['rozmiry_details']['width']=get_field('width', 'pa_rozmiry_'.$rozmiry_id);
+        $variation_data['rozmiry_details']['depth']=get_field('depth', 'pa_rozmiry_'.$rozmiry_id);
+      }
+
     }
     if (isset($variation_data['attributes']['attribute_pa_material'])) {
         $material_slug = $variation_data['attributes']['attribute_pa_material'];
@@ -432,6 +449,8 @@ function customize_product_variations($variation_data, $product, $variation) {
             $variation_data['material_details']['id']=$material_term->term_id;
             $variation_data['material_details']['slug']=$material_term->slug;
             $variation_data['material_details']['name']=$material_term->name;
+            $variation_data['material_details']['id']=$material_term->term_id;
+            $variation_data['material_details']['description'] = esc_html(term_description($material_term->term_id, 'pa_material'));
             $variation_data['material_details']['image']=$material_img;
 
             $colors = get_field('colors', 'pa_material_'.$material_id);
