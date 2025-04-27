@@ -433,6 +433,8 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['rozmiry_details']['height']=get_field('height', 'pa_rozmiry_'.$rozmiry_id);
         $variation_data['rozmiry_details']['width']=get_field('width', 'pa_rozmiry_'.$rozmiry_id);
         $variation_data['rozmiry_details']['depth']=get_field('depth', 'pa_rozmiry_'.$rozmiry_id);
+        $variation_data['rozmiry_details']['volume']=get_field('volume', 'pa_rozmiry_'.$rozmiry_id);
+        
       }
 
     }
