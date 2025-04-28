@@ -1054,8 +1054,10 @@ section.details {
         flex-direction: column;
         gap: 24px;
         width: 100%;
-        max-width: 410px;
         flex: none;
+        @include mq-min-768 {
+          max-width: 410px;
+        }
       }
 
       &-key {
@@ -1066,6 +1068,10 @@ section.details {
 
       &:nth-child(even) {
         flex-direction: row-reverse;
+      }
+      @include mq-max-768 {
+        flex-direction: column !important;
+        gap: 16px;
       }
     }
   }
