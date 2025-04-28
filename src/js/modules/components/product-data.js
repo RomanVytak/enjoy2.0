@@ -4,9 +4,10 @@ const _COLOR = "data-color";
 const _SERT = "data-sert";
 
 const _SIZES = {
-  height: "Висота",
-  width: "Ширина",
-  length: "Глибина",
+  height: "Висота %% см",
+  width: "Ширина %% см",
+  length: "Глибина %% см",
+  volume: "Об'єм %% л",
 };
 
 export default function createProductData(section) {
@@ -14,6 +15,8 @@ export default function createProductData(section) {
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
   const isProduct = form.dataset.productType === "product";
+
+  console.log(variations);
 
   const product_name = form.dataset.productName;
 
@@ -44,6 +47,8 @@ export default function createProductData(section) {
 
   const onAdded = onAddedToCart();
 
+  const defaultVariation = [...variations].find((v) => v?.is_default);
+
   const selectedData = { color: null, size: null, material: null };
   const htmlElements = {};
 
@@ -63,12 +68,33 @@ export default function createProductData(section) {
     material_params.classList.remove("hidden");
     const html = material.options.map((option) => {
       const img = option.ico.url;
+      const description = option.description;
       return `<div class="param">
-            <div class="title">${option.description}</div>
+        ${
+          description
+            ? `<span class="title"><span class='d'>${description}</span></span>`
+            : ""
+        }
             ${img ? `<img src="${img}" alt="${option.description}">` : ""}
       </div>`;
     });
     material_params.innerHTML = html.join("");
+
+    const icons = material_params.querySelectorAll("img");
+    const texts = material_params.querySelectorAll(".title");
+
+    icons.forEach((icon) => {
+      icon.addEventListener("click", (e) => {
+        const parent = icon.closest(".param");
+        parent.classList.add("active");
+      });
+    });
+    texts.forEach((text) => {
+      text.addEventListener("click", (e) => {
+        const parent = text.closest(".param");
+        parent.classList.remove("active");
+      });
+    });
   };
   const createMaterialInfo = (isActive, element) => {
     if (isActive) {
@@ -110,7 +136,7 @@ export default function createProductData(section) {
       if (value) {
         const type = _SIZES[key];
         html.push(
-          `<div class="param ${key}" title="${type} ${value} см">${type} ${value} см</div>`
+          `<div class="param ${key}">${type.replace("%%", value)}</div>`
         );
       }
     });
@@ -198,6 +224,31 @@ export default function createProductData(section) {
   const NEW_getElementsByAttr = (attr) => {
     const elements = wrapper.querySelectorAll(`[${attr}]`);
     htmlElements[attr] = elements;
+
+    if (defaultVariation) {
+      let element = null;
+
+      if (attr == _MATERIAL) {
+        element = [...elements].find(
+          (el) => el.getAttribute(attr) == defaultVariation.material_details.id
+        );
+      }
+      if (attr == _COLOR) {
+        element = [...elements].find(
+          (el) =>
+            el.getAttribute(attr) ==
+            Object.values(defaultVariation.material_colors)[0]?.id
+        );
+      }
+      if (attr == _SIZE) {
+        element = [...elements].find(
+          (el) =>
+            el.getAttribute(attr) ==
+            defaultVariation.attributes.attribute_pa_rozmiry
+        );
+      }
+      element && element.click();
+    }
   };
 
   const NEW_createHTMLData = () => {
@@ -237,7 +288,7 @@ export default function createProductData(section) {
       wrapper_colors && createColors(data_colors);
       wrapper_sizes && createSizes(data_sizes);
 
-      [_SIZE, _MATERIAL, _COLOR].forEach(NEW_getElementsByAttr);
+      [_MATERIAL, _COLOR, _SIZE].forEach(NEW_getElementsByAttr);
     } else {
       wrapper_sertyfikat && createSertyfikat(filteredVariations);
       NEW_getElementsByAttr(_SERT);
@@ -523,110 +574,3 @@ function onAddedToCart() {
 
   return onAdded;
 }
-
-const variations = [
-  {
-    attributes: {
-      attribute_pa_rozmiry: "",
-      attribute_pa_material: "",
-    },
-    dimensions: {
-      length: "",
-      width: "",
-      height: "",
-    },
-    display_price: 99,
-    image: {},
-    variation_id: 84,
-    material_details: {
-      id: 21,
-      slug: "",
-      name: "",
-      image: false,
-      options: [
-        {
-          ico: {},
-          description: "",
-        },
-        {
-          ico: {},
-          description: "",
-        },
-      ],
-    },
-    material_colors: {
-      23: {
-        name: "",
-        image: "",
-        id: 23,
-      },
-      24: {
-        name: "",
-        image: "",
-        id: 24,
-      },
-    },
-    material_options: [
-      {
-        ico: {},
-        description: null,
-      },
-      {
-        ico: {},
-        description: null,
-      },
-    ],
-  },
-  {
-    attributes: {
-      attribute_pa_rozmiry: "",
-      attribute_pa_material: "",
-    },
-    dimensions: {
-      length: "",
-      width: "",
-      height: "",
-    },
-    display_price: 99,
-    image: {},
-    variation_id: 84,
-    material_details: {
-      id: 21,
-      slug: "",
-      name: "",
-      image: false,
-      options: [
-        {
-          ico: {},
-          description: "",
-        },
-        {
-          ico: {},
-          description: "",
-        },
-      ],
-    },
-    material_colors: {
-      23: {
-        name: "",
-        image: "",
-        id: 23,
-      },
-      24: {
-        name: "",
-        image: "",
-        id: 24,
-      },
-    },
-    material_options: [
-      {
-        ico: {},
-        description: null,
-      },
-      {
-        ico: {},
-        description: null,
-      },
-    ],
-  },
-];

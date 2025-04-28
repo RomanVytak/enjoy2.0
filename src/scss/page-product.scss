@@ -49,7 +49,7 @@
     @include grid(12, min-max(24, 48), 24px);
     padding-bottom: min-max(60, 200);
 
-    @include mq-max-1024 {
+    @include mq-max-768 {
       display: flex;
       flex-direction: column;
     }
@@ -157,7 +157,7 @@
   }
 
   .woocommerce-product-content {
-    >* {
+    > * {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -450,52 +450,99 @@
                 object-fit: cover;
               }
 
-              .title {
-                position: absolute;
-                left: 50%;
-                bottom: 100%;
-                transform: translate(-50%, -10px);
-                font-size: min-max(12, 14);
-                white-space: nowrap;
-                display: flex;
-                justify-content: center;
-                min-width: min-max(180, 200);
-                padding: min-max(8, 12) min-max(10, 20);
-                background: rgba(35, 31, 32, 0.9);
-                border-radius: min-max(4, 6);
-                color: var(--white);
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity var(--transition);
-
-                &::after {
-                  content: "";
+              @include mq-min-768 {
+                .title {
                   position: absolute;
-                  top: 100%;
                   left: 50%;
-                  transform: translate(-50%, -1px);
-                  width: 16px;
-                  height: 8px;
-                  clip-path: polygon(50% 100%, 0 0, 100% 0);
+                  bottom: 100%;
+                  transform: translate(-50%, -10px);
+                  font-size: min-max(12, 14);
+                  white-space: nowrap;
+                  display: flex;
+                  justify-content: center;
+                  min-width: min-max(180, 200);
+                  padding: min-max(8, 12) min-max(10, 20);
                   background: rgba(35, 31, 32, 0.9);
-                }
-
-                @include mq-max-768 {
-                  left: auto;
-                  right: 0;
-                  transform: translate(0%, -10px);
+                  border-radius: min-max(4, 6);
+                  color: var(--white);
+                  opacity: 0;
+                  pointer-events: none;
+                  transition: opacity var(--transition);
 
                   &::after {
-                    left: auto;
-                    right: 6px;
-                    transform: translate(0%, -1px);
+                    content: "";
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    transform: translate(-50%, -1px);
+                    width: 16px;
+                    height: 8px;
+                    clip-path: polygon(50% 100%, 0 0, 100% 0);
+                    background: rgba(35, 31, 32, 0.9);
+                  }
+                }
+
+                @include on-hover {
+                  .title {
+                    opacity: 1;
                   }
                 }
               }
 
-              @include on-hover {
+              @include mq-max-768 {
                 .title {
-                  opacity: 1;
+                  font-size: min-max(16, 14);
+                  display: flex;
+                  justify-content: center;
+                  min-width: min-max(180, 200);
+                  border-radius: min-max(4, 6);
+                  opacity: 0;
+                  pointer-events: none;
+                  transition: opacity var(--transition);
+                  position: fixed;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  z-index: 222;
+                  padding: min-max(16, 50);
+
+                  .d {
+                    background: white;
+                    position: relative;
+                    z-index: 1;
+                    padding: min-max(8, 12) min-max(10, 20);
+                    border-radius: 6px;
+                    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
+                  }
+
+                  &::before {
+                    content: "";
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    height: 110vh;
+                    background: rgb(0 0 0 / 30%);
+                  }
+
+                  &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 100%;
+                    left: 50%;
+                    transform: translate(-50%, 8px);
+                    width: 30px;
+                    aspect-ratio: 1;
+                    background: white url("../img/close.svg") center/16px no-repeat;
+                    border-radius: 50%;
+                  }
+                }
+
+                &.active {
+                  .title {
+                    opacity: 1;
+                    pointer-events: all;
+                  }
                 }
               }
             }
@@ -727,14 +774,19 @@
                   background: url("../img/width.svg") center/cover no-repeat;
                 }
               }
+              &.volume {
+                &::before {
+                  background: url("../img/volume.svg") center/cover no-repeat;
+                }
+              }
             }
 
-            @include mq-max-1024 {
+            @include mq-max-768 {
               flex-wrap: wrap;
               gap: 16px;
 
               .param {
-                width: calc(100% / 2 - 12px);
+                max-width: calc(50% - 12px);
                 font-size: 14px;
 
                 &::before {
@@ -887,6 +939,12 @@
         }
       }
 
+      &-name {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
       @include mq-max-1024 {
         &-name {
           font-size: 16px;
@@ -957,7 +1015,7 @@
   }
 
   .woocommerce-tabs-panel {
-    &>* {
+    & > * {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -996,8 +1054,10 @@ section.details {
         flex-direction: column;
         gap: 24px;
         width: 100%;
-        max-width: 410px;
         flex: none;
+        @include mq-min-768 {
+          max-width: 410px;
+        }
       }
 
       &-key {
@@ -1008,6 +1068,10 @@ section.details {
 
       &:nth-child(even) {
         flex-direction: row-reverse;
+      }
+      @include mq-max-768 {
+        flex-direction: column !important;
+        gap: 16px;
       }
     }
   }
