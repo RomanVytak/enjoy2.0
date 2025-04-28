@@ -536,6 +536,14 @@ function customize_product_variations($variation_data, $product, $variation) {
 
     }
 
+    if (isset($variation_data['dimensions'])){
+      $volume = get_post_meta($variation->get_id(), '_volume', true);
+      if ( $volume ) {
+          $variation_data['dimensions']['volume'] = $volume;
+      }
+    }
+    
+
     return $variation_data;
 }
 
@@ -611,3 +619,67 @@ function custom_woocommerce_catalog_orderby( $sortby ) {
 
     return $sortby;
 }
+
+
+
+// кастомне поле об'єм
+/*add_action('woocommerce_product_options_dimensions', 'add_volume_field_to_product');
+
+function add_volume_field_to_product() {
+    woocommerce_wp_text_input([
+        'id'          => '_volume',
+        'label'       => __('Об\'єм (cм³)', 'woocommerce'),
+        'desc_tip'    => 'true',
+        'description' => __('Enter the product volume.', 'woocommerce'),
+        'type'        => 'number',
+        'custom_attributes' => [
+            'step' => 'any',
+            'min'  => '0',
+        ]
+    ]);
+}
+
+add_action('woocommerce_process_product_meta', 'save_volume_field');
+
+function save_volume_field($post_id) {
+    $volume = isset($_POST['_volume']) ? wc_clean($_POST['_volume']) : '';
+    update_post_meta($post_id, '_volume', $volume);
+}
+
+add_action('woocommerce_product_meta_end', function() {
+  global $product;
+
+  $length = $product->get_length();
+  $width  = $product->get_width();
+  $height = $product->get_height();
+
+  if ( $length && $width && $height ) {
+      $volume = $length * $width * $height;
+      echo '<div class="product-volume"><strong>' . __('Volume:', 'woocommerce') . '</strong> ' . esc_html($volume) . ' cm³</div>';
+  }
+});
+*/
+
+
+// кастомне поле об'єм для варіантів
+add_action('woocommerce_variation_options_dimensions', function($loop, $variation_data, $variation) {
+  woocommerce_wp_text_input([
+      'id' => 'volume[' . $loop . ']',
+      'label' => __('Об\'єм (cm³)', 'woocommerce'),
+      'desc_tip' => true,
+      'description' => __('Enter the volume for this variation.', 'woocommerce'),
+      'wrapper_class' => 'form-row form-row-first',
+      'value' => get_post_meta($variation->ID, '_volume', true),
+      'type' => 'number',
+      'custom_attributes' => [
+          'step' => 'any',
+          'min'  => '0',
+      ],
+  ]);
+}, 10, 3);
+
+add_action('woocommerce_save_product_variation', function($variation_id, $i) {
+  if ( isset($_POST['volume'][$i]) ) {
+      update_post_meta($variation_id, '_volume', wc_clean($_POST['volume'][$i]));
+  }
+}, 10, 2);
