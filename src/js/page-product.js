@@ -65,17 +65,21 @@ const thumbsGallarySlider = () => {
 const pinBuyButton = () => {
   const form = pinWrapper.querySelector("[data-product-form-data]");
   const pin = form.querySelector(".custom-woo-data");
+  let sto = null;
 
   const refresh = () => {
-    form.style.minHeight = `${pin.offsetHeight}px`;
-    pin.style.maxWidth = `${form.offsetWidth}px`;
+    sto && clearTimeout(sto);
+    sto = setTimeout(() => {
+      form.style.minHeight = `${pin.offsetHeight}px`;
+      pin.style.maxWidth = `${form.offsetWidth}px`;
 
-    setTimeout(() => pinned.refresh(), 100);
+      setTimeout(() => pinned.refresh(), 100);
+    }, 100);
   };
 
   const pinned = ScrollTrigger.create({
     trigger: pinWrapper,
-    start: "top bottom",
+    start: "top 100000px",
     end: `bottom bottom`,
     // markers: true,
     onToggle: (self) => {
@@ -84,6 +88,7 @@ const pinBuyButton = () => {
   });
   const resize = new ResizeObserver(refresh);
   resize.observe(pin);
+  resize.observe(form);
 };
 
 quantity && handleQuantityAmount();
