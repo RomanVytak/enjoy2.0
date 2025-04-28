@@ -395,12 +395,71 @@ function change_slug_structure( $query ) {
 add_action( 'pre_get_posts', 'change_slug_structure', 99 );
 
 
+// get default variation ID: wc_get_default_variation($product->get_id());
+function wc_get_default_variation( $product_id = false, $return = 'id' ) {
+  // do not use wc_get_product() to bypass some limits
+  $product = WC()->product_factory->get_product( $product_id );
+
+  if ( empty( $product ) || ! $product instanceof WC_Product_Variable ) {
+      return 0;
+  }
+
+  if ( $product->has_child() ) {
+      $attributes = $product->get_default_attributes();
+
+      if ( ! empty( $attributes ) ) {
+          $check_count      = true;
+          $attributes_count = count( $attributes );
+
+          // get in-stock (if enabled in wc options) and visible variations
+          $variations = $product->get_available_variations( 'objects' );
+
+          foreach ( $variations as $variation ) {
+              $variation_attributes = $variation->get_attributes();
+
+              // check count for first time
+              // if not match, it means that user do not set default value for some variation attrs
+              if ( $check_count && $attributes_count !== count( $variation_attributes ) ) {
+                  break;
+              }
+
+              // no need to check count anymore
+              $check_count = false;
+
+              // remove 'any' attrs (empty values)
+              $variation_attributes = array_filter( $variation_attributes );
+
+              // add 'any' attrs with default value
+              $variation_attributes = wp_parse_args( $variation_attributes, $attributes );
+
+              // check is default
+              if ( $variation_attributes == $attributes ) {
+                  if ( $return === 'id' ) {
+                      return $variation->get_id();
+                  }
+
+                  return $variation;
+              }
+          }
+      }
+  }
+
+  return 0;
+}
+
 // <form class="variations_form cart"  enctype="multipart/form-data" data-product_id="83" data-product_variations="">
 add_filter('woocommerce_available_variation', 'customize_product_variations', 10, 3);
 
 function customize_product_variations($variation_data, $product, $variation) {
     // Приклад зміни атрибуту 'price_html'
     //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
+    
+    $default_variation_id = wc_get_default_variation($product->get_id());    
+    if ( $default_variation_id && $variation->get_id() == $default_variation_id ) {
+      $variation_data['is_default'] = true;
+    } else {
+        $variation_data['is_default'] = false;
+    }
 
     // Додати новий ключ у data-product_variations
     if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
@@ -418,8 +477,9 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['sertyfikat_details']['image']=$sertyfikaty_img;
       }
 
-    } 
-    if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
+    }
+
+    /*if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
       $rozmiry_slug = $variation_data['attributes']['attribute_pa_rozmiry'];
 
       // Отримуємо термін за slug у таксономії pa_material
@@ -437,7 +497,7 @@ function customize_product_variations($variation_data, $product, $variation) {
         
       }
 
-    }
+    }*/
     if (isset($variation_data['attributes']['attribute_pa_material'])) {
         $material_slug = $variation_data['attributes']['attribute_pa_material'];
 
