@@ -542,6 +542,13 @@ function customize_product_variations($variation_data, $product, $variation) {
           $variation_data['dimensions']['volume'] = $volume;
       }
     }
+    if (isset($variation_data['dimensions'])){
+      $dimensions_description = get_post_meta($variation->get_id(), '_dimensions_description', true);
+      if ( $dimensions_description ) {
+          $variation_data['dimensions']['dimensions_description'] = $dimensions_description;
+      }
+    }
+    
     
     
     // Додати новий ключ у data-product_variations
@@ -680,8 +687,9 @@ add_action('woocommerce_product_meta_end', function() {
 */
 
 
-// кастомне поле об'єм для варіантів
+// Кастомні поля обʼєм і опис розмірів для варіантів
 add_action('woocommerce_variation_options_dimensions', function($loop, $variation_data, $variation) {
+  // Обʼєм
   woocommerce_wp_text_input([
       'id' => 'volume[' . $loop . ']',
       'label' => __('Об\'єм (cm³)', 'woocommerce'),
@@ -695,10 +703,25 @@ add_action('woocommerce_variation_options_dimensions', function($loop, $variatio
           'min'  => '0',
       ],
   ]);
+
+  // Опис розмірів
+  woocommerce_wp_text_input([
+      'id' => 'dimensions_description[' . $loop . ']',
+      'label' => __('Опис розмірів', 'woocommerce'),
+      'desc_tip' => true,
+      'description' => __('Введіть для кого підійде.', 'woocommerce'),
+      'wrapper_class' => 'form-row form-row-last',
+      'value' => get_post_meta($variation->ID, '_dimensions_description', true),
+      'type' => 'text',
+  ]);
 }, 10, 3);
 
+// Збереження полів
 add_action('woocommerce_save_product_variation', function($variation_id, $i) {
   if ( isset($_POST['volume'][$i]) ) {
       update_post_meta($variation_id, '_volume', wc_clean($_POST['volume'][$i]));
+  }
+  if ( isset($_POST['dimensions_description'][$i]) ) {
+      update_post_meta($variation_id, '_dimensions_description', wc_clean($_POST['dimensions_description'][$i]));
   }
 }, 10, 2);
