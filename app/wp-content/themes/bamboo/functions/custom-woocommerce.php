@@ -543,6 +543,25 @@ function customize_product_variations($variation_data, $product, $variation) {
       }
     }
     
+    
+    // Додати новий ключ у data-product_variations
+    if (isset($variation_data['attributes']['attribute_pa_print'])) {
+      $print_slug = $variation_data['attributes']['attribute_pa_print'];
+
+      // Отримуємо термін за slug у таксономії pa_material
+      $print_term = get_term_by('slug', $print_slug, 'pa_print');
+      if ($print_term) {
+        $print_id = $print_term->term_id; // ID терміна
+        // додаткові дані матеріалу
+        $print_img = get_field('image', 'pa_print_'.$print_id);
+        $variation_data['print_details']['id']=$print_term->term_id;
+        $variation_data['print_details']['slug']=$print_term->slug;
+        $variation_data['print_details']['name']=$print_term->name;
+        $variation_data['print_details']['image']=$print_img;
+        $variation_data['print_details']['description'] = esc_html(term_description($print_term->term_id, 'pa_print'));
+      }
+
+    }
 
     return $variation_data;
 }
