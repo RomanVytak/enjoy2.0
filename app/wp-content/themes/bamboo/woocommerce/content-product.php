@@ -107,7 +107,30 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
           <div class="product-item-price flex-v">
             <div class="flex w-full h-between">
               <p class="price roboto-38">
-                <?php echo $product->get_price_html(); ?>
+              <?php
+              if ( $product->is_type( 'variable' ) ) {
+                  $default_attributes = $product->get_default_attributes();
+
+                  // Якщо жодного дефолтного атрибута не задано
+                  if ( empty( $default_attributes ) ) {
+                      $prices = $product->get_variation_prices( true );
+                      $min_price = current( $prices['price'] );
+                      $max_price = end( $prices['price'] );
+
+                      if ( $min_price !== $max_price ) {
+                          echo '<span class="price">' . wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . '</span>';
+                      } else {
+                          echo '<span class="price">' . wc_price( $min_price ) . '</span>';
+                      }
+                  } else {
+                      // Якщо є дефолтна варіація, показати стандартну ціну
+                      echo $product->get_price_html();
+                  }
+              } else {
+                  // Для простих товарів
+                  echo $product->get_price_html();
+              }
+              ?>
               </p>
             </div>
 
