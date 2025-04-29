@@ -15,6 +15,7 @@ export default function createProductData(section) {
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
   const isProduct = form.dataset.productType === "product";
+  const header = document.querySelector("header");
 
   console.log(variations);
 
@@ -39,6 +40,7 @@ export default function createProductData(section) {
   const color_name = wrapper.querySelector("[data-color-name]");
 
   const wrapper_sizes = wrapper.querySelector("[data-sizes]");
+  const size_description = wrapper.querySelector("[data-size-description]");
   const size_params = wrapper.querySelector("[data-size-params]");
 
   const wrapper_price = form.querySelector("[data-custom-price]");
@@ -84,9 +86,14 @@ export default function createProductData(section) {
     const texts = material_params.querySelectorAll(".title");
 
     icons.forEach((icon) => {
+      const parent = icon.closest(".param");
+      const tooltip = parent.querySelector(".title");
       icon.addEventListener("click", (e) => {
-        const parent = icon.closest(".param");
         parent.classList.add("active");
+      });
+
+      icon.addEventListener("mouseenter", () => {
+        handleTooltipHover(tooltip, icon);
       });
     });
     texts.forEach((text) => {
@@ -116,17 +123,27 @@ export default function createProductData(section) {
 
     if (!description) return;
     const icon = material_name.querySelector(".icon");
-    const text = material_name.querySelector(".text");
+    const tooltip = material_name.querySelector(".text");
 
-    icon.addEventListener("click", (e) => text.classList.add("active"));
-    text.addEventListener("click", (e) => text.classList.remove("active"));
+    icon.addEventListener("click", (e) => tooltip.classList.add("active"));
+    tooltip.addEventListener("click", (e) =>
+      tooltip.classList.remove("active")
+    );
+
+    icon.addEventListener("mouseenter", () => {
+      handleTooltipHover(tooltip, icon);
+    });
   };
-
   const createSizesParams = (size) => {
     const dimensions = size ? size?.dimensions : null;
+    const description = size?.description ;
+
+
+      size_description.innerHTML = description ? `<span class="d">${description}</span>` : "";
 
     if (!size || !dimensions) {
       size_params.innerHTML = "";
+      size_description.innerHTML = "";
       return;
     }
 
@@ -175,14 +192,17 @@ export default function createProductData(section) {
   };
 
   const createSizes = (sizes) => {
+    console.log("sizes", sizes);
     wrapper_sizes.innerHTML = "";
     const html = sizes.map((size) => {
       const id = size.id;
       const name = id.toUpperCase();
 
-      return `<div class="size${
-        selectedData.size == id ? " active" : ""
-      }" ${_SIZE}="${id}"  title="Розмір ${name}">
+      return `<div
+        class="size${selectedData.size == id ? " active" : ""}"
+        ${_SIZE}="${id}"
+        title="Розмір ${name}"
+        >
         ${name}
       </div>`;
     });
@@ -271,6 +291,8 @@ export default function createProductData(section) {
             const data = {
               id: size,
               dimensions: variation?.dimensions ?? null,
+              description:
+                variation?.attributes?.attribute_pa_rozmiry_description ?? null,
             };
             data_sizes.push(data);
           }
@@ -512,6 +534,22 @@ export default function createProductData(section) {
       // showVariatorPrice(selectedData.sertyfikat, variation);
     }
   };
+
+  function handleTooltipHover(tooltip, icon) {
+    // Очистити попередні позиції
+    tooltip.classList.remove("top", "bottom");
+
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const triggerRect = icon.getBoundingClientRect();
+
+    const spaceAbove = triggerRect.top - header.clientHeight - 10;
+
+    if (spaceAbove > tooltipRect.height) {
+      tooltip.classList.add("top");
+    } else {
+      tooltip.classList.add("bottom");
+    }
+  }
 
   wrapper.addEventListener("click", handleSelectData);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);

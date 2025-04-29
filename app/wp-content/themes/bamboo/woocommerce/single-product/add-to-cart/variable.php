@@ -72,7 +72,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
           <div class="params flex-h" data-size-params></div>
         </div>
         <div class="sizes" data-sizes></div>
-
+        <div class="description" data-size-description></div>
       </div>
     </div>
   <?php } ?>

@@ -48,6 +48,7 @@
     padding: 0 min-max(16, 50);
     @include grid(12, min-max(24, 48), 24px);
     padding-bottom: min-max(60, 200);
+    overflow: hidden;
 
     @include mq-max-768 {
       display: flex;
@@ -172,6 +173,7 @@
     flex-direction: column;
     gap: min-max(16, 20);
     width: 100%;
+    align-self: flex-start;
 
     .variations_form {
       position: relative;
@@ -454,8 +456,7 @@
                 .title {
                   position: absolute;
                   left: 50%;
-                  bottom: 100%;
-                  transform: translate(-50%, -10px);
+
                   font-size: min-max(12, 14);
                   white-space: nowrap;
                   display: flex;
@@ -472,13 +473,31 @@
                   &::after {
                     content: "";
                     position: absolute;
-                    top: 100%;
                     left: 50%;
-                    transform: translate(-50%, -1px);
                     width: 16px;
                     height: 8px;
-                    clip-path: polygon(50% 100%, 0 0, 100% 0);
                     background: rgba(35, 31, 32, 0.9);
+                  }
+
+                  &.top {
+                    bottom: 100%;
+                    transform: translate(-50%, -10px);
+
+                    &:after {
+                      top: 100%;
+                      transform: translate(-50%, -1px);
+                      clip-path: polygon(50% 100%, 0 0, 100% 0);
+                    }
+                  }
+                  &.bottom {
+                    top: 100%;
+                    transform: translate(-50%, 10px);
+
+                    &:after {
+                      bottom: 100%;
+                      transform: translate(-50%, 1px);
+                      clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+                    }
                   }
                 }
 
@@ -559,6 +578,7 @@
           display: inline-flex;
           align-items: center;
           gap: 8px;
+          z-index: 1;
 
           .info {
             position: relative;
@@ -586,21 +606,37 @@
               @include mq-min-768 {
                 background: rgba(35, 31, 32, 0.9);
                 left: 50%;
-                bottom: 100%;
-                transform: translate(-50%, -10px);
                 width: min-max(300, 400);
                 color: var(--white);
 
                 &::after {
                   content: "";
                   position: absolute;
-                  top: 100%;
                   left: 50%;
-                  transform: translate(-50%, -1px);
                   width: 16px;
                   height: 8px;
-                  clip-path: polygon(50% 100%, 0 0, 100% 0);
                   background: rgba(35, 31, 32, 0.9);
+                }
+
+                &.top {
+                  bottom: 100%;
+                  transform: translate(-50%, -10px);
+
+                  &::after {
+                    top: 100%;
+                    transform: translate(-50%, -1px);
+                    clip-path: polygon(50% 100%, 0 0, 100% 0);
+                  }
+                }
+                &.bottom {
+                  top: 100%;
+                  transform: translate(-50%, 10px);
+
+                  &::after {
+                    bottom: 100%;
+                    transform: translate(-50%, 1px);
+                    clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+                  }
                 }
               }
 
@@ -832,6 +868,21 @@
               // opacity: 0.5;
               // pointer-events: none;
               // transform: scale(0.9);
+            }
+          }
+        }
+
+        .description {
+          display: none;
+
+          &:has(.d) {
+            display: flex;
+          }
+
+          .d {
+            &::before {
+              content: "* ";
+              color: var(--orange-2);
             }
           }
         }
