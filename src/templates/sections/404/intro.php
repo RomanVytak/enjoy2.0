@@ -4,7 +4,7 @@
       <h1 class="roboto-48">404</h1>
       <p>Сторінку не знайдено</p>
 
-      <a href="/" title="На головну" class="flex-c link roboto-18-sb">На головну</a>
+      <a href="/" title="На головну" class="flex-c link roboto-16-sb">На головну</a>
 
       <div class="smile flex"></div>
     </div>

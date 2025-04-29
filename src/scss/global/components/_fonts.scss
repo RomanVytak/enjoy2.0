@@ -7,11 +7,11 @@
 @include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 70);
 
 p {
-  @include roboto-18;
+  @include roboto-16;
 }
 
-.roboto-18 {
-  @include roboto-18;
+.roboto-16 {
+  @include roboto-16;
 }
 .roboto-48 {
   @include roboto-48-B;
@@ -25,11 +25,11 @@ p {
 .roboto-28 {
   @include use-font(var(--roboto-m), min-max(18, 28), 500, 130%);
 }
-.roboto-18-b {
-  @include roboto-18-B;
+.roboto-16-b {
+  @include roboto-16-B;
 }
-.roboto-18-sb {
-  @include roboto-18-SB;
+.roboto-16-sb {
+  @include roboto-16-SB;
 }
 .roboto-16-sb {
   @include use-font(var(--roboto-m), min-max(14, 16), 500, 140%);

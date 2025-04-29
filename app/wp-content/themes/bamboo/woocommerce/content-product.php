@@ -45,7 +45,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
             if( $rows ) {
                 foreach( $rows as $row ) {
                     if($i==0){
-                      echo '<div class="product-item-sale flex-c roboto-18-sb">';
+                      echo '<div class="product-item-sale flex-c roboto-16-sb">';
                       if($row['url']){echo'<a href="'.$row['url'].'">';}
                       echo '<div class="custom-pr-sale">';
                       if($row['ico']['url']){echo '<img src="'.$row['ico']['url'].'" alt="icon" />';}
@@ -102,7 +102,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
           </div>
           <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="product-item-info flex-v">
             <p class="name roboto-38"><?php echo $product->get_name();?></p>
-            <p class="category roboto-18-sb"><?php echo $product_category;?></p>
+            <p class="category roboto-16-sb"><?php echo $product_category;?></p>
           </a>
           <div class="product-item-price flex-v">
             <div class="flex w-full h-between">
@@ -139,7 +139,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                 <div class="itt pr"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/pr.svg" alt=""></div>
                 <div class="itt mon"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/mon.svg" alt=""></div>
               </div>
-              <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="link roboto-18-b flex-c" title="Обрати дизайн">
+              <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="link roboto-16-b flex-c" title="Обрати дизайн">
                 Обрати дизайн
               </a>
             </div>

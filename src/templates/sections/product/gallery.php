@@ -42,7 +42,7 @@
           $i = 0;
           if ($rows) {
             foreach ($rows as $row) {
-              echo '<div class="product-item-sale flex-c roboto-18-sb">';
+              echo '<div class="product-item-sale flex-c roboto-16-sb">';
               if ($row['url']) {
                 echo '<a href="' . $row['url'] . '">';
               }

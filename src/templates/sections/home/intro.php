@@ -23,9 +23,9 @@ if ($banner_posts->have_posts()) : ?>
   <div class="container">
     <div class="container-text flex-v">
       <h1 class="roboto-48"><?php echo $title;?></h1>
-      <?php echo $content;?>
+      <p><?php echo $content;?></p>
       <?php if(!empty($button_title)){?>
-      <a href="<?php echo $button_url;?>" title="<?php echo $button_title;?>" class="flex-c link roboto-18-sb"><?php echo $button_title;?></a>
+      <a href="<?php echo $button_url;?>" title="<?php echo $button_title;?>" class="flex-c link roboto-16-sb"><?php echo $button_title;?></a>
       <?php }?>
       <?php if(get_field("smile")==true){?>
       <div class="smile flex"></div>

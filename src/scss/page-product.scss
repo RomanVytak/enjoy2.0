@@ -247,7 +247,7 @@
       gap: min-max(8, 12);
 
       li {
-        @include roboto-18-B;
+        @include roboto-16-B;
         min-width: min-max(100, 150);
         height: min-max(30, 40);
         border: 1px solid var(--gray-minus-1);
@@ -964,7 +964,7 @@
           }
 
           .currency {
-            @include roboto-18;
+            @include roboto-16;
             font-size: 38px;
           }
         }

@@ -1,7 +1,7 @@
 @import "general";
 
-@mixin roboto-18 {
-  @include use-font(var(--roboto-r), min-max(var(--size-sm), 18), 400, 140%);
+@mixin roboto-16 {
+  @include use-font(var(--roboto-r), min-max(var(--size-sm), 16), 400, 140%);
 }
 @mixin roboto-48-B {
   @include use-font(var(--roboto-b), min-max(42, 48), 700, 110%);
@@ -9,12 +9,12 @@
 @mixin roboto-38-B {
   @include use-font(var(--roboto-con-b), min-max(32, 38), 700, 110%);
 }
-@mixin roboto-18-B {
-  @include use-font(var(--roboto-con-b), min-max(var(--size-sm), 18), 700, 140%);
+@mixin roboto-16-B {
+  @include use-font(var(--roboto-con-b), min-max(var(--size-sm), 16), 700, 140%);
 }
-@mixin roboto-18-SB {
-  @include use-font(var(--roboto-con-m), min-max(var(--size-sm), 18), 500, 140%);
+@mixin roboto-16-SB {
+  @include use-font(var(--roboto-con-m), min-max(var(--size-sm), 16), 500, 140%);
 }
 @mixin font_input {
-  @include use-font(var(--roboto-r), min-max(16, 18), 400, 140%);
+  @include use-font(var(--roboto-r), min-max(16, 16), 400, 140%);
 }
