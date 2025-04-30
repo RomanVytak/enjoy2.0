@@ -568,20 +568,21 @@ function customize_product_variations($variation_data, $product, $variation) {
 
 
     // Додати новий ключ у data-product_variations
-    if (isset($variation_data['attributes']['attribute_pa_print'])) {
-      $print_slug = $variation_data['attributes']['attribute_pa_print'];
+    if (isset($variation_data['attributes']['attribute_pa_variants'])) {
+      $variants_slug = $variation_data['attributes']['attribute_pa_variants'];
 
       // Отримуємо термін за slug у таксономії pa_material
-      $print_term = get_term_by('slug', $print_slug, 'pa_print');
-      if ($print_term) {
-        $print_id = $print_term->term_id; // ID терміна
+      $variants_term = get_term_by('slug', $variants_slug, 'pa_variants');
+      if ($variants_term) {
+        $variants_id = $variants_term->term_id; // ID терміна
         // додаткові дані матеріалу
-        $print_img = get_field('image', 'pa_print_'.$print_id);
-        $variation_data['print_details']['id']=$print_term->term_id;
-        $variation_data['print_details']['slug']=$print_term->slug;
-        $variation_data['print_details']['name']=$print_term->name;
-        $variation_data['print_details']['image']=$print_img;
-        $variation_data['print_details']['description'] = esc_html(term_description($print_term->term_id, 'pa_print'));
+        $variants_img = get_field('image', 'pa_variants_'.$variants_id);
+        $variation_data['variants_details']['id']=$variants_term->term_id;
+        $variation_data['variants_details']['slug']=$variants_term->slug;
+        $variation_data['variants_details']['name']=$variants_term->name;
+        $variation_data['variants_details']['image']=$variants_img;
+        $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_'.$variants_id);
+        $variation_data['variants_details']['description'] = esc_html(term_description($print_term->term_id, 'pa_print'));
       }
 
     }
