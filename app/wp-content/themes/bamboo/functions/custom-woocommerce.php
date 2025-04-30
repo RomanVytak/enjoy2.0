@@ -461,6 +461,22 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['is_default'] = false;
     }
 
+    // Визначаємо ціну без знижки і знижкову ціну
+    $regular_price = (float) $variation->get_regular_price();
+    $sale_price = (float) $variation->get_sale_price();
+
+    // Якщо є знижка
+    if ( $regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price ) {
+        $saved = $regular_price - $sale_price;
+        $discount_percent = round( ( $saved / $regular_price ) * 100 );
+
+        $variation_data['discount_percent'] = $discount_percent;
+        $variation_data['money_saved'] = $saved;
+    } else {
+        $variation_data['discount_percent'] = 0;
+        $variation_data['money_saved'] = 0;
+    }
+
     // Додати новий ключ у data-product_variations
     if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
       $sertyfikaty_slug = $variation_data['attributes']['attribute_pa_sertyfikaty'];
