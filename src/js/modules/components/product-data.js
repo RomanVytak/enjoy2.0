@@ -136,10 +136,11 @@ export default function createProductData(section) {
   };
   const createSizesParams = (size) => {
     const dimensions = size ? size?.dimensions : null;
-    const description = size?.description ;
+    const description = size?.description;
 
-
-      size_description.innerHTML = description ? `<span class="d">${description}</span>` : "";
+    size_description.innerHTML = description
+      ? `<span class="d">${description}</span>`
+      : "";
 
     if (!size || !dimensions) {
       size_params.innerHTML = "";
@@ -291,8 +292,7 @@ export default function createProductData(section) {
             const data = {
               id: size,
               dimensions: variation?.dimensions ?? null,
-              description:
-                variation?.attributes?.attribute_pa_rozmiry_description ?? null,
+              description: variation?.dimensions_description ?? null,
             };
             data_sizes.push(data);
           }
