@@ -153,18 +153,18 @@ add_action('template_redirect', 'handle_buy_now_button');
 // кастомна ціна
 function custom_subtotal_price()
 {
-  echo '<p class="custom-total-price-title font_title-m t">' . esc_html__('Subtotal:', 'woocommerce') . '</p> ';
+  echo '<p class="custom-total-price-title font_title-m t">Сума</p> ';
   echo '<p class="custom-total-price-number font_title-s n">' . WC()->cart->get_cart_subtotal() . '</p> ';
 }
 function custom_to_checkout()
 {
-  echo '<a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward custom back-black md">' . esc_html__('Checkout', 'woocommerce') . '</a>';
+  echo '<a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward custom back-black md">Оформлення замовлення</a>';
 }
 
 
 function custom_to_view_cart()
 {
-  echo '<a href="' . esc_url(wc_get_cart_url()) . '" class="button wc-forward custom border-black md">' . esc_html__('View cart', 'woocommerce') . '</a>';
+  echo '<a href="' . esc_url(wc_get_cart_url()) . '" class="button wc-forward custom border-black md">Переглянути кошик</a>';
 }
 
 // new - popular tag for product
@@ -485,7 +485,7 @@ function customize_product_variations($variation_data, $product, $variation) {
       $sertyfikaty_term = get_term_by('slug', $sertyfikaty_slug, 'pa_sertyfikaty');
       if ($sertyfikaty_term) {
         $sertyfikaty_id = $sertyfikaty_term->term_id; // ID терміна
-        // додаткові дані матеріалу
+        // додаткові дані сертифікату
         $sertyfikaty_img = get_field('image', 'pa_sertyfikaty_'.$sertyfikaty_id);
         $variation_data['sertyfikat_details']['id']=$sertyfikaty_term->term_id;
         $variation_data['sertyfikat_details']['slug']=$sertyfikaty_term->slug;
