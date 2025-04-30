@@ -199,7 +199,7 @@
         padding: 0;
         display: flex;
         align-items: center;
-        gap: min-max(12, 20);
+        gap: min-max(6, 8);
 
         .page-numbers {
           width: min-max(26, 32);
@@ -247,10 +247,8 @@
             transform: rotate(180deg);
           }
           &.dots {
-            // pointer-events: none;
             background-color: transparent;
             cursor: default;
-            margin: 0 calc(min-max(13, 16) * -1);
           }
         }
       }
