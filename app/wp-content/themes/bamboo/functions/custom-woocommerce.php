@@ -453,8 +453,8 @@ add_filter('woocommerce_available_variation', 'customize_product_variations', 10
 function customize_product_variations($variation_data, $product, $variation) {
     // Приклад зміни атрибуту 'price_html'
     //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
-    
-    $default_variation_id = wc_get_default_variation($product->get_id());    
+
+    $default_variation_id = wc_get_default_variation($product->get_id());
     if ( $default_variation_id && $variation->get_id() == $default_variation_id ) {
       $variation_data['is_default'] = true;
     } else {
@@ -494,7 +494,7 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['rozmiry_details']['width']=get_field('width', 'pa_rozmiry_'.$rozmiry_id);
         $variation_data['rozmiry_details']['depth']=get_field('depth', 'pa_rozmiry_'.$rozmiry_id);
         $variation_data['rozmiry_details']['volume']=get_field('volume', 'pa_rozmiry_'.$rozmiry_id);
-        
+
       }
 
     }*/
@@ -542,15 +542,15 @@ function customize_product_variations($variation_data, $product, $variation) {
           $variation_data['dimensions']['volume'] = $volume;
       }
     }
-    if (isset($variation_data['dimensions'])){
+    if (isset($variation_data)){
       $dimensions_description = get_post_meta($variation->get_id(), '_dimensions_description', true);
       if ( $dimensions_description ) {
-          $variation_data['dimensions']['dimensions_description'] = $dimensions_description;
+          $variation_data['dimensions_description'] = $dimensions_description;
       }
     }
-    
-    
-    
+
+
+
     // Додати новий ключ у data-product_variations
     if (isset($variation_data['attributes']['attribute_pa_print'])) {
       $print_slug = $variation_data['attributes']['attribute_pa_print'];
