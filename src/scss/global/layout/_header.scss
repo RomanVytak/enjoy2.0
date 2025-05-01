@@ -26,6 +26,7 @@
     @include mq-min-1024 {
       display: none;
     }
+
     span {
       width: 20px;
       height: 2px;
@@ -52,6 +53,7 @@
       opacity: 0;
       pointer-events: none;
     }
+
     &:has(input:checked) {
       span {
         opacity: 0;
@@ -71,6 +73,7 @@
   &-right {
     gap: min-max(16, 40);
   }
+
   &-menu {
     display: flex;
     flex: 1;
@@ -88,6 +91,7 @@
         font-size: min-max(12, 16);
         transition: var(--transition);
         color: #054f78;
+
         @include on-hover {
           color: var(--orange-1);
         }
@@ -130,6 +134,7 @@
     .icon {
       display: none;
     }
+
     color: var(--orange-1);
 
     @include on-hover {
@@ -151,7 +156,7 @@
     border-radius: 50%;
     font-family: var(--roboto-m);
     font-weight: 500;
-    margin-left: 4px;
+    margin-left: 2px;
   }
 
   @include mq-max-1024 {
@@ -181,6 +186,7 @@
       .icon {
         display: flex;
       }
+
       .txt {
         display: none;
       }
@@ -192,6 +198,7 @@
       .icon {
         display: flex;
       }
+
       .txt {
         display: none;
       }

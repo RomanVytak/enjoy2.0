@@ -6,17 +6,20 @@
   //   echo 'Кошик порожній.';
   // }
 
-  while (have_posts()) : the_post(); ?>
-    <section class="single-page <?php echo (is_checkout() || is_cart()) ? 'page-custom' : ''  ?>" data-page>
-      <div class="container">
+  while (have_posts()) : the_post();
+    $content = get_the_content();
+    if (trim($content)) : ?>
+      <section class="single-page <?php echo (is_checkout() || is_cart()) ? 'page-custom' : ''  ?>" data-page>
+        <div class="container">
 
-        <!-- <h1 class="roboto-48">?php the_title(); ?></h1> -->
+          <!-- <h1 class="roboto-48">?php the_title(); ?></h1> -->
 
-        <div class="content"><?php the_content(); ?></div>
+          <div class="content"><?php the_content(); ?></div>
 
-      </div>
-    </section>
-<?php endwhile;
+        </div>
+      </section>
+<?php endif;
+  endwhile;
 else :
   renderSection('404');
 endif; ?>
