@@ -10,7 +10,7 @@ const _SIZES = {
   volume: "Об'єм %% л",
 };
 
-export default function createProductData(section) {
+export default function createProductData() {
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
@@ -48,7 +48,7 @@ export default function createProductData(section) {
 
   const onAdded = onAddedToCart();
 
-  const defaultVariation = [...variations].find((v) => v?.is_default);
+  let defaultVariation = [...variations].find((v) => v?.is_default);
 
   const selectedData = { color: null, size: null, material: null };
   const htmlElements = {};
@@ -64,7 +64,6 @@ export default function createProductData(section) {
   const createMaterialParams = (material) => {
     const assets = BAMBOO.assets;
     if (!material || !material?.options) {
-      // material_params.innerHTML = "";
       material_params.classList.add("hidden");
       return;
     }
@@ -242,7 +241,7 @@ export default function createProductData(section) {
       const sert = s;
       const id = sert.id;
       const name = sert.name;
-      const image = s.image;
+      // const image = s.image;
       // const src = image?.sizes?.thumbnail || image?.url || image?.icon || "";
 
       return `<div class="size ${
@@ -573,16 +572,17 @@ export default function createProductData(section) {
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("attribute_pa_variants");
 
+    console.log('value', value);
     if (value) {
       const variation = [...variations].find(
         (f) => f?.variants_details?.slug == value
       );
-      variation && (selectedData.variant = variation?.variants_details?.id);
+      variation && (defaultVariation = variation);
+      console.log('variation', variation);
     }
   };
 
   function handleTooltipHover(tooltip, icon) {
-    // Очистити попередні позиції
     tooltip.classList.remove("top", "bottom");
 
     const tooltipRect = tooltip.getBoundingClientRect();
