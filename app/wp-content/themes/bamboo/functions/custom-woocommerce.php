@@ -535,6 +535,7 @@ function customize_product_variations($variation_data, $product, $variation) {
             $variation_data['material_details']['id']=$material_term->term_id;
             $variation_data['material_details']['description'] = esc_html(term_description($material_term->term_id, 'pa_material'));
             $variation_data['material_details']['image']=$material_img;
+            $variation_data['material_details']['video']=get_field('video', 'pa_material_'.$material_id);
 
             $colors = get_field('colors', 'pa_material_'.$material_id);
             foreach($colors as $color){
