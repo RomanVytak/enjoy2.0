@@ -23,64 +23,68 @@ global $product;
 $attribute_keys  = array_keys($attributes);
 $variations_json = wp_json_encode($available_variations);
 $variations_attr = function_exists('wc_esc_json') ? wc_esc_json($variations_json) : _wp_specialchars($variations_json, ENT_QUOTES, 'UTF-8', true);
-$is_sertyfikat = isset($attributes['pa_sertyfikaty']);
+$is_variants = isset($attributes['pa_variants']);
 
 
 do_action('woocommerce_before_add_to_cart_form'); ?>
 
 <div class="custom-woo-data flex-v loading" data-product-ajax>
 
+  <?php
 
-  <?php if ($is_sertyfikat) { ?>
-    <div class="wrapper">
-      <div class="wrapper_sertyfikat">
-        <div class="top">
-          <p class="roboto-16-sb wrapper-name">Варіанти</p>
-        </div>
-        <div class="variations" data-sertyfikat></div>
-      </div>
-    </div>
-  <?php } else { ?>
+  // var_dump($attributes);
+  ?>
 
-    <div class="wrapper">
-      <div class="wrapper_material">
-        <div class="top">
-          <p class="roboto-16-sb wrapper-name">Матеріал <span data-material-name class="name"></span> </p>
 
-          <div class="params flex-v">
-            <p class="roboto-16-sb params-title wrapper-name">Переваги Матеріалу</p>
-            <div class="params-params flex-h hidden" data-material-params>
-              <div class="param">
-              </div>
+
+
+  <div class="wrapper">
+    <div class="wrapper_material">
+      <div class="top">
+        <p class="roboto-16-sb wrapper-name">Матеріал <span data-material-name class="name"></span> </p>
+
+        <div class="params flex-v">
+          <p class="roboto-16-sb params-title wrapper-name">Переваги Матеріалу</p>
+          <div class="params-params flex-h hidden" data-material-params>
+            <div class="param">
             </div>
           </div>
         </div>
-        <div class="materials" data-materials>
-        </div>
       </div>
-      <div class="wrapper_color">
-        <div class="top">
-          <p class="roboto-16-sb wrapper-name">Колір <span data-color-name></span> </p>
-        </div>
-        <div class="colors" data-colors></div>
+      <div class="materials" data-materials>
       </div>
     </div>
-    <div class="wrapper">
-      <div class="wrapper_sizes">
-        <div class="top">
-          <p class="roboto-16-sb wrapper-name">Розмір </p>
-          <div class="params flex-h" data-size-params></div>
-        </div>
-        <div class="sizes" data-sizes></div>
-        <div class="description" data-size-description></div>
+    <div class="wrapper_color">
+      <div class="top">
+        <p class="roboto-16-sb wrapper-name">Колір <span data-color-name></span> </p>
       </div>
+      <div class="colors" data-colors></div>
     </div>
-  <?php } ?>
+  </div>
+  <div class="wrapper">
+    <div class="wrapper_sizes">
+      <div class="top">
+        <p class="roboto-16-sb wrapper-name">Розмір </p>
+        <div class="params flex-h" data-size-params></div>
+      </div>
+      <div class="sizes" data-sizes></div>
+      <div class="description" data-size-description></div>
+    </div>
+  </div>
+
+  <div class="wrapper">
+    <div class="wrapper_sertyfikat">
+      <div class="top">
+        <p class="roboto-16-sb wrapper-name">Варіанти</p>
+      </div>
+      <div class="variations" data-variants></div>
+    </div>
+  </div>
 
 </div>
 
-<form class="variations_form cart" data-product-type="<?php echo $is_sertyfikat ? 'sertyfikat' : "product" ?>" data-product-name="<?php echo esc_attr($product->get_name()); ?>" data-product-form-data action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.
-                                                                                                                                                                                                                                                                                                                                                                                                                                                          ?>">
+<form class="variations_form cart" data-product-name="<?php echo esc_attr($product->get_name()); ?>" data-product-form-data action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.
+                                                                                                                                                                                                                                                                                                                                                                              ?>">
   <?php do_action('woocommerce_before_variations_form'); ?>
 
   <?php if (empty($available_variations) && false !== $available_variations) : ?>

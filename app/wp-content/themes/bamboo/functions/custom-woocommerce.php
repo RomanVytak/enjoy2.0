@@ -153,7 +153,7 @@ add_action('template_redirect', 'handle_buy_now_button');
 // кастомна ціна
 function custom_subtotal_price()
 {
-  echo '<p class="woocommerce-mini-cart__total total roboto-28"><strong>Разом</strong>' . WC()->cart->get_cart_subtotal() . '</p>';  
+  echo '<p class="woocommerce-mini-cart__total total roboto-28"><strong>Разом</strong>' . WC()->cart->get_cart_subtotal() . '</p>';
 }
 function custom_to_checkout()
 {
@@ -585,9 +585,10 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['variants_details']['id']=$variants_term->term_id;
         $variation_data['variants_details']['slug']=$variants_term->slug;
         $variation_data['variants_details']['name']=$variants_term->name;
-        $variation_data['variants_details']['image']=$variants_img;
+        // $variation_data['variants_details']['image']=$variants_img;
+        $variation_data['variants_details']['image_html']= wp_get_attachment_image($variants_img['id']);
         $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_'.$variants_id);
-        $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
+        // $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
       }
 
     }
