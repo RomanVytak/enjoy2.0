@@ -340,3 +340,41 @@ li {
     }
   }
 }
+
+.spinner {
+  width: min-max(18, 20);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: #4c5c66;
+  margin-right: min-max(10, 16);
+  padding: 4px;
+  animation: spin 0.5s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition);
+
+  @include mq-max-768 {
+    position: absolute;
+    left: 0;
+  }
+
+  &::after {
+    content: "";
+    width: min-max(4, 5);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: var(--white);
+    display: block;
+  }
+}
+
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
