@@ -762,7 +762,7 @@ function new_mail_from_name($old)
 {
   return 'Enjoy';
 }
-* Hide links from admin menu */
+/* Hide links from admin menu */
 function remove_menus()
 {
   //remove_menu_page( 'edit.php' ); 
