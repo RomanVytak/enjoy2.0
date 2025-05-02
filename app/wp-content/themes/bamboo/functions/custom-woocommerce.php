@@ -587,7 +587,7 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['variants_details']['name']=$variants_term->name;
         $variation_data['variants_details']['image']=$variants_img;
         $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_'.$variants_id);
-        $variation_data['variants_details']['description'] = esc_html(term_description($print_term->term_id, 'pa_print'));
+        $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
       }
 
     }
