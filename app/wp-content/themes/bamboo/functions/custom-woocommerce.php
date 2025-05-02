@@ -153,13 +153,18 @@ add_action('template_redirect', 'handle_buy_now_button');
 // кастомна ціна
 function custom_subtotal_price()
 {
-  echo '<p class="custom-total-price-title font_title-m t">Сума</p> ';
-  echo '<p class="custom-total-price-number font_title-s n">' . WC()->cart->get_cart_subtotal() . '</p> ';
+  echo '<p class="woocommerce-mini-cart__total total roboto-28"><strong>Разом</strong>' . WC()->cart->get_cart_subtotal() . '</p>';  
 }
 function custom_to_checkout()
 {
-  echo '<a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward custom back-black md">Оформлення замовлення</a>';
+  echo '<p class="woocommerce-mini-cart__buttons buttons"><a href="' . esc_url(wc_get_checkout_url()) . '" class="button checkout wc-forward">Оформити замовлення</a></p>';
 }
+remove_action('woocommerce_widget_shopping_cart_total', 'woocommerce_widget_shopping_cart_subtotal', 10);
+remove_action('woocommerce_widget_shopping_cart_buttons', 'woocommerce_widget_shopping_cart_button_view_cart', 10);
+remove_action('woocommerce_widget_shopping_cart_buttons', 'woocommerce_widget_shopping_cart_proceed_to_checkout', 20);
+add_action('woocommerce_widget_shopping_cart_buttons', 'custom_to_checkout', 21);
+add_action('woocommerce_widget_shopping_cart_total', 'custom_subtotal_price', 11);
+
 
 
 function custom_to_view_cart()
