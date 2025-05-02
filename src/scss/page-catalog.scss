@@ -352,9 +352,30 @@
       .price {
         font-family: var(--roboto-b);
 
-        .custom_symbol {
+        &:has(del) {
+          display: flex;
+          align-items: flex-end;
+        }
+
+        .custom_symbol,
+        .woocommerce-Price-currencySymbol {
           font-family: var(--roboto-r);
           font-weight: 400;
+        }
+
+        ins {
+          text-decoration: none;
+          order: -1;
+        }
+
+        del {
+          font-size: min-max(16, 18);
+          font-family: var(--roboto-r);
+          font-weight: 400;
+          color: #8199af;
+          text-decoration-color: #f94754;
+          line-height: normal;
+          margin: 2px min-max(10, 20);
         }
       }
 

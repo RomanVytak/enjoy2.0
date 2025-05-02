@@ -61,14 +61,20 @@
           }
         }
       }
-
-
     }
 
     &.text {
       padding-block: min-max(24, 40);
       justify-content: center;
       aspect-ratio: unset;
+
+      &.landscape {
+        grid-column: span 2;
+
+        & ~ .media {
+          grid-column: unset;
+        }
+      }
 
       .text-content {
         display: flex;

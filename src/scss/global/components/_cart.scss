@@ -99,6 +99,9 @@
       display: none !important;
     }
   }
+  &__empty-message {
+    padding: 50px 24px;
+  }
 
   .screen-reader-text {
     position: absolute;
