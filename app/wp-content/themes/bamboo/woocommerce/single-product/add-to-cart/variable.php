@@ -102,6 +102,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
           <div class="wrapper_sent_price" data-custom-price></div>
 
           <div class="wrapper_sent_nav">
+            <div class="spinner"></div>
             <button type="button" aria-label="Замовити" disabled data-sent-ajax>Замовити</button>
           </div>
         </div>

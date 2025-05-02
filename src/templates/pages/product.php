@@ -44,7 +44,8 @@ while (have_posts()) :
     </div>
   </section>
 
-  <?php renderSection('product/details'); ?>
+
+  <?php renderSection('home/builder'); ?>
 
 <?php
 

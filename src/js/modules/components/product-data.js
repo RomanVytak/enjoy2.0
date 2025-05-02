@@ -62,6 +62,7 @@ export default function createProductData(section) {
   form.removeAttribute("data-product_variations");
 
   const createMaterialParams = (material) => {
+    const assets = BAMBOO.assets;
     if (!material || !material?.options) {
       // material_params.innerHTML = "";
       material_params.classList.add("hidden");
@@ -69,7 +70,7 @@ export default function createProductData(section) {
     }
     material_params.classList.remove("hidden");
     const html = material.options.map((option) => {
-      const img = option.ico.url;
+      const img = option.ico;
       const description = option.description;
       return `<div class="param">
         ${
@@ -77,7 +78,11 @@ export default function createProductData(section) {
             ? `<span class="title"><span class='d'>${description}</span></span>`
             : ""
         }
-            ${img ? `<img src="${img}" alt="${option.description}">` : ""}
+            ${
+              img
+                ? `<img src="${assets}img/properties/${img}.svg" alt="${option.description}">`
+                : ""
+            }
       </div>`;
     });
     material_params.innerHTML = html.join("");
@@ -164,6 +169,11 @@ export default function createProductData(section) {
   const createMaterials = (materials) => {
     wrapper_materials.innerHTML = "";
 
+    if (!materials?.length) {
+      wrapper_materials.parentElement.remove();
+      return;
+    }
+
     const html = materials.map((material) => {
       const img = material.image.url;
       const name = material.name;
@@ -180,6 +190,12 @@ export default function createProductData(section) {
   };
   const createColors = (colors) => {
     wrapper_colors.innerHTML = "";
+
+    if (!colors?.length) {
+      wrapper_colors.parentElement.remove();
+      return;
+    }
+
     const html = colors.map((color) => {
       const img = color.image;
       const name = color.name;
@@ -193,8 +209,13 @@ export default function createProductData(section) {
   };
 
   const createSizes = (sizes) => {
-    console.log("sizes", sizes);
     wrapper_sizes.innerHTML = "";
+
+    if (!sizes?.length) {
+      wrapper_sizes.parentElement.remove();
+      return;
+    }
+
     const html = sizes.map((size) => {
       const id = size.id;
       const name = id.toUpperCase();
@@ -215,11 +236,18 @@ export default function createProductData(section) {
       const sert = s.sertyfikat_details;
       const id = sert.id;
       const name = sert.name;
+      const image = s.image;
+      const src = image?.src || image?.thumb_src || image?.full_src || "";
 
       return `<div class="size ${
         selectedData.sertyfikat == id ? " active" : ""
       }" ${_SERT}="${id}"  title="${name} грн">
-        ${name}
+        <div class='icon'>
+          <img src="${src}" alt="${image.alt}" srcset="${
+        image.srcset
+      }" sizes="${image.sizes}" >
+        </div>
+       <p>${name}</p>
       </div>`;
     });
     wrapper_sertyfikat.innerHTML = html.join("");
@@ -228,10 +256,32 @@ export default function createProductData(section) {
   const showVariatorPrice = (boo, variation) => {
     if (boo) {
       if (!variation) return;
+
+      const discount_percent = variation?.discount_percent || 0;
+      const display_price = variation?.display_price || 0;
+      const display_regular_price = variation?.display_regular_price || 0;
+
+      const price_html = `<span class='price'>${display_price} <span class='currency'>грн</span></span>`;
+      const percent_html = discount_percent
+        ? `<span class="percent">-${discount_percent}%</span>`
+        : "";
+      const regular_price_html = discount_percent
+        ? `<span class='regular'>${display_regular_price} грн</span>`
+        : "";
+      const saving_price_html = discount_percent
+        ? `<span class='saving'>Економія ${
+            display_regular_price - display_price
+          } ₴</span>`
+        : "";
+
       input_variation_id.value = variation.variation_id;
       input_product_id.value = variation.variation_id;
       ajaxButton.disabled = false;
-      wrapper_price.innerHTML = `<span class='price'>${variation.display_price} </span><span class='currency'>грн</span>`;
+      wrapper_price.innerHTML = `${price_html} ${
+        percent_html
+          ? `<div class='info'>${percent_html} ${regular_price_html} ${saving_price_html} </div>`
+          : ""
+      }`;
       selectedVariation = variation;
     } else {
       input_variation_id.value = "";
@@ -492,9 +542,9 @@ export default function createProductData(section) {
     );
 
     const formData = new FormData(form);
+    const parent = ajaxButton.parentElement;
 
-    ajaxButton.disabled = true;
-
+    parent.classList.add("loading");
     // Відправляємо AJAX-запит
     fetch(ajaxUrl, {
       method: "POST",
@@ -507,7 +557,7 @@ export default function createProductData(section) {
           : selected.sertyfikat_details.name + " грн";
         const material = isProduct ? selected.material_details.name : "";
         onAdded && onAdded(`${product_name} - ${name}, ${material}`);
-        ajaxButton.disabled = false;
+        parent.classList.remove("loading");
 
         if (data && data.fragments) {
           $.each(data.fragments, function (key, value) {
@@ -516,8 +566,7 @@ export default function createProductData(section) {
         }
       })
       .catch((error) => {
-        ajaxButton.disabled = false;
-
+        parent.classList.remove("loading");
         console.error("Request failed:", error);
       });
   };
@@ -532,6 +581,10 @@ export default function createProductData(section) {
       );
       variation && (selectedData.sertyfikat = variation.sertyfikat_details.id);
       // showVariatorPrice(selectedData.sertyfikat, variation);
+    } else {
+      const defaultVariation = variations.find((v) => v?.is_default);
+      defaultVariation &&
+        (selectedData.sertyfikat = defaultVariation.sertyfikat_details.id);
     }
   };
 
