@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Order Item Details
  *
@@ -15,54 +16,57 @@
  * @version 5.2.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (! defined('ABSPATH')) {
+  exit;
 }
 
-if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
-	return;
+if (! apply_filters('woocommerce_order_item_visible', true, $item)) {
+  return;
 }
 ?>
-<tr class="<?php echo esc_attr( apply_filters( 'woocommerce_order_item_class', 'woocommerce-table__line-item order_item', $item, $order ) ); ?>">
+<div class="product">
 
-	<td class="woocommerce-table__product-name product-name">
-		<?php
-		$is_visible        = $product && $product->is_visible();
-		$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $item ) : '', $item, $order );
+  <div class="wrapper">
+    <?php
+    $is_visible        = $product && $product->is_visible();
+    $product_permalink = apply_filters('woocommerce_order_item_permalink', $is_visible ? $product->get_permalink($item) : '', $item, $order);
+    $thumbnail         = apply_filters('woocommerce_cart_item_thumbnail', $product->get_image());
+    $qty          = $item->get_quantity();
 
-		echo wp_kses_post( apply_filters( 'woocommerce_order_item_name', $product_permalink ? sprintf( '<a href="%s">%s</a>', $product_permalink, $item->get_name() ) : $item->get_name(), $item, $is_visible ) );
 
-		$qty          = $item->get_quantity();
-		$refunded_qty = $order->get_qty_refunded_for_item( $item_id );
+    echo '<a class="product_img" href="' . esc_url($product_permalink) . '">'
+      . $thumbnail
+      . apply_filters('woocommerce_order_item_quantity_html', '<div class="product-quantity">' . esc_html($qty) . '</div>', $item)
+      . '</a>';
+    echo '<div class="product_info">';
+    echo wp_kses_post(apply_filters('woocommerce_order_item_name', $product_permalink ? sprintf('<a href="%s">%s</a>', $product_permalink, $item->get_name()) : $item->get_name(), $item, $is_visible));
 
-		if ( $refunded_qty ) {
-			$qty_display = '<del>' . esc_html( $qty ) . '</del> <ins>' . esc_html( $qty - ( $refunded_qty * -1 ) ) . '</ins>';
-		} else {
-			$qty_display = esc_html( $qty );
-		}
 
-		echo apply_filters( 'woocommerce_order_item_quantity_html', ' <strong class="product-quantity">' . sprintf( '&times;&nbsp;%s', $qty_display ) . '</strong>', $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-		do_action( 'woocommerce_order_item_meta_start', $item_id, $item, $order, false );
+    do_action('woocommerce_order_item_meta_start', $item_id, $item, $order, false);
 
-		wc_display_item_meta( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    wc_display_item_meta($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-		do_action( 'woocommerce_order_item_meta_end', $item_id, $item, $order, false );
-		?>
-	</td>
+    do_action('woocommerce_order_item_meta_end', $item_id, $item, $order, false);
+    echo '</div>';
+    ?>
 
-	<td class="woocommerce-table__product-total product-total">
-		<?php echo $order->get_formatted_line_subtotal( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-	</td>
+  </div>
 
-</tr>
+  <div class="price">
+    <?php echo $order->get_formatted_line_subtotal($item); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    ?>
+  </div>
 
-<?php if ( $show_purchase_note && $purchase_note ) : ?>
+</div>
 
-<tr class="woocommerce-table__product-purchase-note product-purchase-note">
+<?php if ($show_purchase_note && $purchase_note) : ?>
 
-	<td colspan="2"><?php echo wpautop( do_shortcode( wp_kses_post( $purchase_note ) ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
+  <div class="woocommerce-table__product-purchase-note product-purchase-note">
 
-</tr>
+    <div colspan="2"><?php echo wpautop(do_shortcode(wp_kses_post($purchase_note))); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                      ?></div>
+
+  </div>
 
 <?php endif; ?>

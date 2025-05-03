@@ -1,18 +1,17 @@
 <?php if (have_posts()) :
 
-  // if ( WC()->cart && ! WC()->cart->is_empty() ) {
-  //   echo 'У кошику є продукти.';
-  // } else {
-  //   echo 'Кошик порожній.';
-  // }
+  $pageClass = '';
+  if (is_wc_endpoint_url('order-received')) {
+    $pageClass = 'page-order-received';
+  } elseif (is_checkout() || is_cart()) {
+    $pageClass = 'page-custom';
+  };
 
   while (have_posts()) : the_post();
     $content = get_the_content();
     if (trim($content)) : ?>
-      <section class="single-page <?php echo (is_checkout() || is_cart()) ? 'page-custom' : ''  ?>" data-page>
+      <section class="single-page <?php echo $pageClass  ?>" data-page>
         <div class="container">
-
-          <!-- <h1 class="roboto-48">?php the_title(); ?></h1> -->
 
           <div class="content"><?php the_content(); ?></div>
 
