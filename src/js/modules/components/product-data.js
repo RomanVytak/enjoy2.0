@@ -365,7 +365,9 @@ export default function createProductData() {
         });
       }
       if (variants) {
-        data_vars.push(variants);
+        if (!data_vars.some((m) => m?.id === variants?.id)) {
+          data_vars.push(variants);
+        }
       }
     });
 
