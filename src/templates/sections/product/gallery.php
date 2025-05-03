@@ -67,6 +67,34 @@
           $html = get_custom_image_html($post_thumbnail_id, true);
           echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
           do_action('woocommerce_product_thumbnails');
+
+          
+          // Якщо це варіативний товар, додаємо зображення варіантів
+          if ($product && $product->is_type('variable')) {
+            $available_variations = $product->get_children(); // Отримує всі варіанти
+
+            foreach ($available_variations as $variation_id) {
+                $variation = wc_get_product($variation_id);
+
+                // Отримуємо ID зображення варіації
+                $variation_image_id = $variation->get_image_id();
+
+                // Перевіряємо, чи задане головне зображення
+                if ($variation_image_id && wp_attachment_is_image($variation_image_id) && $post_thumbnail_id!=$variation_image_id) {
+                    $img_attrs = array(
+                        'data-id' => $variation_id,
+                        // 'class' => 'custom-image-class', // за потреби
+                    );
+
+                    $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
+
+                    echo '<div class="swiper-slide image obj-cover">';
+                    echo $variation_image_html;
+                    echo '</div>';
+                }
+            }
+          }
+
           ?>
         </div>
 
@@ -86,6 +114,27 @@
           $html = get_custom_image_html($post_thumbnail_id, true);
           echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
           do_action('woocommerce_product_thumbnails');
+
+          foreach ($available_variations as $variation_id) {
+            $variation = wc_get_product($variation_id);
+
+            // Отримуємо ID зображення варіації
+            $variation_image_id = $variation->get_image_id();
+
+            // Перевіряємо, чи задане головне зображення
+            if ($variation_image_id && wp_attachment_is_image($variation_image_id) && $post_thumbnail_id!=$variation_image_id) {
+                $img_attrs = array(
+                    'data-id' => $variation_id,
+                    // 'class' => 'custom-image-class', // за потреби
+                );
+
+                $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
+
+                echo '<div class="swiper-slide image obj-cover">';
+                echo $variation_image_html;
+                echo '</div>';
+            }
+        }
           ?>
         </div>
       </div>
