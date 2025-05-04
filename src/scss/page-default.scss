@@ -1078,6 +1078,7 @@ section.page-order-received {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
+          gap: 16px;
 
           &-data {
             color: #4c5c66;
@@ -1085,6 +1086,7 @@ section.page-order-received {
           &-value {
             @include use-font(var(--roboto-m), min-max(16, 20), 500, 140%);
             color: #001b2e;
+            text-align: right;
           }
         }
       }
@@ -1123,6 +1125,7 @@ section.page-order-received {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
+            gap: 16px;
 
             .label {
               color: #4c5c66;
@@ -1130,6 +1133,7 @@ section.page-order-received {
             .value {
               @include use-font(var(--roboto-m), min-max(14, 16), 500, 140%);
               color: #001b2e;
+              text-align: right;
             }
 
             &.order_total {
