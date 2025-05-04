@@ -51,7 +51,7 @@ const thumbsGallarySlider = () => {
       },
     },
   });
-  new Swiper(lg, {
+ const swiper_LG =  new Swiper(lg, {
     spaceBetween: 10,
     modules: [Thumbs],
     thumbs: { swiper },
@@ -60,6 +60,9 @@ const thumbsGallarySlider = () => {
       prevEl: prev,
     },
   });
+
+
+  window.thumbsSlider = swiper_LG;
 };
 
 const pinBuyButton = () => {

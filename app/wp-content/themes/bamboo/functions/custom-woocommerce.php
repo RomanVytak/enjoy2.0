@@ -71,7 +71,7 @@ function get_custom_image_html($attachment_id, $main_image = false)
 {
 
   if (empty($attachment_id)) {
-    return '<div class="swiper-slide image cover">' . wc_placeholder_img() . '</div>';
+    return '<div class="swiper-slide image obj-cover">' . wc_placeholder_img() . '</div>';
   }
   $flexslider        = (bool) apply_filters('woocommerce_single_product_flexslider_enabled', get_theme_support('wc-product-gallery-slider'));
   $gallery_thumbnail = wc_get_image_size('gallery_thumbnail');
@@ -765,7 +765,7 @@ function new_mail_from_name($old)
 /* Hide links from admin menu */
 function remove_menus()
 {
-  //remove_menu_page( 'edit.php' ); 
+  //remove_menu_page( 'edit.php' );
   remove_menu_page('edit-comments.php');
 }
 add_action('admin_menu', 'remove_menus');

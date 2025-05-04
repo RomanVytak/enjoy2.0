@@ -68,7 +68,7 @@
           echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
           do_action('woocommerce_product_thumbnails');
 
-          
+
           // Якщо це варіативний товар, додаємо зображення варіантів
           if ($product && $product->is_type('variable')) {
             $available_variations = $product->get_children(); // Отримує всі варіанти
@@ -88,7 +88,7 @@
 
                     $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
 
-                    echo '<div class="swiper-slide image obj-cover">';
+                    echo '<div class="swiper-slide image obj-cover" data-id="' . $variation_id . '">';
                     echo $variation_image_html;
                     echo '</div>';
                 }
@@ -130,7 +130,7 @@
 
                 $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
 
-                echo '<div class="swiper-slide image obj-cover">';
+                echo '<div class="swiper-slide image obj-cover" data-id="' . $variation_id . '">';
                 echo $variation_image_html;
                 echo '</div>';
             }

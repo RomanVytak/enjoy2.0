@@ -260,6 +260,8 @@ export default function createProductData() {
     if (boo) {
       if (!variation) return;
 
+      const var_id = variation.variation_id;
+
       const discount_percent = variation?.discount_percent || 0;
       const display_price = variation?.display_price || 0;
       const display_regular_price = variation?.display_regular_price || 0;
@@ -277,8 +279,8 @@ export default function createProductData() {
           } ₴</span>`
         : "";
 
-      input_variation_id.value = variation.variation_id;
-      input_product_id.value = variation.variation_id;
+      input_variation_id.value = var_id;
+      input_product_id.value = var_id;
       ajaxButton.disabled = false;
       wrapper_price.innerHTML = `${price_html} ${
         percent_html
@@ -286,6 +288,7 @@ export default function createProductData() {
           : ""
       }`;
       selectedVariation = variation;
+      slideGallerySliderToVarID(var_id);
     } else {
       input_variation_id.value = "";
       input_product_id.value = "";
@@ -526,7 +529,6 @@ export default function createProductData() {
           break;
       }
     });
-
     updateProductData();
   };
 
@@ -555,7 +557,8 @@ export default function createProductData() {
         } else if (selected?.variants_details?.name) {
           description = selected?.variants_details?.name;
         }
-        onAdded && onAdded(`${product_name}${description ? ` - ${description}` : ""}`);
+        onAdded &&
+          onAdded(`${product_name}${description ? ` - ${description}` : ""}`);
         parent.classList.remove("loading");
 
         if (data && data.fragments) {
@@ -574,13 +577,13 @@ export default function createProductData() {
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("attribute_pa_variants");
 
-    console.log('value', value);
+    console.log("value", value);
     if (value) {
       const variation = [...variations].find(
         (f) => f?.variants_details?.slug == value
       );
       variation && (defaultVariation = variation);
-      console.log('variation', variation);
+      console.log("variation", variation);
     }
   };
 
@@ -659,4 +662,12 @@ function onAddedToCart() {
   };
 
   return onAdded;
+}
+
+function slideGallerySliderToVarID(var_id) {
+  const slider = window.thumbsSlider;
+  if (!slider || !var_id) return;
+  const slides = [...slider.slides];
+  const slideIndex = slides.findIndex((s) => s.dataset?.id == var_id);
+  slideIndex > -1 && slider.slideTo(slideIndex);
 }
