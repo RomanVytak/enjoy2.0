@@ -61,7 +61,6 @@ export default function createProductData() {
   const videoWrapper = videoPopUp.querySelector("[data-video]");
 
   console.log(variations);
-  console.log('createProductData');
 
   const product_name = form.dataset.productName;
 
@@ -116,7 +115,6 @@ export default function createProductData() {
   form.removeAttribute("data-product_variations");
 
   const handleMaterialParams = (wrapper = material_params) => {
-    console.log('handleMaterialParams');
     const icons = wrapper.querySelectorAll(".param img");
     const texts = wrapper.querySelectorAll(".title");
 
@@ -140,7 +138,6 @@ export default function createProductData() {
   };
 
   const createMaterialParams = (material) => {
-    console.log('createMaterialParams');
     const assets = BAMBOO.assets;
     if (!material || !material?.options) {
       material_params.classList.add("hidden");
@@ -168,7 +165,6 @@ export default function createProductData() {
     setTimeout(handleMaterialParams, 100);
   };
   const createMaterialInfo = (element) => {
-    console.log('createMaterialInfo');
     const title = element.title;
     const description = element.dataset.description;
 
@@ -196,7 +192,6 @@ export default function createProductData() {
     });
   };
   const createSizesParams = (size) => {
-    console.log('createSizesParams');
     const dimensions = size ? size?.dimensions : null;
     const description = size?.description;
 
@@ -224,7 +219,6 @@ export default function createProductData() {
   };
 
   const createMaterials = () => {
-    console.log('createMaterials');
     const materials = dataArrays.material;
     wrapper_materials.innerHTML = "";
 
@@ -248,7 +242,6 @@ export default function createProductData() {
     wrapper_materials.innerHTML = html.join("");
   };
   const createColors = () => {
-    console.log('createColors');
     const colors = dataArrays.color;
     wrapper_colors.innerHTML = "";
 
@@ -271,7 +264,6 @@ export default function createProductData() {
 
   const createSizes = () => {
 
-    console.log('createSizes');
     const sizes = dataArrays.size;
     wrapper_sizes.innerHTML = "";
 
@@ -295,7 +287,6 @@ export default function createProductData() {
     wrapper_sizes.innerHTML = html.join("");
   };
   const createVarians = () => {
-    console.log('createVarians');
     const variants = dataArrays.variant;
     wrapper_variants.innerHTML = "";
 
@@ -324,7 +315,6 @@ export default function createProductData() {
   };
 
   const showVariatorPrice = (boo, variation) => {
-    console.log('showVariatorPrice');
     if (boo) {
       if (!variation) return;
 
@@ -367,7 +357,6 @@ export default function createProductData() {
   };
 
   const NEW_getElementsByAttr = (attr) => {
-    console.log('NEW_getElementsByAttr');
     const elements = wrapper.querySelectorAll(`[${attr}]`);
     htmlElements[attr] = elements;
 
@@ -405,7 +394,6 @@ export default function createProductData() {
   };
 
   const NEW_createHTMLData = () => {
-    console.log('NEW_createHTMLData');
     let filteredVariations = [...variations];
 
     filteredVariations.forEach((variation) => {
@@ -437,7 +425,6 @@ export default function createProductData() {
   };
 
   const NEW_updateFilteredVar = (filtered) => {
-    console.log('NEW_updateFilteredVar');
     let data_colors = [];
     let data_sizes = [];
     let data_materials = [];
@@ -495,7 +482,6 @@ export default function createProductData() {
   };
 
   const updateProductData = () => {
-    console.log('updateProductData');
     let filteredVariations = [...variations];
 
     filteredVariations = filterData(filteredVariations, selectedData);
@@ -516,13 +502,11 @@ export default function createProductData() {
   };
 
   const handleSelectData = (e) => {
-    console.log('handleSelectData');
     const element = e.target;
     const arr = [_SIZE, _MATERIAL, _COLOR, _SERT];
 
     const hasAnyAttribute = arr.some(attr => element.hasAttribute(attr));
     if (!hasAnyAttribute) return
-    console.log('hasAnyAttribute', hasAnyAttribute);
 
     arr.forEach((attr) => {
       const value = element.hasAttribute(attr)
@@ -568,7 +552,6 @@ export default function createProductData() {
   };
 
   const handleAddToCart = () => {
-    console.log('handleAddToCart');
     // URL WooCommerce для AJAX-запиту
     const selected = selectedVariation;
     const ajaxUrl = wc_add_to_cart_params.wc_ajax_url.replace(
@@ -610,7 +593,6 @@ export default function createProductData() {
   };
 
   const checkIsSelectedvariant = () => {
-    console.log('checkIsSelectedvariant');
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("attribute_pa_variants");
 
@@ -623,7 +605,6 @@ export default function createProductData() {
   };
 
   function handleTooltipHover(tooltip, icon) {
-    console.log('handleTooltipHover');
     tooltip.classList.remove("top", "bottom");
 
     const tooltipRect = tooltip.getBoundingClientRect();
@@ -639,7 +620,6 @@ export default function createProductData() {
   }
 
   function showMaterialPopUp(material) {
-    console.log('showMaterialPopUp');
     const video = material?.video;
 
     if (activeMaterialID?.id !== material.id) {
@@ -657,7 +637,6 @@ export default function createProductData() {
     handlePopUp.open(imgPopUp);
   }
   function showVideoPopUp(e) {
-    console.log('showVideoPopUp');
     const videoUrl = e.target.dataset.playVideo;
     if (!videoUrl) return;
     const id = e.target.dataset.id;
@@ -736,7 +715,6 @@ function onAddedToCart() {
 }
 
 function slideGallerySliderToVarID(var_id) {
-  console.log("slideGallerySliderToVarID");
   const slider = window.thumbsSlider;
   if (!slider || !var_id) return;
   const slides = [...slider.slides];
@@ -745,7 +723,6 @@ function slideGallerySliderToVarID(var_id) {
 }
 
 function filterData(data, selectedData) {
-  console.log('filterData');
   const strategies = {
     color: (variation, key) => {
       const colors = Object.values(variation.material_colors || {});
@@ -763,13 +740,11 @@ function filterData(data, selectedData) {
 }
 
 function getMaterials(array, data) {
-  console.log('getMaterials');
   if (!array.some((m) => m?.id === data.id)) {
     array.push(data);
   }
 }
 function getSizes(array, data, variation) {
-  console.log('getSizes');
   if (!array.some((m) => m?.id === data)) {
     const obj = {
       id: data,
@@ -780,7 +755,6 @@ function getSizes(array, data, variation) {
   }
 }
 function getColors(array, colors) {
-  console.log('getColors');
   colors.forEach((color) => {
     if (!array.some((c) => c?.id === color.id)) {
       array.push(color);
@@ -788,7 +762,6 @@ function getColors(array, colors) {
   });
 }
 function getVars(array, data) {
-  console.log('getVars');
   if (!array.some((m) => m?.id === data?.id)) {
     array.push(data);
   }
