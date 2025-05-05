@@ -50,13 +50,20 @@ export default function createProductData() {
 
   let defaultVariation = [...variations].find((v) => v?.is_default);
 
-  const selectedData = { color: null, size: null, material: null };
+  const selectedData = {
+    color: null,
+    size: null,
+    material: null,
+    variant: null,
+  };
   const htmlElements = {};
+  const dataArrays = {
+    color: [],
+    size: [],
+    material: [],
+    variant: [],
+  };
 
-  let data_colors = [];
-  let data_sizes = [];
-  let data_materials = [];
-  let data_vars = [];
   let selectedVariation = null;
 
   form.removeAttribute("data-product_variations");
@@ -165,7 +172,8 @@ export default function createProductData() {
     size_params.innerHTML = html.join("");
   };
 
-  const createMaterials = (materials) => {
+  const createMaterials = () => {
+    const materials = dataArrays.material;
     wrapper_materials.innerHTML = "";
 
     if (!materials?.length) {
@@ -187,7 +195,8 @@ export default function createProductData() {
     });
     wrapper_materials.innerHTML = html.join("");
   };
-  const createColors = (colors) => {
+  const createColors = () => {
+    const colors = dataArrays.color;
     wrapper_colors.innerHTML = "";
 
     if (!colors?.length) {
@@ -207,7 +216,8 @@ export default function createProductData() {
     wrapper_colors.innerHTML = html.join("");
   };
 
-  const createSizes = (sizes) => {
+  const createSizes = () => {
+    const sizes = dataArrays.size;
     wrapper_sizes.innerHTML = "";
 
     if (!sizes?.length) {
@@ -229,7 +239,8 @@ export default function createProductData() {
     });
     wrapper_sizes.innerHTML = html.join("");
   };
-  const createVarians = (variants) => {
+  const createVarians = () => {
+    const variants = dataArrays.variant;
     wrapper_variants.innerHTML = "";
 
     if (!variants?.length) {
@@ -345,40 +356,23 @@ export default function createProductData() {
       const variants = variation?.variants_details;
 
       if (material) {
-        if (!data_materials.some((m) => m?.id === material.id)) {
-          material.options = variation?.material_options ?? null;
-          data_materials.push(material);
-        }
+        getMaterials(dataArrays.material, material);
       }
       if (size) {
-        if (!data_sizes.some((m) => m?.id === size)) {
-          const data = {
-            id: size,
-            dimensions: variation?.dimensions ?? null,
-            description: variation?.dimensions_description ?? null,
-          };
-          data_sizes.push(data);
-        }
+        getSizes(dataArrays.size, size, variation);
       }
       if (colors.length) {
-        colors.forEach((color) => {
-          if (!data_colors.some((c) => c?.id === color.id)) {
-            data_colors.push(color);
-          }
-        });
+        getColors(dataArrays.color, colors);
       }
       if (variants) {
-        if (!data_vars.some((m) => m?.id === variants?.id)) {
-          data_vars.push(variants);
-        }
+        getVars(dataArrays.variant, variants);
       }
     });
 
-    wrapper_materials && createMaterials(data_materials);
-    wrapper_colors && createColors(data_colors);
-    wrapper_sizes && createSizes(data_sizes);
-
-    wrapper_variants && createVarians(data_vars);
+    wrapper_materials && createMaterials();
+    wrapper_colors && createColors();
+    wrapper_sizes && createSizes();
+    wrapper_variants && createVarians();
 
     [_MATERIAL, _COLOR, _SIZE, _SERT].forEach(NEW_getElementsByAttr);
   };
@@ -400,30 +394,17 @@ export default function createProductData() {
       const variants = variation?.variants_details;
 
       if (variants) {
-        data_vars.push(variants);
+        getVars(data_vars, variants);
       }
 
       if (material) {
-        if (!data_materials.some((m) => m?.id === material.id)) {
-          material.options = variation?.material_options ?? null;
-          data_materials.push(material);
-        }
+        getMaterials(data_materials, material, variation);
       }
       if (size) {
-        if (!data_sizes.some((m) => m?.id === size)) {
-          const data = {
-            id: size,
-            dimensions: variation?.dimensions ?? null,
-          };
-          data_sizes.push(data);
-        }
+        getSizes(data_sizes, size, variation);
       }
       if (colors.length) {
-        colors.forEach((color) => {
-          if (!data_colors.some((c) => c?.id === color.id)) {
-            data_colors.push(color);
-          }
-        });
+        getColors(data_colors, colors);
       }
     });
 
@@ -456,36 +437,19 @@ export default function createProductData() {
   const updateProductData = () => {
     let filteredVariations = [...variations];
 
-    // filter variations by color
-    if (selectedData.color) {
-      filteredVariations = filteredVariations.filter((variation) => {
-        const colors = Object.values(variation.material_colors);
-        return colors.some((color) => color.id == selectedData.color);
-      });
-    }
+    filteredVariations = filterData(filteredVariations, selectedData);
 
-    // filter variations by size
-    if (selectedData.size) {
-      filteredVariations = filteredVariations.filter(
-        (variation) =>
-          variation.attributes.attribute_pa_rozmiry == selectedData.size
-      );
-    }
+    // check if all selected data is valid
+    const options = Object.entries(dataArrays);
 
-    // filter variations by material
-    if (selectedData.material) {
-      filteredVariations = filteredVariations.filter(
-        (variation) => variation.material_details.id == selectedData.material
-      );
-    }
+    const isValid = options.every(
+      (opt) => !opt[1].length || selectedData[opt[0]]
+    );
 
-    // filter variations by variant
-    if (selectedData.variant) {
-      filteredVariations = filteredVariations.filter(
-        (variation) => variation?.variants_details?.id == selectedData.variant
-      );
-    }
-    showVariatorPrice(filteredVariations.length == 1, filteredVariations[0]);
+    showVariatorPrice(
+      isValid && filteredVariations.length == 1,
+      filteredVariations[0]
+    );
 
     NEW_updateFilteredVar(filteredVariations);
   };
@@ -507,7 +471,7 @@ export default function createProductData() {
           selectedData.size = isActive ? null : value;
           input_size.value = isActive ? "" : value;
           createSizesParams(
-            !isActive ? data_sizes.find((m) => m.id == value) : null
+            !isActive ? dataArrays.size.find((m) => m.id == value) : null
           );
           break;
         case _MATERIAL:
@@ -515,7 +479,7 @@ export default function createProductData() {
           createMaterialInfo(isActive, element);
           input_material.value = isActive ? "" : value;
           createMaterialParams(
-            !isActive ? data_materials.find((m) => m.id == value) : null
+            !isActive ? dataArrays.material.find((m) => m.id == value) : null
           );
           break;
         case _COLOR:
@@ -577,7 +541,6 @@ export default function createProductData() {
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("attribute_pa_variants");
 
-    console.log("value", value);
     if (value) {
       const variation = [...variations].find(
         (f) => f?.variants_details?.slug == value
@@ -670,4 +633,50 @@ function slideGallerySliderToVarID(var_id) {
   const slides = [...slider.slides];
   const slideIndex = slides.findIndex((s) => s.dataset?.id == var_id);
   slideIndex > -1 && slider.slideTo(slideIndex);
+}
+
+function filterData(data, selectedData) {
+  const strategies = {
+    color: (variation, key) => {
+      const colors = Object.values(variation.material_colors || {});
+      return colors.some((color) => color.id == key);
+    },
+    size: (variation, key) => variation.attributes?.attribute_pa_rozmiry == key,
+    material: (variation, key) => variation.material_details?.id == key,
+    variant: (variation, key) => variation.variants_details?.id == key,
+  };
+
+  return Object.entries(selectedData).reduce((filtered, [type, key]) => {
+    const fn = strategies[type];
+    return fn && key ? filtered.filter((v) => fn(v, key)) : filtered;
+  }, data);
+}
+
+function getMaterials(array, data, variation) {
+  if (!array.some((m) => m?.id === data.id)) {
+    data.options = variation?.material_options ?? null;
+    array.push(data);
+  }
+}
+function getSizes(array, data, variation) {
+  if (!array.some((m) => m?.id === data)) {
+    const obj = {
+      id: data,
+      dimensions: variation?.dimensions ?? null,
+      description: variation?.dimensions_description ?? null,
+    };
+    array.push(obj);
+  }
+}
+function getColors(array, colors) {
+  colors.forEach((color) => {
+    if (!array.some((c) => c?.id === color.id)) {
+      array.push(color);
+    }
+  });
+}
+function getVars(array, data) {
+  if (!array.some((m) => m?.id === data?.id)) {
+    array.push(data);
+  }
 }
