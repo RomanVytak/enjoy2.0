@@ -69,13 +69,14 @@ const pinBuyButton = () => {
   const form = pinWrapper.querySelector("[data-product-form-data]");
   const pin = form.querySelector(".custom-woo-data");
   let sto = null;
+  console.log('pinBuyButton');
 
   const refresh = () => {
     sto && clearTimeout(sto);
     sto = setTimeout(() => {
       form.style.minHeight = `${pin.offsetHeight}px`;
       pin.style.maxWidth = `${form.offsetWidth}px`;
-
+      console.log('refresh');
       setTimeout(() => pinned.refresh(), 100);
     }, 100);
   };
@@ -86,6 +87,7 @@ const pinBuyButton = () => {
     end: `bottom bottom`,
     // markers: true,
     onToggle: (self) => {
+      console.log('onToggle ScrollTrigger');
       pin.classList.toggle("pinned", self.isActive);
     },
   });

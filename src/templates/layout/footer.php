@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<?php if (have_posts()) {  ?>
+<?php if (is_product()) {  ?>
   <div class="pop-up full-img" data-img-popup>
     <div class="back-close" data-popup-close></div>
     <div class="overflow" data-scroller>
@@ -43,11 +43,7 @@
     <div class="overflow" data-scroller>
       <div class="popup-content">
         <button class="close icon_close" data-popup-close></button>
-        <div class="pop-up-video" data-video>
-          <video controls autoplay playsinline>
-            <source src="http://enjoy.loc/wp-content/uploads/2025/04/314-1-1.jpg" type="video/mp4">
-          </video>
-        </div>
+        <div class="pop-up-video" data-video></div>
       </div>
     </div>
   </div>
