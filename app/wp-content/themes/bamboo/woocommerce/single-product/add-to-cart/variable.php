@@ -45,7 +45,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
         <div class="params flex-v">
           <p class="roboto-16-sb params-title wrapper-name">Переваги Матеріалу</p>
-          <div class="params-params flex-h hidden" data-material-params>
+          <div class="params-params flex-h material-params-wrapper hidden" data-material-params>
             <div class="param">
             </div>
           </div>

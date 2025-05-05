@@ -1,0 +1,143 @@
+.pop-up {
+  align-items: center;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  transition:
+    opacity var(--transition),
+    transform var(--transition);
+  z-index: 1000;
+
+  .back-close {
+    position: absolute;
+    inset: 0;
+    background-color: #252424a8;
+  }
+  .overflow {
+    @include no-scrollbar;
+    overflow-y: scroll;
+    max-height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .popup-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: min-max(16, 24);
+  }
+
+  .close {
+    position: absolute;
+    width: min-max(20, 24);
+    aspect-ratio: 1;
+    top: min-max(16, 30);
+    right: min-max(16, 30);
+    z-index: 1;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: none;
+  }
+
+  &.full-img {
+    .overflow {
+      padding: min-max(60, 100) 14px;
+    }
+    .popup-content {
+      width: 100%;
+      max-width: min-max(900, 1300);
+      padding: min-max(60, 80) min-max(24, 80);
+      background: white;
+
+      .pop-up-img {
+        display: flex;
+        position: relative;
+
+        &.with-video {
+          .item-play {
+            display: flex;
+          }
+        }
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+
+      @include mq-max-768 {
+        justify-content: center;
+        padding: 16px;
+      }
+    }
+
+    .item-play {
+      position: absolute;
+      inset: 0;
+      display: none;
+
+      .icon {
+        opacity: 0.8;
+        transform: scale(0.8);
+        pointer-events: none;
+      }
+      @include on-hover {
+        .icon {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+  &.full-video {
+    .popup-content {
+      width: 100%;
+      max-width: min-max(800, 1100);
+      overflow: hidden;
+
+      video {
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+      }
+    }
+  }
+
+  .material-params-wrapper {
+    position: absolute;
+    z-index: 1;
+    left: min-max(16, 24);
+    top: min-max(16, 24);
+    .param {
+      border-radius: 50%;
+      background: var(--white);
+    }
+  }
+
+  @include mq-max-768 {
+    .back-close {
+      background: transparent;
+    }
+    .overflow {
+      padding: 0 !important;
+      height: 100%;
+      background: var(--white);
+      align-items: center;
+    }
+    .popup-content {
+      position: initial;
+      padding: 16px;
+    }
+  }
+}

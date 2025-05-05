@@ -2,6 +2,7 @@ const _SIZE = "data-size";
 const _MATERIAL = "data-material";
 const _COLOR = "data-color";
 const _SERT = "data-vars";
+let activePopup = null;
 
 const _SIZES = {
   height: "Висота %% см",
@@ -10,11 +11,53 @@ const _SIZES = {
   volume: "Об'єм %% л",
 };
 
+function onEscPress(e) {
+  if (e.key === "Escape") {
+    handlePopUp.close();
+  }
+}
+function onDocClick(e) {
+  const target = e.target;
+  const isCloseElement = target.dataset.popupClose;
+
+  (isCloseElement || isCloseElement !== undefined) && handlePopUp.close();
+}
+
+const handlePopUp = {
+  open: (object) => {
+    const open = () => {
+      let popup = object;
+      const scroller = popup.querySelector("[data-scroller]");
+      activePopup = popup;
+      popup.classList.add("active");
+      scroller && scroller.scrollTo(0, 0);
+
+      document.addEventListener("keydown", onEscPress);
+      document.addEventListener("click", onDocClick);
+    };
+    handlePopUp.close();
+    open();
+  },
+  close: () => {
+    if (!activePopup) return;
+    activePopup.classList.remove("active");
+    document.removeEventListener("keydown", onEscPress);
+    document.removeEventListener("click", onDocClick);
+    activePopup && activePopup?.onClose?.();
+    activePopup = null;
+  },
+};
+
 export default function createProductData() {
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
   const header = document.querySelector("header");
+
+  const imgPopUp = document.querySelector("[data-img-popup]");
+  const videoPopUp = document.querySelector("[data-video-popup]");
+  const imgWrapper = imgPopUp.querySelector("[data-img]");
+  const videoWrapper = videoPopUp.querySelector("[data-video]");
 
   console.log(variations);
 
@@ -65,36 +108,14 @@ export default function createProductData() {
   };
 
   let selectedVariation = null;
+  let activeMaterialID = {};
+  let activeVideo = null;
 
   form.removeAttribute("data-product_variations");
 
-  const createMaterialParams = (material) => {
-    const assets = BAMBOO.assets;
-    if (!material || !material?.options) {
-      material_params.classList.add("hidden");
-      return;
-    }
-    material_params.classList.remove("hidden");
-    const html = material.options.map((option) => {
-      const img = option.ico;
-      const description = option.description;
-      return `<div class="param">
-        ${
-          description
-            ? `<span class="title"><span class='d'>${description}</span></span>`
-            : ""
-        }
-            ${
-              img
-                ? `<img src="${assets}img/properties/${img}.svg" alt="${option.description}">`
-                : ""
-            }
-      </div>`;
-    });
-    material_params.innerHTML = html.join("");
-
-    const icons = material_params.querySelectorAll("img");
-    const texts = material_params.querySelectorAll(".title");
+  const handleMaterialParams = (wrapper = material_params) => {
+    const icons = wrapper.querySelectorAll(".param img");
+    const texts = wrapper.querySelectorAll(".title");
 
     icons.forEach((icon) => {
       const parent = icon.closest(".param");
@@ -114,11 +135,35 @@ export default function createProductData() {
       });
     });
   };
-  const createMaterialInfo = (isActive, element) => {
-    if (isActive) {
-      material_name.innerHTML = "";
+
+  const createMaterialParams = (material) => {
+    const assets = BAMBOO.assets;
+    if (!material || !material?.options) {
+      material_params.classList.add("hidden");
       return;
     }
+
+    material_params.classList.remove("hidden");
+    const html = material.options.map((option) => {
+      const img = option.ico;
+      const description = option.description;
+      return `<div class="param">
+        ${
+          description
+            ? `<span class="title"><span class='d'>${description}</span></span>`
+            : ""
+        }
+            ${
+              img
+                ? `<img src="${assets}img/properties/${img}.svg" alt="${option.description}">`
+                : ""
+            }
+      </div>`;
+    });
+    material_params.innerHTML = html.join("");
+    setTimeout(handleMaterialParams, 100);
+  };
+  const createMaterialInfo = (element) => {
     const title = element.title;
     const description = element.dataset.description;
 
@@ -182,15 +227,15 @@ export default function createProductData() {
     }
 
     const html = materials.map((material) => {
-      const img = material.image.url;
-      const name = material.name;
-      const description = material?.description ?? "";
-      const id = material.id;
+      const image_html = material.image_html;
 
+      const name = material.name;
+      const id = material.id;
+      const description = material?.description;
       return `<div class="material${
         selectedData.material == id ? " active" : ""
-      }" ${_MATERIAL}="${id}" title="${name}" data-description="${description}">
-        ${img ? `<img src="${img}" alt="${name}">` : ""}
+      }" ${_MATERIAL}="${id}" title="${name}"data-description="${description}"  >
+        ${image_html}
       </div>`;
     });
     wrapper_materials.innerHTML = html.join("");
@@ -475,12 +520,16 @@ export default function createProductData() {
           );
           break;
         case _MATERIAL:
-          selectedData.material = isActive ? null : value;
-          createMaterialInfo(isActive, element);
-          input_material.value = isActive ? "" : value;
-          createMaterialParams(
-            !isActive ? dataArrays.material.find((m) => m.id == value) : null
-          );
+          const material = dataArrays.material.find((m) => m.id == value);
+          if (isActive) {
+            showMaterialPopUp(material);
+            return;
+          }
+
+          selectedData.material = value;
+          createMaterialInfo(element);
+          input_material.value = value;
+          createMaterialParams(material);
           break;
         case _COLOR:
           selectedData.color = isActive ? null : value;
@@ -546,7 +595,6 @@ export default function createProductData() {
         (f) => f?.variants_details?.slug == value
       );
       variation && (defaultVariation = variation);
-      console.log("variation", variation);
     }
   };
 
@@ -565,8 +613,41 @@ export default function createProductData() {
     }
   }
 
+  function showMaterialPopUp(material) {
+    const video = material?.video;
+
+    if (activeMaterialID?.id !== material.id) {
+      const params = material_params.cloneNode(true);
+
+      activeMaterialID = material;
+      imgWrapper.innerHTML = `
+      <img src="${material.full_size}" alt="${material.name}">
+      <button class="item-play flex-c" data-play-video="${video}" data-id="${material.id}"><div class="icon icon_play"></div></button>
+      `;
+      imgWrapper.append(params);
+      handleMaterialParams(imgWrapper);
+    }
+    imgWrapper.classList.toggle("with-video", video);
+    handlePopUp.open(imgPopUp);
+  }
+  function showVideoPopUp(e) {
+    const videoUrl = e.target.dataset.playVideo;
+    if (!videoUrl) return;
+    const id = e.target.dataset.id;
+
+    if (activeVideo && activeMaterialID?.id == id) {
+      activeVideo.play();
+    } else {
+      videoWrapper.innerHTML = `<video controls autoplay playsinline><source src="${videoUrl}" type="video/mp4"></video>`;
+      setTimeout(() => (activeVideo = videoWrapper.querySelector("video")), 10);
+    }
+    handlePopUp.open(videoPopUp);
+  }
+
   wrapper.addEventListener("click", handleSelectData);
+  imgWrapper.addEventListener("click", showVideoPopUp);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);
+  videoPopUp.onClose = () => activeVideo?.pause();
   checkIsSelectedvariant();
   NEW_createHTMLData();
   updateProductData();
@@ -652,9 +733,8 @@ function filterData(data, selectedData) {
   }, data);
 }
 
-function getMaterials(array, data, variation) {
+function getMaterials(array, data) {
   if (!array.some((m) => m?.id === data.id)) {
-    data.options = variation?.material_options ?? null;
     array.push(data);
   }
 }

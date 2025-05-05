@@ -3,7 +3,6 @@
 @import "swiper/swiper.min.css";
 @import "./sections/builder";
 
-
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -159,7 +158,9 @@
     }
   }
 
-  .woocommerce-product-content {
+  .woocommerce-product-content,
+  .woocommerce-product-instruction,
+  .instruction-text {
     > * {
       margin-top: 1em;
 
@@ -387,24 +388,38 @@
             background: rgba(128, 128, 128, 0.279);
             transition: var(--transition);
 
-            &::before {
+            &::before,
+            &::after {
               content: "";
               position: absolute;
-              // inset: 0;
-              width: 100%;
-              height: 100%;
               top: 50%;
               left: 50%;
               transform: translate(-50%, -50%);
+              transition: var(--transition);
+              pointer-events: none;
+            }
+
+            &::before {
+              width: 100%;
+              height: 100%;
               border-radius: 50%;
               border: 2px solid transparent;
-              pointer-events: none;
-              transition: var(--transition);
+            }
+
+            &::after {
+              width: min-max(24, 32);
+              aspect-ratio: 1;
+              z-index: 1;
+              background: url("../img/play-2.svg") center/cover no-repeat;
+              opacity: 0;
             }
 
             @include on-hover {
               &::before {
                 border-color: var(--orange-2);
+              }
+              &::after {
+                transform: translate(-50%, -50%) scale(1.15);
               }
             }
 
@@ -412,6 +427,9 @@
               &::before {
                 border-color: var(--orange-2);
                 transform: translate(-50%, -50%) scale(1.15);
+              }
+              &::after {
+                opacity: 1;
               }
             }
 
@@ -440,152 +458,6 @@
           &:has(.hidden) {
             opacity: 0;
             pointer-events: none;
-          }
-
-          &-params {
-            display: flex;
-            gap: 8px;
-
-            .param {
-              display: flex;
-              width: min-max(28, 32);
-              aspect-ratio: 1;
-              position: relative;
-
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              }
-
-              @include mq-min-768 {
-                .title {
-                  position: absolute;
-                  left: 50%;
-
-                  font-size: min-max(12, 14);
-                  white-space: nowrap;
-                  display: flex;
-                  justify-content: center;
-                  min-width: min-max(180, 200);
-                  padding: min-max(8, 12) min-max(10, 20);
-                  background: rgba(35, 31, 32, 0.9);
-                  border-radius: min-max(4, 6);
-                  color: var(--white);
-                  opacity: 0;
-                  pointer-events: none;
-                  transition: opacity var(--transition);
-
-                  &::before {
-                    content: "";
-                    position: absolute;
-                    inset: -12px 0;
-                    z-index: -1;
-                  }
-
-                  &::after {
-                    content: "";
-                    position: absolute;
-                    left: 50%;
-                    width: 16px;
-                    height: 8px;
-                    background: rgba(35, 31, 32, 0.9);
-                  }
-
-                  &.top {
-                    bottom: 100%;
-                    transform: translate(-50%, -10px);
-
-                    &::before {
-                      top: 0;
-                    }
-
-                    &:after {
-                      top: 100%;
-                      transform: translate(-50%, -1px);
-                      clip-path: polygon(50% 100%, 0 0, 100% 0);
-                    }
-                  }
-                  &.bottom {
-                    top: 100%;
-                    transform: translate(-50%, 10px);
-                    &::before {
-                      bottom: 0;
-                    }
-
-                    &:after {
-                      bottom: 100%;
-                      transform: translate(-50%, 1px);
-                      clip-path: polygon(50% 0%, 0 100%, 100% 100%);
-                    }
-                  }
-                }
-
-                @include on-hover {
-                  .title {
-                    opacity: 1;
-                    pointer-events: all;
-                  }
-                }
-              }
-
-              @include mq-max-768 {
-                .title {
-                  font-size: min-max(16, 14);
-                  display: flex;
-                  justify-content: center;
-                  min-width: min-max(180, 200);
-                  border-radius: min-max(4, 6);
-                  opacity: 0;
-                  pointer-events: none;
-                  transition: opacity var(--transition);
-                  position: fixed;
-                  left: 0;
-                  right: 0;
-                  bottom: 0;
-                  z-index: 222;
-                  padding: min-max(16, 50);
-
-                  .d {
-                    background: white;
-                    position: relative;
-                    z-index: 1;
-                    padding: min-max(8, 12) min-max(10, 20);
-                    border-radius: 6px;
-                    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
-                  }
-
-                  &::before {
-                    content: "";
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    height: 110vh;
-                    background: rgb(0 0 0 / 30%);
-                  }
-
-                  &::after {
-                    content: "";
-                    position: absolute;
-                    bottom: 100%;
-                    left: 50%;
-                    transform: translate(-50%, 8px);
-                    width: 30px;
-                    aspect-ratio: 1;
-                    background: white url("../img/close.svg") center/16px no-repeat;
-                    border-radius: 50%;
-                  }
-                }
-
-                &.active {
-                  .title {
-                    opacity: 1;
-                    pointer-events: all;
-                  }
-                }
-              }
-            }
           }
 
           @include mq-max-1024 {
@@ -1055,7 +927,7 @@
 
           .currency {
             @include roboto-16;
-            font-size: min-max(28,38);
+            font-size: min-max(28, 38);
           }
 
           .info {
@@ -1267,6 +1139,154 @@ section.details {
 
       &:nth-child(2n) {
         width: 40%;
+      }
+    }
+  }
+}
+
+
+
+.material-params-wrapper {
+  display: flex;
+  gap: 8px;
+
+  .param {
+    display: flex;
+    width: min-max(28, 32);
+    aspect-ratio: 1;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @include mq-min-768 {
+      .title {
+        position: absolute;
+        left: 50%;
+
+        font-size: min-max(12, 14);
+        white-space: nowrap;
+        display: flex;
+        justify-content: center;
+        min-width: min-max(180, 200);
+        padding: min-max(8, 12) min-max(10, 20);
+        background: rgba(35, 31, 32, 0.9);
+        border-radius: min-max(4, 6);
+        color: var(--white);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--transition);
+
+        &::before {
+          content: "";
+          position: absolute;
+          inset: -12px 0;
+          z-index: -1;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          left: 50%;
+          width: 16px;
+          height: 8px;
+          background: rgba(35, 31, 32, 0.9);
+        }
+
+        &.top {
+          bottom: 100%;
+          transform: translate(-50%, -10px);
+
+          &::before {
+            top: 0;
+          }
+
+          &:after {
+            top: 100%;
+            transform: translate(-50%, -1px);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+          }
+        }
+        &.bottom {
+          top: 100%;
+          transform: translate(-50%, 10px);
+          &::before {
+            bottom: 0;
+          }
+
+          &:after {
+            bottom: 100%;
+            transform: translate(-50%, 1px);
+            clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+          }
+        }
+      }
+
+      @include on-hover {
+        .title {
+          opacity: 1;
+          pointer-events: all;
+        }
+      }
+    }
+
+    @include mq-max-768 {
+      .title {
+        font-size: min-max(16, 14);
+        display: flex;
+        justify-content: center;
+        min-width: min-max(180, 200);
+        border-radius: min-max(4, 6);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--transition);
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 222;
+        padding: min-max(16, 50);
+
+        .d {
+          background: white;
+          position: relative;
+          z-index: 1;
+          padding: min-max(8, 12) min-max(10, 20);
+          border-radius: 6px;
+          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 110vh;
+          background: rgb(0 0 0 / 30%);
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translate(-50%, 8px);
+          width: 30px;
+          aspect-ratio: 1;
+          background: white url("../img/close.svg") center/16px no-repeat;
+          border-radius: 50%;
+        }
+      }
+
+      &.active {
+        .title {
+          opacity: 1;
+          pointer-events: all;
+        }
       }
     }
   }

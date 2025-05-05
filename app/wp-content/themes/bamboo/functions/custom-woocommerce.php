@@ -522,19 +522,32 @@ function customize_product_variations($variation_data, $product, $variation) {
     if (isset($variation_data['attributes']['attribute_pa_material'])) {
         $material_slug = $variation_data['attributes']['attribute_pa_material'];
 
+        // Вилучаємо непотрібні дані з масиву
+        unset($variation_data['image']);
+        unset($variation_data['price_html']);
+
         // Отримуємо термін за slug у таксономії pa_material
         $material_term = get_term_by('slug', $material_slug, 'pa_material');
 
         if ($material_term) {
+            $full_size = '';
             $material_id = $material_term->term_id; // ID терміна
             // додаткові дані матеріалу
             $material_img = get_field('image', 'pa_material_'.$material_id);
+
+
+            if (!empty($material_img) && isset($material_img['url'])) {
+              $full_size = esc_url($material_img['url']);
+          }
+
             $variation_data['material_details']['id']=$material_term->term_id;
             $variation_data['material_details']['slug']=$material_term->slug;
             $variation_data['material_details']['name']=$material_term->name;
             $variation_data['material_details']['id']=$material_term->term_id;
             $variation_data['material_details']['description'] = esc_html(term_description($material_term->term_id, 'pa_material'));
-            $variation_data['material_details']['image']=$material_img;
+            // $variation_data['material_details']['image']=$material_img;
+            $variation_data['material_details']['full_size']=$full_size;
+            $variation_data['material_details']['image_html']= isset($material_img['id']) ? wp_get_attachment_image($material_img['id']) : '';
             $variation_data['material_details']['video']=get_field('video', 'pa_material_'.$material_id);
 
             $colors = get_field('colors', 'pa_material_'.$material_id);
@@ -550,7 +563,7 @@ function customize_product_variations($variation_data, $product, $variation) {
             $i=0;
             if (!empty($options) && is_array($options)) {
               foreach($options as $option){
-                $variation_data['material_options'][$i]=$option;
+                $variation_data['material_details']['options'][$i]=$option;
                 $i++;
               }
             }

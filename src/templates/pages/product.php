@@ -47,6 +47,8 @@ while (have_posts()) :
 
   <?php renderSection('home/builder'); ?>
 
+
+
 <?php
 
   do_action('woocommerce_after_single_product');
