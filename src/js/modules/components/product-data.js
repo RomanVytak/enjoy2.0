@@ -24,7 +24,7 @@ function onDocClick(e) {
 }
 
 const handlePopUp = {
-  open: (object) => {
+  open: (object, boo = true) => {
     const open = () => {
       let popup = object;
       const scroller = popup.querySelector("[data-scroller]");
@@ -49,7 +49,6 @@ const handlePopUp = {
 };
 
 export default function createProductData() {
-
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
   const variations = JSON.parse(form.dataset.product_variations);
@@ -263,7 +262,6 @@ export default function createProductData() {
   };
 
   const createSizes = () => {
-
     const sizes = dataArrays.size;
     wrapper_sizes.innerHTML = "";
 
@@ -505,8 +503,8 @@ export default function createProductData() {
     const element = e.target;
     const arr = [_SIZE, _MATERIAL, _COLOR, _SERT];
 
-    const hasAnyAttribute = arr.some(attr => element.hasAttribute(attr));
-    if (!hasAnyAttribute) return
+    const hasAnyAttribute = arr.some((attr) => element.hasAttribute(attr));
+    if (!hasAnyAttribute) return;
 
     arr.forEach((attr) => {
       const value = element.hasAttribute(attr)
@@ -605,7 +603,7 @@ export default function createProductData() {
   };
 
   function handleTooltipHover(tooltip, icon) {
-    tooltip.classList.remove("top", "bottom");
+    tooltip.classList.remove("t", "b");
 
     const tooltipRect = tooltip.getBoundingClientRect();
     const triggerRect = icon.getBoundingClientRect();
@@ -613,9 +611,9 @@ export default function createProductData() {
     const spaceAbove = triggerRect.top - header.clientHeight - 10;
 
     if (spaceAbove > tooltipRect.height) {
-      tooltip.classList.add("top");
+      tooltip.classList.add("t");
     } else {
-      tooltip.classList.add("bottom");
+      tooltip.classList.add("b");
     }
   }
 
@@ -653,7 +651,12 @@ export default function createProductData() {
   wrapper.addEventListener("click", handleSelectData);
   imgWrapper.addEventListener("click", showVideoPopUp);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);
-  videoPopUp.onClose = () => activeVideo?.pause();
+  videoPopUp.onClose = () => {
+    activeVideo?.pause();
+    setTimeout(() => {
+      handlePopUp.open(imgPopUp);
+    }, 10);
+  };
   checkIsSelectedvariant();
   NEW_createHTMLData();
   updateProductData();
@@ -728,7 +731,7 @@ function filterData(data, selectedData) {
       const colors = Object.values(variation.material_colors || {});
       return colors.some((color) => color.id == key);
     },
-    size: (variation, key) => variation.attributes?.attribute_pa_rozmiry == key,
+    size: (variation, key) => variation,
     material: (variation, key) => variation.material_details?.id == key,
     variant: (variation, key) => variation.variants_details?.id == key,
   };

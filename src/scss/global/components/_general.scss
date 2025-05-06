@@ -132,11 +132,21 @@ li {
   }
 
   &_close {
-    mask: url("../img/close.svg") center/cover no-repeat;
-    background-color: #717a8e;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      mask: url("../img/close.svg") center/cover no-repeat;
+      background-color: #717a8e;
+      transition: background-color var(--transition);
+    }
 
     @include on-hover {
-      background-color: var(--orange-2);
+      &::before {
+        background-color: var(--orange-2);
+      }
     }
   }
   &_trash {
@@ -367,7 +377,6 @@ li {
     display: block;
   }
 }
-
 
 @keyframes spin {
   from {

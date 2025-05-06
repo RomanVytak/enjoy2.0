@@ -31,17 +31,24 @@
   .popup-content {
     position: relative;
     display: flex;
-    flex-direction: column;
     border-radius: min-max(16, 24);
+    height: 90vh;
   }
 
   .close {
     position: absolute;
-    width: min-max(20, 24);
+    width: min-max(28, 32);
     aspect-ratio: 1;
     top: min-max(16, 30);
     right: min-max(16, 30);
     z-index: 1;
+
+    border-radius: 50%;
+    background-color: white;
+
+    &::before {
+      inset: min-max(4, 6);
+    }
   }
 
   &.active {
@@ -51,13 +58,9 @@
   }
 
   &.full-img {
-    .overflow {
-      padding: min-max(60, 100) 14px;
-    }
     .popup-content {
       width: 100%;
       max-width: min-max(900, 1300);
-      padding: min-max(60, 80) min-max(24, 80);
       background: white;
 
       .pop-up-img {
@@ -73,12 +76,12 @@
 
       img {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
       }
 
-      @include mq-max-768 {
-        justify-content: center;
-        padding: 16px;
+      @include mq-min-768 {
+        padding: min-max(60, 80) min-max(24, 80);
       }
     }
 
@@ -103,8 +106,12 @@
   &.full-video {
     .popup-content {
       width: 100%;
-      max-width: min-max(800, 1100);
+      max-width: min-max(900, 1300);
       overflow: hidden;
+
+      @include mq-min-768 {
+        height: auto;
+      }
 
       video {
         width: 100%;
@@ -113,12 +120,19 @@
       }
     }
   }
+  .pop-up-video {
+    display: flex;
+    width: 100%;
+  }
 
   .material-params-wrapper {
     position: absolute;
     z-index: 1;
     left: min-max(16, 24);
     top: min-max(16, 24);
+    max-width: 80%;
+    flex-wrap: wrap;
+
     .param {
       border-radius: 50%;
       background: var(--white);
@@ -130,14 +144,24 @@
       background: transparent;
     }
     .overflow {
-      padding: 0 !important;
+      padding: 16px;
       height: 100%;
       background: var(--white);
       align-items: center;
     }
     .popup-content {
-      position: initial;
-      padding: 16px;
+      padding: 0;
+      height: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+
+      .icon_play {
+        width: 100px;
+      }
+    }
+
+    .pop-up-video {
+      align-items: center;
     }
   }
 }
