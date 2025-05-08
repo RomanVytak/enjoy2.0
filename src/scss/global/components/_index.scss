@@ -3,3 +3,11 @@
 @import "general";
 @import "cart";
 @import "popups";
+
+#wpadminbar {
+  opacity: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+}

@@ -94,8 +94,8 @@
 
           .nav {
             pointer-events: all;
-            width: 32px;
-            height: 32px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background: var(--white);
 
@@ -190,6 +190,11 @@
         position: fixed;
         z-index: 1;
         bottom: 0;
+
+        .wrapper {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
       }
     }
   }
@@ -412,6 +417,7 @@
               z-index: 1;
               background: url("../img/play-2.svg") center/cover no-repeat;
               opacity: 0;
+              margin-left: 0.15em;
             }
 
             @include on-hover {
@@ -889,11 +895,11 @@
           }
 
           button {
-            font-size: min-max(16, 18);
+            font-size: min-max(14, 16);
             font-weight: 700;
             font-family: var(--roboto-b);
             color: var(--white);
-            padding: min-max(12, 14) min-max(32, 46);
+            padding: min-max(14, 16) min-max(30, 40);
             border-radius: min-max(12, 16);
             background: var(--orange-2);
             transition: var(--transition);

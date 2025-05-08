@@ -2,6 +2,7 @@
 @import "swiper/swiper.css";
 
 .catalog {
+
   // сортування
   &--ordering {
     display: flex;
@@ -22,13 +23,16 @@
             opacity: 1;
             pointer-events: all;
           }
+
           .toggle {
             color: var(--beige-0);
+
             .icon {
               transform: rotate(-90deg);
             }
           }
         }
+
         @include on-hover {
           .toggle {
             .icon {
@@ -64,6 +68,7 @@
             pointer-events: none;
             color: #4c5c66;
           }
+
           @include on-hover {
             color: var(--orange-2);
           }
@@ -100,6 +105,7 @@
     padding-inline: min-max(16, 50);
     border-bottom: 1px solid #ced5dd;
   }
+
   .tabs {
     display: flex;
     gap: min-max(8, 24);
@@ -111,6 +117,7 @@
       @include no-scrollbar;
     }
   }
+
   .tab {
     --color: #9fa8b2;
     flex: none;
@@ -140,6 +147,7 @@
         width: 20px;
       }
     }
+
     @include on-hover {
       --color: var(--orange-2);
     }
@@ -186,12 +194,13 @@
     .catalog--ordering {
       grid-column: 2/-1;
     }
+
     .woocommerce-pagination {
       grid-column: 1/-1;
       display: flex;
       justify-content: center;
       width: 100%;
-      margin-top: 24px;
+      margin: 40px 0 10px;
 
       ul {
         list-style-type: none;
@@ -223,6 +232,7 @@
         }
 
         .page-numbers {
+
           &.next,
           &.prev {
             transition: var(--transition);
@@ -243,9 +253,11 @@
               }
             }
           }
+
           &.prev::after {
             transform: rotate(180deg);
           }
+
           &.dots {
             background-color: transparent;
             cursor: default;
@@ -257,10 +269,12 @@
 
   .grid {
     grid-column: 1/-1;
-    @include grid(3, min-max(16, 30), min-max(24, 48));
+    @include grid(3, min-max(14, 18), min-max(22, 48));
+
     @include mq-max-1024 {
       grid-template-columns: repeat(2, 1fr);
     }
+
     @include mq-max-640 {
       grid-template-columns: 1fr;
       gap: 48px;
@@ -294,7 +308,7 @@
 
       &-navs {
         position: absolute;
-        padding: 0 8px;
+        padding: 0 15px;
         top: 50%;
         transform: translateY(-50%);
         z-index: 2;
@@ -302,8 +316,8 @@
 
         .nav {
           pointer-events: all;
-          width: 32px;
-          height: 32px;
+          width: 42px;
+          height: 42px;
           border-radius: 50%;
           background: var(--white);
 
@@ -326,6 +340,7 @@
       align-items: center;
       justify-content: center;
     }
+
     &-circle {
       position: absolute;
       width: 100%;
@@ -336,15 +351,17 @@
       transform: scale(0.8);
       transition: 0.5s ease;
     }
+
     &-info {
       gap: 8px;
 
       .category {
-        font-size: min-max(16, 20);
+        font-size: min-max(14, 16);
         line-height: 100%;
         color: var(--orange-2);
       }
     }
+
     &-price {
       padding: min-max(12, 16);
       background-color: #f9f9f9;
@@ -407,6 +424,7 @@
         color: var(--white);
         border-radius: min-max(12, 16);
         background-color: var(--orange-2);
+
         @include on-hover {
           background-color: var(--orange-1);
         }
@@ -414,6 +432,7 @@
     }
 
     @include on-hover {
+
       // .icon_arrow {
       //   --arrow: var(--white);
       // }
