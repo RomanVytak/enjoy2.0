@@ -490,7 +490,6 @@ export default function createProductData() {
     const isValid = options.every(
       (opt) => !opt[1].length || selectedData[opt[0]]
     );
-
     showVariatorPrice(
       isValid && filteredVariations.length == 1,
       filteredVariations[0]
@@ -502,6 +501,7 @@ export default function createProductData() {
   const handleSelectData = (e) => {
     const element = e.target;
     const arr = [_SIZE, _MATERIAL, _COLOR, _SERT];
+    let needUpdateData = true;
 
     const hasAnyAttribute = arr.some((attr) => element.hasAttribute(attr));
     if (!hasAnyAttribute) return;
@@ -526,6 +526,7 @@ export default function createProductData() {
         case _MATERIAL:
           const material = dataArrays.material.find((m) => m.id == value);
           if (isActive) {
+            needUpdateData = false;
             showMaterialPopUp(material);
             return;
           }
@@ -546,7 +547,7 @@ export default function createProductData() {
           break;
       }
     });
-    updateProductData();
+    needUpdateData &&  updateProductData();
   };
 
   const handleAddToCart = () => {
@@ -628,7 +629,7 @@ export default function createProductData() {
       <img src="${material.full_size}" alt="${material.name}">
       <button class="item-play flex-c" data-play-video="${video}" data-id="${material.id}"><div class="icon icon_play"></div></button>
       `;
-      imgWrapper.append(params);
+      material.options && imgWrapper.append(params);
       handleMaterialParams(imgWrapper);
     }
     imgWrapper.classList.toggle("with-video", video);
@@ -731,7 +732,7 @@ function filterData(data, selectedData) {
       const colors = Object.values(variation.material_colors || {});
       return colors.some((color) => color.id == key);
     },
-    size: (variation, key) => variation,
+    size: (variation, key) => variation.attributes?.attribute_pa_rozmiry == key,
     material: (variation, key) => variation.material_details?.id == key,
     variant: (variation, key) => variation.variants_details?.id == key,
   };
