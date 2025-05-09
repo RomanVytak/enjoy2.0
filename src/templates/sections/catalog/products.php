@@ -55,6 +55,7 @@ $categories = [
 
     
       <?php
+      // wp-content/themes/bamboo/functions/custom-woocommerce.php
       woocommerce_custom_content();
       ?>
 

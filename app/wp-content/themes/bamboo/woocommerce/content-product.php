@@ -111,7 +111,6 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
               if ( $product->is_type( 'variable' ) ) {
                   $default_attributes = $product->get_default_attributes();
 
-                  // Якщо жодного дефолтного атрибута не задано
                   if ( empty( $default_attributes ) ) {
                       $prices = $product->get_variation_prices( true );
                       $min_price = current( $prices['price'] );
@@ -123,12 +122,61 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                           echo '<span class="price">' . wc_price( $min_price ) . '</span>';
                       }
                   } else {
-                      // Якщо є дефолтна варіація, показати стандартну ціну
-                      echo $product->get_price_html();
+                      // Знайти варіацію за замовчуванням
+                      $variations = $product->get_available_variations();
+                      $variation_id = null;
+
+                      foreach ( $variations as $variation ) {
+                          $match = true;
+                          foreach ( $default_attributes as $key => $value ) {
+                              if ( $variation['attributes']['attribute_' . $key] !== $value ) {
+                                  $match = false;
+                                  break;
+                              }
+                          }
+                          if ( $match ) {
+                              $variation_id = $variation['variation_id'];
+                              break;
+                          }
+                      }
+
+                      if ( $variation_id ) {
+                          $variation_product = wc_get_product( $variation_id );
+
+                          echo $variation_product->get_price_html();
+
+                          $regular_price = (float) $variation_product->get_regular_price();
+                          $sale_price = (float) $variation_product->get_sale_price();
+
+                          if ( $sale_price && $regular_price > $sale_price ) {
+                              $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
+                              $saving_money = $regular_price - $sale_price;
+
+                              echo '<span class="discount">';
+                              echo '<span class="discount_percent">-' . $discount_percent . '%</span>';
+                              echo '<span class="full_price">' . wc_price( $regular_price ) . '</span>';
+                              echo '<span class="saving_money">Економія ' . wc_price( $saving_money ) . '</span>';
+                              echo '</span>';
+                          }
+                      }
                   }
               } else {
                   // Для простих товарів
+                  $regular_price = (float) $product->get_regular_price();
+                  $sale_price = (float) $product->get_sale_price();
+
                   echo $product->get_price_html();
+
+                  if ( $sale_price && $regular_price > $sale_price ) {
+                      $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
+                      $saving_money = $regular_price - $sale_price;
+
+                      echo '<span class="discount">';
+                      echo '<span class="discount_percent">-' . $discount_percent . '%</span>';
+                      echo '<span class="full_price">' . wc_price( $regular_price ) . '</span>';
+                      echo '<span class="saving_money">Економія ' . wc_price( $saving_money ) . '</span>';
+                      echo '</span>';
+                  }
               }
               ?>
               </p>
