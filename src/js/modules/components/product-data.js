@@ -423,10 +423,12 @@ export default function createProductData() {
   };
 
   const NEW_updateFilteredVar = (filtered) => {
-    let data_colors = [];
-    let data_sizes = [];
-    let data_materials = [];
-    let data_vars = [];
+    const filteredDataArays = {
+      [_SIZE]: [],
+      [_MATERIAL]: [],
+      [_COLOR]: [],
+      [_SERT]: [],
+    };
 
     const selectedLength = Object.values(selectedData).filter(
       (v) => v !== null
@@ -439,32 +441,33 @@ export default function createProductData() {
       const variants = variation?.variants_details;
 
       if (variants) {
-        getVars(data_vars, variants);
+        getVars(filteredDataArays[_SERT], variants);
       }
 
       if (material) {
-        getMaterials(data_materials, material, variation);
+        getMaterials(filteredDataArays[_MATERIAL], material, variation);
       }
       if (size) {
-        getSizes(data_sizes, size, variation);
+        getSizes(filteredDataArays[_SIZE], size, variation);
       }
       if (colors.length) {
-        getColors(data_colors, colors);
+        getColors(filteredDataArays[_COLOR], colors);
       }
     });
 
     const dataMap = {
-      [_SIZE]: { selected: selectedData.size, list: data_sizes },
-      [_MATERIAL]: { selected: selectedData.material, list: data_materials },
-      [_COLOR]: { selected: selectedData.color, list: data_colors },
-      [_SERT]: { selected: selectedData.variant, list: data_vars },
+      [_SIZE]: selectedData.size,
+      [_MATERIAL]: selectedData.material,
+      [_COLOR]: selectedData.color,
+      [_SERT]: selectedData.variant,
     };
 
     [_SIZE, _MATERIAL, _COLOR, _SERT].forEach((attr) => {
       const elements = htmlElements[attr];
       if (!elements) return;
 
-      const { selected, list } = dataMap[attr];
+      const selected = dataMap[attr];
+      const list = filteredDataArays[attr];
 
       elements.forEach((el) => {
         const value = el.getAttribute(attr);
@@ -481,7 +484,6 @@ export default function createProductData() {
 
   const updateProductData = () => {
     let filteredVariations = [...variations];
-
     filteredVariations = filterData(filteredVariations, selectedData);
 
     // check if all selected data is valid
@@ -517,8 +519,12 @@ export default function createProductData() {
 
       switch (attr) {
         case _SIZE:
-          selectedData.size = isActive ? null : value;
-          input_size.value = isActive ? "" : value;
+          if (isActive) {
+            needUpdateData = false;
+            return;
+          }
+          selectedData.size = value;
+          input_size.value = value;
           createSizesParams(
             !isActive ? dataArrays.size.find((m) => m.id == value) : null
           );
@@ -530,24 +536,34 @@ export default function createProductData() {
             showMaterialPopUp(material);
             return;
           }
+          // clear selected color
+          selectedData.color = null;
+          color_name.innerHTML = "";
 
           selectedData.material = value;
-          createMaterialInfo(element);
           input_material.value = value;
+          createMaterialInfo(element);
           createMaterialParams(material);
           break;
         case _COLOR:
-          selectedData.color = isActive ? null : value;
-          color_name.innerHTML = isActive ? "" : element.title;
-          input_color.value = isActive ? "" : value;
+          if (isActive) {
+            needUpdateData = false;
+            return;
+          }
+          selectedData.color = value;
+          color_name.innerHTML = element.title;
+          input_color.value = value;
           break;
         case _SERT:
-          selectedData.variant = isActive ? null : value;
-
+          if (isActive) {
+            needUpdateData = false;
+            return;
+          }
+          selectedData.variant = value;
           break;
       }
     });
-    needUpdateData &&  updateProductData();
+    needUpdateData && updateProductData();
   };
 
   const handleAddToCart = () => {
@@ -730,17 +746,22 @@ function filterData(data, selectedData) {
   const strategies = {
     color: (variation, key) => {
       const colors = Object.values(variation.material_colors || {});
-      return colors.some((color) => color.id == key);
+      const some = colors.some((color) => color.id == key);
+      return some;
     },
     size: (variation, key) => variation.attributes?.attribute_pa_rozmiry == key,
     material: (variation, key) => variation.material_details?.id == key,
     variant: (variation, key) => variation.variants_details?.id == key,
   };
 
-  return Object.entries(selectedData).reduce((filtered, [type, key]) => {
-    const fn = strategies[type];
-    return fn && key ? filtered.filter((v) => fn(v, key)) : filtered;
-  }, data);
+  const object = Object.entries(selectedData).reduce(
+    (filtered, [type, key]) => {
+      const fn = strategies[type];
+      return fn && key ? filtered.filter((v) => fn(v, key)) : filtered;
+    },
+    data
+  );
+  return object;
 }
 
 function getMaterials(array, data) {
