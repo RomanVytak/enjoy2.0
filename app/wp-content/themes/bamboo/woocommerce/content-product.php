@@ -106,7 +106,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
           </a>
           <div class="product-item-price flex-v">
             <div class="flex w-full h-between">
-              <p class="price roboto-38">
+              <p class="data-price">
               <?php
               if ( $product->is_type( 'variable' ) ) {
                   $default_attributes = $product->get_default_attributes();
@@ -117,9 +117,9 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                       $max_price = end( $prices['price'] );
 
                       if ( $min_price !== $max_price ) {
-                          echo '<span class="price">' . wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . '</span>';
+                          echo '<span class="price price_html">' . wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . '</span>';
                       } else {
-                          echo '<span class="price">' . wc_price( $min_price ) . '</span>';
+                          echo '<span class="price price_html">' . wc_price( $min_price ) . '</span>';
                       }
                   } else {
                       // Знайти варіацію за замовчуванням
@@ -143,7 +143,9 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                       if ( $variation_id ) {
                           $variation_product = wc_get_product( $variation_id );
 
+                          echo '<span class="price_html">';
                           echo $variation_product->get_price_html();
+                          echo '</span>';
 
                           $regular_price = (float) $variation_product->get_regular_price();
                           $sale_price = (float) $variation_product->get_sale_price();
@@ -153,9 +155,9 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                               $saving_money = $regular_price - $sale_price;
 
                               echo '<span class="discount">';
-                              echo '<span class="discount_percent">-' . $discount_percent . '%</span>';
-                              echo '<span class="full_price">' . wc_price( $regular_price ) . '</span>';
-                              echo '<span class="saving_money">Економія ' . wc_price( $saving_money ) . '</span>';
+                              echo '<span class="discount-top"><span class="discount-percent">-' . $discount_percent . '%</span>';
+                              echo '<span class="discount-price">' . wc_price( $regular_price ) . '</span></span>';
+                              echo '<span class="discount-saving">Економія ' . wc_price( $saving_money ) . '</span>';
                               echo '</span>';
                           }
                       }
@@ -165,7 +167,9 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
                   $regular_price = (float) $product->get_regular_price();
                   $sale_price = (float) $product->get_sale_price();
 
+                  echo '<span class="price_html">';
                   echo $product->get_price_html();
+                  echo '</span>';
 
                   if ( $sale_price && $regular_price > $sale_price ) {
                       $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );

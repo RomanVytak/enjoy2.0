@@ -2,7 +2,6 @@
 @import "swiper/swiper.css";
 
 .catalog {
-
   // сортування
   &--ordering {
     display: flex;
@@ -232,7 +231,6 @@
         }
 
         .page-numbers {
-
           &.next,
           &.prev {
             transition: var(--transition);
@@ -368,13 +366,21 @@
       border-radius: min-max(16, 24);
       gap: min-max(16, 24);
 
-      .price {
-        font-family: var(--roboto-b);
+      .data-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-        &:has(del) {
-          display: flex;
-          align-items: flex-end;
+        .price_html {
+          @include roboto-38-B;
+          font-family: var(--roboto-b);
         }
+
+        // &:has(del) {
+        //   display: flex;
+        //   align-items: flex-end;
+        // }
 
         .custom_symbol,
         .woocommerce-Price-currencySymbol {
@@ -387,14 +393,46 @@
           order: -1;
         }
 
+        .discount {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          &-top {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+          }
+
+          &-percent {
+            color: var(--white);
+            background: #f94754;
+            border-radius: 10px;
+            min-width: min-max(35, 45);
+            font-size: 12px;
+            padding: 2px;
+            text-align: center;
+            line-height: normal;
+          }
+          &-price {
+            font-size: min-max(16, 18);
+            color: #8199af;
+            text-decoration: line-through;
+            text-decoration-color: #f94754;
+          }
+          &-saving {
+            color: #00ae11;
+          }
+        }
+
         del {
-          font-size: min-max(16, 18);
-          font-family: var(--roboto-r);
-          font-weight: 400;
-          color: #8199af;
-          text-decoration-color: #f94754;
-          line-height: normal;
-          margin: 2px min-max(10, 20);
+          display: none !important;
+          // font-size: min-max(16, 18);
+          // font-family: var(--roboto-r);
+          // font-weight: 400;
+          // color: #8199af;
+          // text-decoration-color: #f94754;
+          // line-height: normal;
+          // margin: 2px min-max(10, 20);
         }
       }
 
@@ -432,7 +470,6 @@
     }
 
     @include on-hover {
-
       // .icon_arrow {
       //   --arrow: var(--white);
       // }
