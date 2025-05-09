@@ -439,11 +439,11 @@
               }
             }
 
-            &.disabled {
-              opacity: 0.5;
-              pointer-events: none;
-              transform: scale(0.9);
-            }
+            // &.disabled {
+            //   opacity: 0.5;
+            //   pointer-events: none;
+            //   transform: scale(0.9);
+            // }
 
             img {
               pointer-events: none;
@@ -653,6 +653,7 @@
             }
 
             &.active {
+              pointer-events: none;
               &::before {
                 border-color: var(--orange-2);
                 transform: translate(-50%, -50%) scale(1.2);
@@ -774,6 +775,7 @@
             }
 
             &.active {
+              pointer-events: none;
               background: var(--orange-2);
               color: var(--white);
               border-color: var(--orange-2);
