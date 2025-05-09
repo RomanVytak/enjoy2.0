@@ -113,9 +113,11 @@ li {
 }
 
 .clip-logo {
+  position: relative;
+  top: 4px;
   mask: url("../img/logo.svg") center/cover no-repeat;
   aspect-ratio: 107/40;
-  width: min-max(70, 107);
+  width: min-max(60, 90);
   background-color: #054f78;
 }
 
@@ -159,6 +161,8 @@ li {
   }
 
   &_cart {
+    position: relative;
+    top: -4px;
     mask: url("../img/cart.svg") center/cover no-repeat;
     background-color: #054f78;
 
