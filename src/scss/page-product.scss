@@ -161,7 +161,7 @@
   .woocommerce-product-content,
   .woocommerce-product-instruction,
   .instruction-text {
-    > * {
+    >* {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -194,6 +194,7 @@
         .wrapper {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
+          box-shadow: rgb(203 203 203) 0px 0px 6px;
         }
       }
     }
@@ -424,6 +425,7 @@
               &::before {
                 border-color: var(--orange-2);
               }
+
               &::after {
                 transform: translate(-50%, -50%) scale(1.15);
               }
@@ -434,6 +436,7 @@
                 border-color: var(--orange-2);
                 transform: translate(-50%, -50%) scale(1.15);
               }
+
               &::after {
                 opacity: 1;
               }
@@ -535,10 +538,12 @@
                     transform: translate(-50%, -1px);
                     clip-path: polygon(50% 100%, 0 0, 100% 0);
                   }
+
                   &::before {
                     top: 0;
                   }
                 }
+
                 &.b {
                   top: 100%;
                   transform: translate(-50%, 10px);
@@ -548,11 +553,13 @@
                     transform: translate(-50%, 1px);
                     clip-path: polygon(50% 0%, 0 100%, 100% 100%);
                   }
+
                   &::before {
                     bottom: 0;
                   }
                 }
-                .d{
+
+                .d {
                   position: relative;
                   z-index: 1;
                 }
@@ -658,6 +665,7 @@
 
             &.active {
               pointer-events: none;
+
               &::before {
                 border-color: var(--orange-2);
                 transform: translate(-50%, -50%) scale(1.2);
@@ -730,6 +738,7 @@
                   background: url("../img/width.svg") center/cover no-repeat;
                 }
               }
+
               &.volume {
                 &::before {
                   background: url("../img/volume.svg") center/cover no-repeat;
@@ -924,6 +933,7 @@
               background: #c9c9c9;
               pointer-events: none;
             }
+
             .spinner {
               opacity: 1;
             }
@@ -935,6 +945,7 @@
           display: flex;
           flex-direction: column;
           align-items: flex-start;
+
           .price {
             @include roboto-38-B;
             font-size: 38px;
@@ -968,6 +979,7 @@
             text-decoration: line-through;
             text-decoration-color: #f94754;
           }
+
           .saving {
             color: #00ae11;
           }
@@ -1077,7 +1089,7 @@
   }
 
   .woocommerce-tabs-panel {
-    & > * {
+    &>* {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -1117,6 +1129,7 @@ section.details {
         gap: 24px;
         width: 100%;
         flex: none;
+
         @include mq-min-768 {
           max-width: 410px;
         }
@@ -1131,6 +1144,7 @@ section.details {
       &:nth-child(even) {
         flex-direction: row-reverse;
       }
+
       @include mq-max-768 {
         flex-direction: column !important;
         gap: 16px;
@@ -1223,9 +1237,11 @@ section.details {
             clip-path: polygon(50% 100%, 0 0, 100% 0);
           }
         }
+
         &.b {
           top: 100%;
           transform: translate(-50%, 10px);
+
           &::before {
             bottom: 0;
           }
