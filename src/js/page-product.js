@@ -67,6 +67,7 @@ const thumbsGallarySlider = () => {
 
 const pinBuyButton = () => {
   const form = pinWrapper.querySelector("[data-product-form-data]");
+  if (!form) return;
   const pin = form.querySelector(".custom-woo-data");
   let sto = null;
 

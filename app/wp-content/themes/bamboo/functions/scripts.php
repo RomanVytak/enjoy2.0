@@ -95,6 +95,15 @@ function bamboo_remove_needless_css()
   wp_dequeue_style('woocommerce-general');
   wp_dequeue_style('woocommerce-layout');
   wp_dequeue_style('woo-variation-swatches');
+
+  if ( is_page(472) ) {
+      wp_enqueue_style(
+          'wc-checkout-css',
+          plugins_url( 'woocommerce/assets/client/blocks/checkout.css' ),
+          array(),
+          '1.0.0'
+      );
+  }
 }
 
 // Remove WP FSE Scripts & styles
