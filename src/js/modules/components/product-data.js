@@ -89,6 +89,8 @@ export default function createProductData() {
 
   const wrapper_variants = wrapper.querySelector("[data-variants]");
 
+  const mobileTooltip = document.querySelector(".mobile-text-tooltip");
+
   const onAdded = onAddedToCart();
 
   let defaultVariation = [...variations].find((v) => v?.is_default);
@@ -113,25 +115,21 @@ export default function createProductData() {
 
   form.removeAttribute("data-product_variations");
 
-  const handleMaterialParams = (wrapper = material_params) => {
-    const icons = wrapper.querySelectorAll(".param img");
-    const texts = wrapper.querySelectorAll(".title");
+  const handleTooltip = (wrapper) => {
+    const icons = wrapper.querySelectorAll(".icon, .param img");
 
     icons.forEach((icon) => {
-      const parent = icon.closest(".param");
-      const tooltip = parent.querySelector(".title");
+      const tooltip = icon.parentElement.querySelector(".tooltip-text");
+
       icon.addEventListener("click", (e) => {
-        parent.classList.add("active");
+        if (window.innerWidth > 768) return;
+        const innerText = tooltip.innerHTML;
+        mobileTooltip.innerHTML = innerText;
+        mobileTooltip.classList.add("active");
       });
 
       icon.addEventListener("mouseenter", () => {
         handleTooltipHover(tooltip, icon);
-      });
-    });
-    texts.forEach((text) => {
-      text.addEventListener("click", (e) => {
-        const parent = text.closest(".param");
-        parent.classList.remove("active");
       });
     });
   };
@@ -148,20 +146,16 @@ export default function createProductData() {
       const img = option.ico;
       const description = option.description;
       return `<div class="param">
+        ${createHTMLTooltip(description)}
         ${
-          description
-            ? `<span class="title"><span class='d'>${description}</span></span>`
+          img
+            ? `<img src="${assets}img/properties/${img}.svg" alt="${option.description}">`
             : ""
         }
-            ${
-              img
-                ? `<img src="${assets}img/properties/${img}.svg" alt="${option.description}">`
-                : ""
-            }
       </div>`;
     });
     material_params.innerHTML = html.join("");
-    setTimeout(handleMaterialParams, 100);
+    setTimeout(() => handleTooltip(material_params), 100);
   };
   const createMaterialInfo = (element) => {
     const title = element.title;
@@ -169,41 +163,22 @@ export default function createProductData() {
 
     material_name.innerHTML = `
     ${title}
-    ${
-      description
-        ? `<span class="info">
-          <span class="icon"></span><span class="text"><span class='d'>${description}</span></span></span>`
-        : ""
-    }
+    ${createHTMLTooltip(description, true)}
     `;
 
     if (!description) return;
-    const icon = material_name.querySelector(".icon");
-    const tooltip = material_name.querySelector(".text");
-
-    icon.addEventListener("click", (e) => tooltip.classList.add("active"));
-    tooltip.addEventListener("click", (e) =>
-      tooltip.classList.remove("active")
-    );
-
-    icon.addEventListener("mouseenter", () => {
-      handleTooltipHover(tooltip, icon);
-    });
+    handleTooltip(material_name, false);
   };
   const createSizesParams = (size) => {
     const dimensions = size ? size?.dimensions : null;
-    const description = size?.description;
-
-    size_description.innerHTML = description
-      ? `<span class="d">${description}</span>`
-      : "";
+    const d = size?.description;
 
     if (!size || !dimensions) {
       size_params.innerHTML = "";
       size_description.innerHTML = "";
       return;
     }
-
+    size_description.innerHTML = d ? `<span class="d">${d}</span>` : "";
     const html = [];
 
     Object.entries(dimensions).forEach(([key, value]) => {
@@ -251,11 +226,12 @@ export default function createProductData() {
 
     const html = colors.map((color) => {
       const img = color.image;
+      const image_html = color.image_html;
       const name = color.name;
       return `<div class="color${
         selectedData.color == color.id ? " active" : ""
       }" ${_COLOR}="${color.id}"  title="${name}">
-        ${img ? `<img src="${img}" alt="${name}">` : ""}
+        ${image_html ? image_html : img ? `<img src="${img}" alt="${name}">` : ""}
       </div>`;
     });
     wrapper_colors.innerHTML = html.join("");
@@ -363,14 +339,15 @@ export default function createProductData() {
 
       if (attr == _MATERIAL) {
         element = [...elements].find(
-          (el) => el.getAttribute(attr) == defaultVariation.material_details.id
+          (el) =>
+            el.getAttribute(attr) == defaultVariation?.material_details?.id
         );
       }
       if (attr == _COLOR) {
         element = [...elements].find(
           (el) =>
             el.getAttribute(attr) ==
-            Object.values(defaultVariation.material_colors)[0]?.id
+            Object.values(defaultVariation?.material_colors || {})[0]?.id
         );
       }
       if (attr == _SIZE) {
@@ -401,6 +378,7 @@ export default function createProductData() {
       const variants = variation?.variants_details;
 
       if (material) {
+        material.colors = colors;
         getMaterials(dataArrays.material, material);
       }
       if (size) {
@@ -517,28 +495,29 @@ export default function createProductData() {
 
       const isActive = element.classList.contains("active");
 
+      isActive && (needUpdateData = false);
+
       switch (attr) {
         case _SIZE:
-          if (isActive) {
-            needUpdateData = false;
-            return;
-          }
+          if (isActive) return;
+
           selectedData.size = value;
           input_size.value = value;
-          createSizesParams(
-            !isActive ? dataArrays.size.find((m) => m.id == value) : null
-          );
+          createSizesParams(dataArrays.size.find((m) => m.id == value));
           break;
         case _MATERIAL:
           const material = dataArrays.material.find((m) => m.id == value);
           if (isActive) {
-            needUpdateData = false;
             showMaterialPopUp(material);
             return;
           }
-          // clear selected color
-          selectedData.color = null;
-          color_name.innerHTML = "";
+          if (selectedData.color && material?.colors?.length) {
+            if (!material.colors.some((c) => c?.id == selectedData?.color)) {
+              // clear selected color
+              selectedData.color = null;
+              color_name.innerHTML = "";
+            }
+          }
 
           selectedData.material = value;
           input_material.value = value;
@@ -546,19 +525,13 @@ export default function createProductData() {
           createMaterialParams(material);
           break;
         case _COLOR:
-          if (isActive) {
-            needUpdateData = false;
-            return;
-          }
+          if (isActive) return;
           selectedData.color = value;
           color_name.innerHTML = element.title;
           input_color.value = value;
           break;
         case _SERT:
-          if (isActive) {
-            needUpdateData = false;
-            return;
-          }
+          if (isActive) return;
           selectedData.variant = value;
           break;
       }
@@ -620,6 +593,8 @@ export default function createProductData() {
   };
 
   function handleTooltipHover(tooltip, icon) {
+    if (window.innerWidth < 769) return;
+
     tooltip.classList.remove("t", "b");
 
     const tooltipRect = tooltip.getBoundingClientRect();
@@ -646,7 +621,7 @@ export default function createProductData() {
       <button class="item-play flex-c" data-play-video="${video}" data-id="${material.id}"><div class="icon icon_play"></div></button>
       `;
       material.options && imgWrapper.append(params);
-      handleMaterialParams(imgWrapper);
+      handleTooltip(imgWrapper);
     }
     imgWrapper.classList.toggle("with-video", video);
     handlePopUp.open(imgPopUp);
@@ -668,6 +643,10 @@ export default function createProductData() {
   wrapper.addEventListener("click", handleSelectData);
   imgWrapper.addEventListener("click", showVideoPopUp);
   ajaxButton && ajaxButton.addEventListener("click", handleAddToCart);
+  mobileTooltip &&
+    mobileTooltip.addEventListener("click", (e) => {
+      mobileTooltip.classList.remove("active");
+    });
   videoPopUp.onClose = () => {
     activeVideo?.pause();
     setTimeout(() => {
@@ -790,4 +769,15 @@ function getVars(array, data) {
   if (!array.some((m) => m?.id === data?.id)) {
     array.push(data);
   }
+}
+
+function createHTMLTooltip(text, icon = false) {
+  const wrapperStart = icon
+    ? '<span class="info"> <span class="icon"></span>'
+    : "";
+  const wrapperEnd = icon ? "</span>" : "";
+
+  return text
+    ? `${wrapperStart}<span class="tooltip-text"><span class='d'>${text}</span></span>${wrapperEnd}`
+    : "";
 }

@@ -44,6 +44,7 @@ while (have_posts()) :
     </div>
   </section>
 
+  <div class="mobile-text-tooltip"></div>
 
   <?php renderSection('home/builder'); ?>
 

@@ -81,6 +81,23 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
     </div>
   </div>
 
+  <div class="wrapper-attrs flex-v" data-attrs>
+    <div class="wrapper">
+      <div class="wrapper_attribut">
+        <p class="roboto-16-sb name" data-title>Внутрішній чохол
+          <span class="info">
+            <span class="icon"></span>
+          </span>
+          :
+        </p>
+        <label>
+          <input type="checkbox" name="inner_case" data-name>
+          <span data-value>З чохлом</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <form class="variations_form cart" data-product-name="<?php echo esc_attr($product->get_name()); ?>" data-product-form-data action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.

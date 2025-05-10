@@ -161,6 +161,8 @@
   .woocommerce-product-content,
   .woocommerce-product-instruction,
   .instruction-text {
+    transition: opacity var(--transition);
+
     >* {
       margin-top: 1em;
 
@@ -181,6 +183,7 @@
     .variations_form {
       position: relative;
       width: 100%;
+      transition: opacity var(--transition);
     }
 
     .custom-woo-data {
@@ -196,6 +199,15 @@
           border-bottom-right-radius: 0;
           box-shadow: rgb(203 203 203) 0px 0px 6px;
         }
+      }
+    }
+
+    &:has(.custom-woo-data.loading) {
+
+      .woocommerce-product-instruction,
+      .variations_form {
+        pointer-events: none;
+        opacity: 0;
       }
     }
   }
@@ -356,7 +368,12 @@
       padding: min-max(12, 16) min-max(16, 24);
       background: #f9f9f9;
       border-radius: min-max(16, 24);
-      transition: opacity var(--transition);
+      transition: var(--transition);
+
+      &-attrs {
+        gap: 8px;
+        width: 100%;
+      }
 
       &:not(:has(> *)) {
         display: none !important;
@@ -496,124 +513,9 @@
               background: url("../img/info.svg") center/cover no-repeat;
             }
 
-            .text {
-              position: absolute;
-              font-size: min-max(12, 14);
-              display: flex;
-              justify-content: center;
-              min-width: min-max(180, 200);
-              padding: min-max(8, 12) min-max(10, 20);
-              border-radius: min-max(4, 6);
-              opacity: 0;
-              pointer-events: none;
-              transition: opacity var(--transition);
-
-              @include mq-min-768 {
-                background: rgba(35, 31, 32, 0.9);
-                left: 50%;
-                width: min-max(300, 400);
-                color: var(--white);
-
-                &::before {
-                  content: "";
-                  position: absolute;
-                  inset: -12px 0;
-                }
-
-                &::after {
-                  content: "";
-                  position: absolute;
-                  left: 50%;
-                  width: 16px;
-                  height: 8px;
-                  background: rgba(35, 31, 32, 0.9);
-                }
-
-                &.t {
-                  bottom: 100%;
-                  transform: translate(-50%, -10px);
-
-                  &::after {
-                    top: 100%;
-                    transform: translate(-50%, -1px);
-                    clip-path: polygon(50% 100%, 0 0, 100% 0);
-                  }
-
-                  &::before {
-                    top: 0;
-                  }
-                }
-
-                &.b {
-                  top: 100%;
-                  transform: translate(-50%, 10px);
-
-                  &::after {
-                    bottom: 100%;
-                    transform: translate(-50%, 1px);
-                    clip-path: polygon(50% 0%, 0 100%, 100% 100%);
-                  }
-
-                  &::before {
-                    bottom: 0;
-                  }
-                }
-
-                .d {
-                  position: relative;
-                  z-index: 1;
-                }
-              }
-
-              @include mq-max-768 {
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                z-index: 222;
-                padding: min-max(16, 50);
-
-                .d {
-                  background: white;
-                  position: relative;
-                  z-index: 1;
-                  padding: min-max(8, 12) min-max(10, 20);
-                  border-radius: 6px;
-                  box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
-                }
-
-                &::before {
-                  content: "";
-                  position: absolute;
-                  bottom: 0;
-                  left: 0;
-                  right: 0;
-                  height: 110vh;
-                  background: rgb(0 0 0 / 30%);
-                }
-
-                &::after {
-                  content: "";
-                  position: absolute;
-                  bottom: 100%;
-                  left: 50%;
-                  transform: translate(-50%, 8px);
-                  width: 30px;
-                  aspect-ratio: 1;
-                  background: white url("../img/close.svg") center/16px no-repeat;
-                  border-radius: 50%;
-                }
-
-                &.active {
-                  opacity: 1;
-                  pointer-events: all;
-                }
-              }
-            }
-
             @include mq-min-768 {
               @include on-hover {
-                .text {
+                .tooltip-text {
                   opacity: 1;
                   pointer-events: all;
                 }
@@ -974,10 +876,20 @@
           }
 
           .regular {
+            position: relative;
             font-size: 18px;
             color: #8199af;
-            text-decoration: line-through;
-            text-decoration-color: #f94754;
+
+            &:after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 100%;
+              height: 1px;
+              background: #f94754;
+              transform: rotate(8deg);
+            }
           }
 
           .saving {
@@ -1008,6 +920,62 @@
               button {
                 width: calc(100% - 30px);
               }
+            }
+          }
+        }
+      }
+
+      &_attribut {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .name {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          .info {
+            position: relative;
+            display: flex;
+
+            .icon {
+              width: 24px;
+              height: 24px;
+              flex: none;
+              background: url("../img/info.svg") center/cover no-repeat;
+            }
+
+            @include mq-min-768 {
+              @include on-hover {
+                .tooltip-text {
+                  opacity: 1;
+                  pointer-events: all;
+                }
+              }
+            }
+          }
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          line-height: normal;
+          cursor: pointer;
+
+          input {
+            appearance: none;
+            width: 20px;
+            aspect-ratio: 1;
+            border-radius: min-max(2, 4);
+            border: 2px solid #adb6c4;
+            cursor: pointer;
+            outline: none;
+
+            &:checked {
+              border-color: #054f78;
+              background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 12 12'%3E%3Cpath fill='%23054f78' fill-rule='evenodd' d='M10.68.976a1 1 0 0 1 .344 1.372l-5 8.333a1 1 0 0 1-1.565.193L1.126 7.54A1 1 0 0 1 2.54 6.126l2.428 2.428 4.34-7.235a1 1 0 0 1 1.373-.343' clip-rule='evenodd'/%3E%3C/svg%3E") center/12px no-repeat;
             }
           }
         }
@@ -1190,134 +1158,138 @@ section.details {
     }
 
     @include mq-min-768 {
-      .title {
-        position: absolute;
-        left: 50%;
-
-        font-size: min-max(12, 14);
-        white-space: nowrap;
-        display: flex;
-        justify-content: center;
-        min-width: min-max(180, 200);
-        padding: min-max(8, 12) min-max(10, 20);
-        background: rgba(35, 31, 32, 0.9);
-        border-radius: min-max(4, 6);
-        color: var(--white);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--transition);
-
-        &::before {
-          content: "";
-          position: absolute;
-          inset: -12px 0;
-          z-index: -1;
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          left: 50%;
-          width: 16px;
-          height: 8px;
-          background: rgba(35, 31, 32, 0.9);
-        }
-
-        &.t {
-          bottom: 100%;
-          transform: translate(-50%, -10px);
-
-          &::before {
-            top: 0;
-          }
-
-          &:after {
-            top: 100%;
-            transform: translate(-50%, -1px);
-            clip-path: polygon(50% 100%, 0 0, 100% 0);
-          }
-        }
-
-        &.b {
-          top: 100%;
-          transform: translate(-50%, 10px);
-
-          &::before {
-            bottom: 0;
-          }
-
-          &:after {
-            bottom: 100%;
-            transform: translate(-50%, 1px);
-            clip-path: polygon(50% 0%, 0 100%, 100% 100%);
-          }
-        }
+      .tooltip-text {
+        max-width: min-max(150, 180);
+        min-width: unset;
       }
 
       @include on-hover {
-        .title {
+        .tooltip-text {
           opacity: 1;
           pointer-events: all;
         }
       }
     }
+  }
+}
 
-    @include mq-max-768 {
-      .title {
-        font-size: min-max(16, 14);
-        display: flex;
-        justify-content: center;
-        min-width: min-max(180, 200);
-        border-radius: min-max(4, 6);
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity var(--transition);
-        position: fixed;
-        left: 0;
-        right: 0;
+.tooltip-text {
+  display: none;
+
+  @include mq-min-768 {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    min-width: min-max(180, 200);
+    padding: min-max(8, 12) min-max(10, 20);
+    border-radius: min-max(4, 6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition);
+    background: rgba(35, 31, 32, 0.9);
+    left: 50%;
+    width: min-max(300, 400);
+    color: var(--white);
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -12px 0;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 16px;
+      height: 8px;
+      background: rgba(35, 31, 32, 0.9);
+    }
+
+    &.t {
+      bottom: 100%;
+      transform: translate(-50%, -10px);
+
+      &::after {
+        top: 100%;
+        transform: translate(-50%, -1px);
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+      }
+
+      &::before {
+        top: 0;
+      }
+    }
+
+    &.b {
+      top: 100%;
+      transform: translate(-50%, 10px);
+
+      &::after {
+        bottom: 100%;
+        transform: translate(-50%, 1px);
+        clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+      }
+
+      &::before {
         bottom: 0;
-        z-index: 222;
-        padding: min-max(16, 50);
-
-        .d {
-          background: white;
-          position: relative;
-          z-index: 1;
-          padding: min-max(8, 12) min-max(10, 20);
-          border-radius: 6px;
-          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
-        }
-
-        &::before {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: 110vh;
-          background: rgb(0 0 0 / 30%);
-        }
-
-        &::after {
-          content: "";
-          position: absolute;
-          bottom: 100%;
-          left: 50%;
-          transform: translate(-50%, 8px);
-          width: 30px;
-          aspect-ratio: 1;
-          background: white url("../img/close.svg") center/16px no-repeat;
-          border-radius: 50%;
-        }
-      }
-
-      &.active {
-        .title {
-          opacity: 1;
-          pointer-events: all;
-          justify-content: center;
-        }
       }
     }
+
+    * {
+      font-size: min-max(12, 14);
+    }
+
+    .d {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}
+
+.mobile-text-tooltip {
+  position: fixed;
+  inset: 0;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  background: rgb(0 0 0 / 30%);
+
+  @include mq-min-768 {
+    display: none !important;
+  }
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    width: 30px;
+    aspect-ratio: 1;
+    background: white url("../img/close.svg") center/16px no-repeat;
+    border-radius: 50%;
+  }
+
+  * {
+    font-size: 12px;
+  }
+
+  .d {
+    background: white;
+    position: relative;
+    z-index: 1;
+    padding: min-max(8, 12) min-max(10, 20);
+    border-radius: 6px;
+    box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.45);
   }
 }
