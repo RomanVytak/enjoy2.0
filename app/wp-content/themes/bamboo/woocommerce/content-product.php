@@ -107,82 +107,84 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
           <div class="product-item-price flex-v">
             <div class="flex w-full h-between">
               <p class="data-price">
-              <?php
-              if ( $product->is_type( 'variable' ) ) {
-                  $default_attributes = $product->get_default_attributes();
+<?php
+if ( $product->is_type( 'variable' ) ) {
+    $default_attributes = $product->get_default_attributes();
 
-                  if ( empty( $default_attributes ) ) {
-                      $prices = $product->get_variation_prices( true );
-                      $min_price = current( $prices['price'] );
-                      $max_price = end( $prices['price'] );
+    if ( empty( $default_attributes ) ) {
+        // Немає варіацій за замовчуванням – вивести діапазон цін
+        $prices = $product->get_variation_prices( true );
+        $min_price = current( $prices['price'] );
+        $max_price = end( $prices['price'] );
 
-                      if ( $min_price !== $max_price ) {
-                          echo '<span class="price price_html">' . wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . '</span>';
-                      } else {
-                          echo '<span class="price price_html">' . wc_price( $min_price ) . '</span>';
-                      }
-                  } else {
-                      // Знайти варіацію за замовчуванням
-                      $variations = $product->get_available_variations();
-                      $variation_id = null;
+        if ( $min_price !== $max_price ) {
+            echo '<span class="price price_html">' . wc_price( $min_price ) . ' - ' . wc_price( $max_price ) . '</span>';
+        } else {
+            echo '<span class="price price_html">' . wc_price( $min_price ) . '</span>';
+        }
+    } else {
+        // Є варіація за замовчуванням — шукаємо її серед доступних
+        $variations = $product->get_available_variations();
+        $variation_id = null;
 
-                      foreach ( $variations as $variation ) {
-                          $match = true;
-                          foreach ( $default_attributes as $key => $value ) {
-                              if ( $variation['attributes']['attribute_' . $key] !== $value ) {
-                                  $match = false;
-                                  break;
-                              }
-                          }
-                          if ( $match ) {
-                              $variation_id = $variation['variation_id'];
-                              break;
-                          }
-                      }
+        foreach ( $variations as $variation ) {
+            $match = true;
+            foreach ( $default_attributes as $key => $value ) {
+                $attribute_key = 'attribute_' . $key;
+                if ( !isset( $variation['attributes'][ $attribute_key ] ) || $variation['attributes'][ $attribute_key ] !== $value ) {
+                    $match = false;
+                    break;
+                }
+            }
 
-                      if ( $variation_id ) {
-                          $variation_product = wc_get_product( $variation_id );
+            if ( $match ) {
+                $variation_id = $variation['variation_id'];
+                break;
+            }
+        }
 
-                          echo '<span class="price_html">';
-                          echo $variation_product->get_price_html();
-                          echo '</span>';
+        if ( $variation_id ) {
+            $variation_product = wc_get_product( $variation_id );
+            $regular_price = (float) $variation_product->get_regular_price();
+            $sale_price = (float) $variation_product->get_sale_price();
 
-                          $regular_price = (float) $variation_product->get_regular_price();
-                          $sale_price = (float) $variation_product->get_sale_price();
+            echo '<span class="price_html">';
+            echo wc_price( $variation_product->get_price() );
+            echo '</span>';
 
-                          if ( $sale_price && $regular_price > $sale_price ) {
-                              $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
-                              $saving_money = $regular_price - $sale_price;
+            if ( $sale_price && $regular_price > $sale_price ) {
+                $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
+                $saving_money = $regular_price - $sale_price;
 
-                              echo '<span class="discount">';
-                              echo '<span class="discount-top"><span class="discount-percent">-' . $discount_percent . '%</span>';
-                              echo '<span class="discount-price">' . wc_price( $regular_price ) . '</span></span>';
-                              echo '<span class="discount-saving">Економія ' . wc_price( $saving_money ) . '</span>';
-                              echo '</span>';
-                          }
-                      }
-                  }
-              } else {
-                  // Для простих товарів
-                  $regular_price = (float) $product->get_regular_price();
-                  $sale_price = (float) $product->get_sale_price();
+                echo '<span class="discount">';
+                echo '<span class="discount-top"><span class="discount-percent">-' . $discount_percent . '%</span>';
+                echo '<span class="discount-price">' . wc_price( $regular_price ) . '</span></span>';
+                echo '<span class="discount-saving">Економія ' . wc_price( $saving_money ) . '</span>';
+                echo '</span>';
+            }
+        }
+    }
+} else {
+    // Простий продукт
+    $regular_price = (float) $product->get_regular_price();
+    $sale_price = (float) $product->get_sale_price();
 
-                  echo '<span class="price_html">';
-                  echo $product->get_price_html();
-                  echo '</span>';
+    echo '<span class="price_html">';
+    echo $product->get_price_html();
+    echo '</span>';
 
-                  if ( $sale_price && $regular_price > $sale_price ) {
-                      $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
-                      $saving_money = $regular_price - $sale_price;
+    if ( $sale_price && $regular_price > $sale_price ) {
+        $discount_percent = round( ( ( $regular_price - $sale_price ) / $regular_price ) * 100 );
+        $saving_money = $regular_price - $sale_price;
 
-                      echo '<span class="discount">';
-                      echo '<span class="discount_percent">-' . $discount_percent . '%</span>';
-                      echo '<span class="full_price">' . wc_price( $regular_price ) . '</span>';
-                      echo '<span class="saving_money">Економія ' . wc_price( $saving_money ) . '</span>';
-                      echo '</span>';
-                  }
-              }
-              ?>
+        echo '<span class="discount">';
+        echo '<span class="discount_percent">-' . $discount_percent . '%</span>';
+        echo '<span class="full_price">' . wc_price( $regular_price ) . '</span>';
+        echo '<span class="saving_money">Економія ' . wc_price( $saving_money ) . '</span>';
+        echo '</span>';
+    }
+}
+?>
               </p>
             </div>
 
