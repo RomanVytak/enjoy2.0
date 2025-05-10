@@ -797,8 +797,6 @@ function disable_required_address_fields( $fields ) {
     $fields['state']['required'] = false;
     $fields['city']['required'] = false;
     $fields['postcode']['required'] = false;
-    $fields['address_1']['required'] = false; // якщо треба
-
     return $fields;
 }
 
