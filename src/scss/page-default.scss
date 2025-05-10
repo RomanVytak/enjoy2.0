@@ -1278,6 +1278,7 @@ section.page-custom {
       padding: min-max(10, 14);
       justify-content: center;
       margin: 0 !important;
+      transition:background-color var(--transition);
 
       @include on-hover {
         background: var(--orange-1);
