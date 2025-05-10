@@ -665,10 +665,9 @@ function enjoy_replace_excerpt_with_content() {
   }
 
   if (function_exists('get_field')) {
-    if (get_field('instruct_name')) {
+    if (get_field('instruct_text')) {
       echo '
         <div class="woocommerce-product-instruction">
-          <div class="instruction-title">' . get_field('instruct_name') . '</div>
           <div class="instruction-text">' . get_field('instruct_text') . '</div>
         </div>
         ';

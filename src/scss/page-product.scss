@@ -668,7 +668,7 @@
           display: flex;
           align-items: center;
           flex-wrap: wrap;
-          gap: 8px 16px;
+          gap: 8px;
 
           .size {
             cursor: pointer;
@@ -677,8 +677,10 @@
             display: flex;
             font-size: min-max(14, 16);
             align-items: center;
-            min-height: min-max(32, 40);
-            padding: 0 min-max(12, 16);
+            justify-content: center;
+            padding: 0 10px;
+            height: 36px;
+            min-width: 36px;
             border-radius: min-max(10, 12);
             border: 1px solid #adb6c4;
             transition: var(--transition);
@@ -854,8 +856,9 @@
           }
 
           .currency {
+            margin-left: -0.3em;
             @include roboto-16;
-            font-size: min-max(28, 38);
+            font-size: 18px;
           }
 
           .info {
