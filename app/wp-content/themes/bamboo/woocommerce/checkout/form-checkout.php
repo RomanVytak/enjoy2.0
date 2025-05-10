@@ -54,17 +54,20 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 	<?php endif; ?>
 	
 	<div class="wc-block-components-sidebar wc-block-checkout__sidebar wp-block-woocommerce-checkout-totals-block is-large">
-	<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
-	
-	<h3 id="order_review_heading"><?php esc_html_e( 'Your order', 'woocommerce' ); ?></h3>
-	
-	<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
+		<div class="wp-block-woocommerce-checkout-order-summary-block">
+			<?php do_action( 'woocommerce_checkout_before_order_review_heading' ); ?>
+			<div class="wc-block-components-checkout-order-summary__title">
+				<p class="wc-block-components-checkout-order-summary__title-text" role="heading">Ваше замовлення</p>
+			</div>
+		
+			<?php do_action( 'woocommerce_checkout_before_order_review' ); ?>
 
-	<div id="order_review" class="woocommerce-checkout-review-order">
-		<?php do_action( 'woocommerce_checkout_order_review' ); ?>
-	</div>
+			<div id="order_review" class="woocommerce-checkout-review-order">
+				<?php do_action( 'woocommerce_checkout_order_review' ); ?>
+			</div>
 
-	<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+			<?php do_action( 'woocommerce_checkout_after_order_review' ); ?>
+		</div>
 	</div>
 
 	</div>
