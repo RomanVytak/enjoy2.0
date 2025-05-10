@@ -790,6 +790,18 @@ function remove_menus()
 add_action('admin_menu', 'remove_menus');
 
 /* remove checkout fields */
+// disable required
+add_filter( 'woocommerce_default_address_fields', 'disable_required_address_fields' );
+function disable_required_address_fields( $fields ) {
+    // Робимо необов'язковими наступні поля
+    $fields['state']['required'] = false;
+    $fields['city']['required'] = false;
+    $fields['postcode']['required'] = false;
+    $fields['address_1']['required'] = false; // якщо треба
+
+    return $fields;
+}
+
 // Hook in
 add_filter('woocommerce_checkout_fields', 'custom_override_checkout_fields');
 // Our hooked in function - $fields is passed via the filter!
