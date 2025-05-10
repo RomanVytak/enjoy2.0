@@ -2,6 +2,7 @@
 @import "swiper/swiper.css";
 
 .catalog {
+
   // сортування
   &--ordering {
     display: flex;
@@ -231,6 +232,7 @@
         }
 
         .page-numbers {
+
           &.next,
           &.prev {
             transition: var(--transition);
@@ -361,10 +363,14 @@
     }
 
     &-price {
-      padding: min-max(12, 16);
+      padding: min-max(12, 24);
       background-color: #f9f9f9;
       border-radius: min-max(16, 24);
-      gap: min-max(16, 24);
+      gap: min-max(10, 15);
+
+      .data-price-wrap {
+        min-height: 49px;
+      }
 
       .data-price {
         display: flex;
@@ -375,6 +381,12 @@
         .price_html {
           @include roboto-38-B;
           font-family: var(--roboto-b);
+
+          .woocommerce-Price-currencySymbol {
+            display: inline-block;
+            margin: 0 0 0 -0.4em;
+            font-size: min-max(14, 18);
+          }
         }
 
         // &:has(del) {
@@ -396,11 +408,11 @@
         .discount {
           display: flex;
           flex-direction: column;
-          gap: 5px;
+
           &-top {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
           }
 
           &-percent {
@@ -413,12 +425,23 @@
             text-align: center;
             line-height: normal;
           }
+
           &-price {
+            position: relative;
             font-size: min-max(16, 18);
             color: #8199af;
-            text-decoration: line-through;
-            text-decoration-color: #f94754;
+
+            &:after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 100%;
+              height: 1px;
+              background: #f94754;
+            }
           }
+
           &-saving {
             color: #00ae11;
           }
@@ -433,26 +456,6 @@
           // text-decoration-color: #f94754;
           // line-height: normal;
           // margin: 2px min-max(10, 20);
-        }
-      }
-
-      .payment-icons {
-        gap: 12px;
-
-        .group {
-          gap: 12px;
-
-          .itt {
-            display: flex;
-            aspect-ratio: 1;
-            width: 24px;
-
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: contain;
-            }
-          }
         }
       }
 
@@ -477,6 +480,7 @@
       //   border-color: var(--white);
       //   color: var(--white);
       // }
+
       .product-item-circle {
         border-radius: 0%;
         transform: scale(1.5);

@@ -186,11 +186,7 @@ $color = get_field('product_color', 'product_cat_'.$product_category_id);
               </p>
             </div>
 
-            <div class="payment-icons flex v-center">
-              <div class="group flex v-center">
-                <div class="itt pr"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/pr.svg" alt=""></div>
-                <div class="itt mon"> <img src="https://enjoy.ua/wp-content/themes/enjoy/img/payment/mon.svg" alt=""></div>
-              </div>
+            <div class="payment-icons">
               <a href="<?php echo esc_url( get_permalink( $product->get_id() ) ); ?>" class="link roboto-16-b flex-c" title="Обрати дизайн">
                 Обрати дизайн
               </a>
