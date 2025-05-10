@@ -1352,8 +1352,7 @@ function custom_text_field_output( $field, $key, $args, $value ) {
     // Повна заміна HTML
     $field = sprintf(
         '<div class="wc-block-components-text-input is-active">
-            <label for="%1$s">%2$s</label>
-            <input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
+            <label for="%1$s">%2$s</label><input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
         </div>',
         esc_attr( $key ),
         esc_html( $args['label'] ),
