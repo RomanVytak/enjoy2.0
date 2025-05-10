@@ -88,7 +88,7 @@
 
                     $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
 
-                    echo '<div class="swiper-slide image obj-cover" data-id="' . $variation_id . '">';
+                    echo '<div class="swiper-slide image obj-contain" data-id="' . $variation_id . '">';
                     echo $variation_image_html;
                     echo '</div>';
                 }
@@ -130,7 +130,7 @@
 
                 $variation_image_html = wp_get_attachment_image($variation_image_id, 'full', false, $img_attrs);
 
-                echo '<div class="swiper-slide image obj-cover" data-id="' . $variation_id . '">';
+                echo '<div class="swiper-slide image obj-contain" data-id="' . $variation_id . '">';
                 echo $variation_image_html;
                 echo '</div>';
             }

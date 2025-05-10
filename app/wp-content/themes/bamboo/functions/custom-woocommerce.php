@@ -71,7 +71,7 @@ function get_custom_image_html($attachment_id, $main_image = false)
 {
 
   if (empty($attachment_id)) {
-    return '<div class="swiper-slide image obj-cover">' . wc_placeholder_img() . '</div>';
+    return '<div class="swiper-slide image obj-contain">' . wc_placeholder_img() . '</div>';
   }
   $flexslider        = (bool) apply_filters('woocommerce_single_product_flexslider_enabled', get_theme_support('wc-product-gallery-slider'));
   $gallery_thumbnail = wc_get_image_size('gallery_thumbnail');
@@ -99,7 +99,7 @@ function get_custom_image_html($attachment_id, $main_image = false)
   );
 
 
-  return '<div class="swiper-slide image obj-cover">' . $image . '</div>';
+  return '<div class="swiper-slide image obj-contain">' . $image . '</div>';
 }
 
 // Remove default thumbnail output
@@ -557,6 +557,8 @@ function customize_product_variations($variation_data, $product, $variation) {
               $variation_data['material_colors'][$color]['name']=$term->name;
               $variation_data['material_colors'][$color]['image']=$color_img;
               $variation_data['material_colors'][$color]['id']=$color;
+              $variation_data['material_colors'][$color]['image_html']= wp_get_attachment_image($color);
+
             }
 
             $options = get_field('options', 'pa_material_'.$material_id);

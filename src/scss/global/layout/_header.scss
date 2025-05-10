@@ -181,9 +181,15 @@
     background: var(--orange-1);
     align-self: center;
     border-radius: 50%;
-    margin-left: -1px;
+    margin-left: min-max(2,4);
     font-family: var(--roboto-m);
     font-weight: 500;
+  }
+  &-bag {
+
+    .icon_cart {
+      top: auto;
+    }
   }
 
   @include mq-max-1024 {
