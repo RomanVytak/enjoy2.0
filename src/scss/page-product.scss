@@ -162,7 +162,8 @@
   .woocommerce-product-instruction,
   .instruction-text {
     transition: opacity var(--transition);
-    > * {
+
+    >* {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -202,6 +203,7 @@
     }
 
     &:has(.custom-woo-data.loading) {
+
       .woocommerce-product-instruction,
       .variations_form {
         pointer-events: none;
@@ -874,10 +876,20 @@
           }
 
           .regular {
+            position: relative;
             font-size: 18px;
             color: #8199af;
-            text-decoration: line-through;
-            text-decoration-color: #f94754;
+
+            &:after {
+              content: '';
+              position: absolute;
+              top: 50%;
+              left: 0;
+              width: 100%;
+              height: 1px;
+              background: #f94754;
+              transform: rotate(8deg);
+            }
           }
 
           .saving {
@@ -1045,7 +1057,7 @@
   }
 
   .woocommerce-tabs-panel {
-    & > * {
+    &>* {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -1150,6 +1162,7 @@ section.details {
         max-width: min-max(150, 180);
         min-width: unset;
       }
+
       @include on-hover {
         .tooltip-text {
           opacity: 1;
@@ -1162,6 +1175,7 @@ section.details {
 
 .tooltip-text {
   display: none;
+
   @include mq-min-768 {
     position: absolute;
     display: flex;

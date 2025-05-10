@@ -368,10 +368,6 @@
       border-radius: min-max(16, 24);
       gap: min-max(10, 15);
 
-      .data-price-wrap {
-        min-height: 49px;
-      }
-
       .data-price {
         display: flex;
         align-items: center;
@@ -428,6 +424,7 @@
 
           &-price {
             position: relative;
+            display: block;
             font-size: min-max(16, 18);
             color: #8199af;
 
@@ -439,6 +436,7 @@
               width: 100%;
               height: 1px;
               background: #f94754;
+              transform: rotate(8deg);
             }
           }
 
