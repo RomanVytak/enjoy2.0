@@ -602,7 +602,11 @@ function customize_product_variations($variation_data, $product, $variation) {
         $variation_data['variants_details']['slug']=$variants_term->slug;
         $variation_data['variants_details']['name']=$variants_term->name;
         // $variation_data['variants_details']['image']=$variants_img;
-        $variation_data['variants_details']['image_html']= wp_get_attachment_image($variants_img['id']);
+        if ( isset( $variants_img['id'] ) && absint( $variants_img['id'] ) > 0 ) {
+            $variation_data['variants_details']['image_html'] = wp_get_attachment_image( $variants_img['id'] );
+        } else {
+            $variation_data['variants_details']['image_html'] = ''; // або запасне зображення
+        }
         $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_'.$variants_id);
         // $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
       }
@@ -1348,8 +1352,7 @@ function custom_text_field_output( $field, $key, $args, $value ) {
     // Повна заміна HTML
     $field = sprintf(
         '<div class="wc-block-components-text-input is-active">
-            <label for="%1$s">%2$s</label>
-            <input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
+            <label for="%1$s">%2$s</label><input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
         </div>',
         esc_attr( $key ),
         esc_html( $args['label'] ),
