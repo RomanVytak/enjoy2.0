@@ -161,6 +161,7 @@
   .woocommerce-product-content,
   .woocommerce-product-instruction,
   .instruction-text {
+    transition: opacity var(--transition);
     > * {
       margin-top: 1em;
 
@@ -181,6 +182,7 @@
     .variations_form {
       position: relative;
       width: 100%;
+      transition: opacity var(--transition);
     }
 
     .custom-woo-data {
@@ -196,6 +198,14 @@
           border-bottom-right-radius: 0;
           box-shadow: rgb(203 203 203) 0px 0px 6px;
         }
+      }
+    }
+
+    &:has(.custom-woo-data.loading) {
+      .woocommerce-product-instruction,
+      .variations_form {
+        pointer-events: none;
+        opacity: 0;
       }
     }
   }
@@ -357,6 +367,11 @@
       background: #f9f9f9;
       border-radius: min-max(16, 24);
       transition: var(--transition);
+
+      &-attrs {
+        gap: 8px;
+        width: 100%;
+      }
 
       &:not(:has(> *)) {
         display: none !important;
@@ -893,6 +908,62 @@
               button {
                 width: calc(100% - 30px);
               }
+            }
+          }
+        }
+      }
+
+      &_attribut {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .name {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          .info {
+            position: relative;
+            display: flex;
+
+            .icon {
+              width: 24px;
+              height: 24px;
+              flex: none;
+              background: url("../img/info.svg") center/cover no-repeat;
+            }
+
+            @include mq-min-768 {
+              @include on-hover {
+                .tooltip-text {
+                  opacity: 1;
+                  pointer-events: all;
+                }
+              }
+            }
+          }
+        }
+
+        label {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          line-height: normal;
+          cursor: pointer;
+
+          input {
+            appearance: none;
+            width: 20px;
+            aspect-ratio: 1;
+            border-radius: min-max(2, 4);
+            border: 2px solid #adb6c4;
+            cursor: pointer;
+            outline: none;
+
+            &:checked {
+              border-color: #054f78;
+              background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 12 12'%3E%3Cpath fill='%23054f78' fill-rule='evenodd' d='M10.68.976a1 1 0 0 1 .344 1.372l-5 8.333a1 1 0 0 1-1.565.193L1.126 7.54A1 1 0 0 1 2.54 6.126l2.428 2.428 4.34-7.235a1 1 0 0 1 1.373-.343' clip-rule='evenodd'/%3E%3C/svg%3E") center/12px no-repeat;
             }
           }
         }
