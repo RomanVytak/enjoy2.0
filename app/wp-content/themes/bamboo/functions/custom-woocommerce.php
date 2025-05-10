@@ -1268,7 +1268,7 @@ function custom_override_checkout_fields($fields)
             'select_town',
         )
     ), $fields['billing']['billing_city'] );*/
-
+/*
   $region_args = wp_parse_args(array(
     'type' => 'select',
     'options' => array(
@@ -1303,6 +1303,7 @@ function custom_override_checkout_fields($fields)
       'select_town',
     )
   ), $fields['billing']['billing_state']);
+  */
 
     $name = 'Ім’я';
     $last_name = 'Прізвище';
@@ -1337,3 +1338,22 @@ function custom_override_checkout_fields($fields)
 
   return $fields;
 }
+
+// зміна поля в чекауті
+add_filter( 'woocommerce_form_field', 'custom_text_field_output', 10, 4 );
+
+function custom_text_field_output( $field, $key, $args, $value ) {
+    // Повна заміна HTML
+    $field = sprintf(
+        '<div class="wc-block-components-text-input is-active">
+            <label for="%1$s">%2$s</label>
+            <input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
+        </div>',
+        esc_attr( $key ),
+        esc_html( $args['label'] ),
+        esc_attr( $value )
+    );
+    return $field;
+}
+
+
