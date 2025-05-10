@@ -133,5 +133,9 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
 </form>
 
+<div class="consultation-form">
+  <?php echo do_shortcode('[contact-form-7 id="45e8339"]'); ?>
+</div>
+
 <?php
 do_action('woocommerce_after_add_to_cart_form');
