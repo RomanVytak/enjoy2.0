@@ -536,7 +536,7 @@ function customize_product_variations($variation_data, $product, $variation) {
             $material_img = get_field('image', 'pa_material_'.$material_id);
 
 
-            if (!empty($material_img) && isset($material_img['url'])) {
+          if (!empty($material_img) && isset($material_img['url'])) {
               $full_size = esc_url($material_img['url']);
           }
 
@@ -554,10 +554,18 @@ function customize_product_variations($variation_data, $product, $variation) {
             foreach($colors as $color){
               $term = get_term($color, 'pa_kolory');
               $color_img = get_field('photo', 'pa_kolory_'.$color);
+
+              
+              if (!empty($color_img) && isset($color_img['url'])) {
+                $color_full_size = esc_url($color_img['url']);
+              }else{
+                $color_full_size ='';
+              }
+
               $variation_data['material_colors'][$color]['name']=$term->name;
-              $variation_data['material_colors'][$color]['image']=$color_img;
+              $variation_data['material_colors'][$color]['image']=$color_full_size;
               $variation_data['material_colors'][$color]['id']=$color;
-              // $variation_data['material_colors'][$color]['image_html']= wp_get_attachment_image($color);
+              $variation_data['material_colors'][$color]['image_html']= isset($color_img['id']) ? wp_get_attachment_image($color_img['id']) : '';
 
             }
 
