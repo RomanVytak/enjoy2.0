@@ -117,14 +117,22 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
     <input type="hidden" name="custom_data[color]">
     <input type="hidden" name="variation_id" value="">
 
+
+
     <div class="custom-woo-data">
       <div class="wrapper">
         <div class="wrapper_sent">
           <div class="wrapper_sent_price" data-custom-price></div>
 
           <div class="wrapper_sent_nav">
-            <div class="spinner"></div>
-            <button type="button" aria-label="Замовити" disabled data-sent-ajax>Замовити</button>
+            <div class="buy">
+              <img src="<?php echo getAssets('/img/shares/pay.png')  ?>" alt="">
+            </div>
+            <div class="cta">
+              <div class="spinner"></div>
+              <button type="button" aria-label="Замовити" disabled data-sent-ajax>Замовити</button>
+            </div>
+            <button class="rotate" type="button"></button>
           </div>
         </div>
       </div>
@@ -134,7 +142,11 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 </form>
 
 <div class="consultation-form">
-  <?php echo do_shortcode('[contact-form-7 id="45e8339"]'); ?>
+  <div class="custom-woo-data">
+    <div class="wrapper">
+      <?php echo do_shortcode('[contact-form-7 id="45e8339"]'); ?>
+    </div>
+  </div>
 </div>
 
 <?php

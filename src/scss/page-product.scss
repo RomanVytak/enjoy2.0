@@ -163,12 +163,31 @@
   .instruction-text {
     transition: opacity var(--transition);
 
-    >* {
+    > * {
       margin-top: 1em;
 
       &:nth-child(1) {
         margin-top: 0;
       }
+    }
+  }
+
+  .woocommerce-product-instruction {
+    padding: min-max(20, 24) min-max(20, 32);
+    border-radius: min-max(12, 16);
+    background: var(--white);
+    border: 1px solid #f94754;
+    display: flex;
+    align-items: flex-start;
+    gap: min-max(6, 8);
+
+    &::before {
+      content: "";
+      display: block;
+      width: min-max(20, 24);
+      aspect-ratio: 1;
+      flex: none;
+      background: url("../img/info.svg") center/cover no-repeat;
     }
   }
 
@@ -203,7 +222,6 @@
     }
 
     &:has(.custom-woo-data.loading) {
-
       .woocommerce-product-instruction,
       .variations_form {
         pointer-events: none;
@@ -808,39 +826,72 @@
           display: flex;
           align-items: center;
           position: relative;
+          gap: min-max(6, 8);
+
+          .buy {
+            display: flex;
+            flex: none;
+            width: min-max(50, 60);
+
+            img {
+              width: 100%;
+              height: auto;
+            }
+          }
 
           .spinner {
             background: #c9c9c9;
+            position: absolute;
+            left: 0;
           }
 
-          button {
-            font-size: min-max(14, 16);
-            font-weight: 700;
-            font-family: var(--roboto-b);
-            color: var(--white);
-            padding: min-max(14, 16) min-max(30, 40);
-            border-radius: min-max(12, 16);
-            background: var(--orange-2);
+          .cta {
+            display: flex;
+            align-items: center;
+            position: relative;
             transition: var(--transition);
+            flex: 1;
 
-            @include on-hover {
-              background: var(--orange-1);
+            button {
+              font-size: min-max(14, 16);
+              font-weight: 700;
+              font-family: var(--roboto-b);
+              color: var(--white);
+              padding: min-max(10, 16) min-max(30, 40);
+              border-radius: min-max(12, 16);
+              background: var(--orange-2);
+              transition: var(--transition);
+              min-height: 40px;
+
+              @include on-hover {
+                background: var(--orange-1);
+              }
+
+              &:disabled {
+                background: #c9c9c9;
+                cursor: not-allowed;
+              }
             }
 
-            &:disabled {
-              background: #c9c9c9;
+            &.loading {
+              padding-left: min-max(24, 28);
+
+              button {
+                background: #c9c9c9;
+                pointer-events: none;
+              }
+
+              .spinner {
+                opacity: 1;
+              }
             }
           }
 
-          &.loading {
-            button {
-              background: #c9c9c9;
-              pointer-events: none;
-            }
-
-            .spinner {
-              opacity: 1;
-            }
+          .rotate {
+            flex: none;
+            width: min-max(40, 48);
+            aspect-ratio: 1;
+            background: url("../img/3D.svg") center/cover no-repeat;
           }
         }
 
@@ -864,6 +915,7 @@
           .info {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
             margin-top: min-max(6, 10);
             gap: 6px;
           }
@@ -884,7 +936,7 @@
             color: #8199af;
 
             &:after {
-              content: '';
+              content: "";
               position: absolute;
               top: 50%;
               left: 0;
@@ -897,6 +949,7 @@
 
           .saving {
             color: #00ae11;
+            width: 100%;
           }
         }
 
@@ -914,15 +967,16 @@
             width: 100%;
             justify-content: flex-end;
 
-            button {
-              width: 100%;
-              justify-content: center;
-            }
-
-            &.loading {
+            .cta {
               button {
-                width: calc(100% - 30px);
+                width: 100%;
+                justify-content: center;
               }
+              // &.loading {
+              //   button {
+              //     width: calc(100% - 30px);
+              //   }
+              // }
             }
           }
         }
@@ -1015,6 +1069,98 @@
       }
     }
   }
+
+  .consultation-form {
+    .screen-reader-response,
+    .wpcf7-response-output {
+      display: none;
+      font-size: min-max(12, 14);
+      color: #00ae11;
+    }
+
+    .wpcf7-not-valid-tip {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      padding-top: min-max(6, 10);
+      color: var(--orange-2);
+      font-size: min-max(10, 12);
+      white-space: nowrap;
+    }
+    form {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      position: relative;
+      align-items: flex-start;
+
+      .form-wrapper {
+        width: 100%;
+        display: flex;
+        padding: min-max(6, 8);
+        border-radius: min-max(12, 16);
+        background: var(--white);
+        gap: min-max(6, 8);
+      }
+
+      .wpcf7-form-control-wrap {
+        display: flex;
+        flex: 1;
+        position: relative;
+
+        input {
+          padding: 0 min-max(6, 8);
+          width: 100%;
+          border: none;
+          outline: none;
+          font-size: min-max(14, 16);
+        }
+      }
+
+      .spinner {
+        position: absolute;
+        background: #c9c9c9;
+        right: min-max(12, 16);
+        margin: 0;
+      }
+
+      .submit {
+        border: none;
+        outline: none;
+        @include use-font(var(--roboto-r), min-max(14, 16), 400, 140%);
+        color: var(--white);
+        background: #c9c9c9;
+        border-radius: min-max(12, 16);
+        padding: min-max(8, 10) min-max(12, 16);
+        transition: var(--transition);
+        position: relative;
+
+        @include on-hover {
+          background: var(--orange-2);
+        }
+      }
+
+      &.submitting {
+        .submit {
+          background: #c9c9c9;
+          pointer-events: none;
+          padding-right: min-max(34, 42);
+        }
+
+        .spinner {
+          opacity: 1;
+        }
+      }
+
+      &.resetting,
+      &.sent {
+        .wpcf7-response-output {
+          display: block;
+          padding-top: min-max(12, 16);
+        }
+      }
+    }
+  }
 }
 
 .product_tabs {
@@ -1060,7 +1206,7 @@
   }
 
   .woocommerce-tabs-panel {
-    &>* {
+    & > * {
       margin-top: 1em;
 
       &:nth-child(1) {

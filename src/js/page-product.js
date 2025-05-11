@@ -82,6 +82,7 @@ const pinBuyButton = () => {
 
   const pinned = ScrollTrigger.create({
     trigger: pinWrapper,
+    endTrigger: form,
     start: "top 100000px",
     end: `bottom bottom`,
     // markers: true,
