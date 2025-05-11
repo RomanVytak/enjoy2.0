@@ -126,7 +126,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
           <div class="wrapper_sent_nav">
             <div class="buy">
-              <img src="<?php echo getAssets('/img/shares/pay.png')  ?>" alt="">
+              <img src="<?php echo getAssets('/img/shares/pay.webp')  ?>" alt="">
             </div>
             <div class="cta">
               <div class="spinner"></div>
