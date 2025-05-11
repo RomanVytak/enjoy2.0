@@ -557,7 +557,7 @@ function customize_product_variations($variation_data, $product, $variation) {
               $variation_data['material_colors'][$color]['name']=$term->name;
               $variation_data['material_colors'][$color]['image']=$color_img;
               $variation_data['material_colors'][$color]['id']=$color;
-              $variation_data['material_colors'][$color]['image_html']= wp_get_attachment_image($color);
+              // $variation_data['material_colors'][$color]['image_html']= wp_get_attachment_image($color);
 
             }
 
