@@ -14,6 +14,8 @@
   padding: min-max(8, 14) min-max(16, 50) min-max(6, 16);
   color: #878787;
   overflow: hidden;
+  position: relative;
+  z-index: 2;
 
   a,
   p {
@@ -50,6 +52,9 @@
     @include grid(12, min-max(24, 48), 24px);
     padding-bottom: min-max(60, 200);
     overflow: hidden;
+
+    padding-top: 50px;
+    margin-top: -50px;
 
     @include mq-max-768 {
       display: flex;
@@ -499,6 +504,10 @@
           gap: 8px;
           transition: var(--transition);
 
+          &-title {
+            justify-content: flex-end;
+          }
+
           &:has(.hidden) {
             opacity: 0;
             pointer-events: none;
@@ -830,12 +839,12 @@
 
           .buy {
             display: flex;
-            flex: none;
-            width: min-max(50, 60);
+            gap: min-max(6, 8);
 
             img {
-              width: 100%;
+              width: 28px;
               height: auto;
+              border-radius: 4px;
             }
           }
 
@@ -1335,7 +1344,7 @@ section.details {
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition);
-    background: rgba(35, 31, 32, 0.9);
+    background: rgba(35, 31, 32);
     left: 50%;
     width: min-max(300, 400);
     color: var(--white);
@@ -1352,7 +1361,7 @@ section.details {
       left: 50%;
       width: 16px;
       height: 8px;
-      background: rgba(35, 31, 32, 0.9);
+      background: rgba(35, 31, 32);
     }
 
     &.t {
