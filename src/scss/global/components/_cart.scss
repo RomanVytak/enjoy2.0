@@ -146,6 +146,21 @@
         flex: none;
       }
     }
+
+    .variations {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      .var {
+        display: flex;
+        gap: 4px;
+        color: #7b7b7b;
+
+        * {
+          font-size: min-max(12, 14);
+        }
+      }
+    }
   }
 
   .custom-minicart-quantity {
