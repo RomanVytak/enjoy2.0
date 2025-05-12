@@ -1179,6 +1179,31 @@ section.page-custom {
           }
         }
       }
+
+      .cart-discount {
+        td {
+          position: relative;
+          padding-right: min-max(24, 28);
+        }
+      }
+
+      .woocommerce-remove-coupon {
+        display: inline-flex;
+        overflow: hidden;
+        color: transparent !important;
+        width: min-max(18, 24);
+        height: min-max(18, 24);
+        mask: url("../img/trash.svg") center/cover no-repeat;
+        background-color: #2b3f6c;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+
+        @include on-hover {
+          background-color: var(--orange-2);
+        }
+      }
     }
   }
 
@@ -1278,7 +1303,7 @@ section.page-custom {
       padding: min-max(10, 14);
       justify-content: center;
       margin: 0 !important;
-      transition:background-color var(--transition);
+      transition: background-color var(--transition);
 
       @include on-hover {
         background: var(--orange-1);
@@ -1295,6 +1320,12 @@ section.page-custom {
       font-size: min-max(14, 16);
       color: var(--orange-2);
     }
+  }
+
+  .custom-message-success {
+    @include use-font(var(--roboto-r), min-max(14, 16), 400, 110%);
+    margin-bottom: 1.5em;
+    color: #00ae11;
   }
 }
 
