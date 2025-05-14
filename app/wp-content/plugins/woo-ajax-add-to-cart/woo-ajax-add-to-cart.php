@@ -4,17 +4,17 @@
  * Plugin Name:             Ajax add to cart for WooCommerce
  * Plugin URI:              https://quadlayers.com
  * Description:             Ajax add to cart for WooCommerce products
- * Version:                 2.4.5
+ * Version:                 2.4.9
  * Text Domain:             woo-ajax-add-to-cart
  * Author:                  QuadLayers
  * Author URI:              https://quadlayers.com
  * License:                 GPLv3
  * Domain Path:             /languages
  * Request at least:        4.7
- * Tested up to:            6.7
+ * Tested up to:            6.8
  * Requires PHP:            5.6
  * WC requires at least:    4.0
- * WC tested up to:         9.6
+ * WC tested up to:         9.8
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'QLWCAJAX_PLUGIN_NAME', 'Ajax add to cart for WooCommerce' );
-define( 'QLWCAJAX_PLUGIN_VERSION', '2.4.5' );
+define( 'QLWCAJAX_PLUGIN_VERSION', '2.4.9' );
 define( 'QLWCAJAX_PLUGIN_FILE', __FILE__ );
 define( 'QLWCAJAX_PLUGIN_DIR', __DIR__ . DIRECTORY_SEPARATOR );
 define( 'QLWCAJAX_DOMAIN', 'qlwcajax' );
@@ -35,6 +35,7 @@ define( 'QLWCAJAX_SUPPORT_URL', 'https://quadlayers.com/account/support/?utm_sou
 define( 'QLWCAJAX_GROUP_URL', 'https://www.facebook.com/groups/quadlayers' );
 define( 'QLWCAJAX_DEVELOPER', false );
 define( 'QLWCAJAX_PREMIUM_SELL_URL', 'https://quadlayers.com/products/woocommerce-direct-checkout/?utm_source=qlwcajax_admin' );
+define( 'QLWCAJAX_DOCUMENTATION_URL', 'https://quadlayers.com/documentation/woocommerce-direct-checkout/?utm_source=qlwcajax_admin' );
 
 /**
  * Load composer autoload
@@ -49,6 +50,7 @@ require_once __DIR__ . '/vendor_packages/wp-plugin-table-links.php';
 require_once __DIR__ . '/vendor_packages/wp-notice-plugin-required.php';
 require_once __DIR__ . '/vendor_packages/wp-notice-plugin-promote.php';
 require_once __DIR__ . '/vendor_packages/wp-plugin-install-tab.php';
+require_once __DIR__ . '/vendor_packages/wp-plugin-feedback.php';
 /**
  * Load plugin classes
  */
