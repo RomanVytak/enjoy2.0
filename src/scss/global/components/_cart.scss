@@ -99,6 +99,7 @@
       display: none !important;
     }
   }
+
   &__empty-message {
     padding: 50px 24px;
   }
@@ -150,14 +151,14 @@
     .variations {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+
       .var {
         display: flex;
         gap: 4px;
         color: #7b7b7b;
 
         * {
-          font-size: min-max(12, 14);
+          font-size: min-max(12, 13);
         }
       }
     }
