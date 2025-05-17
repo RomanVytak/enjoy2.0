@@ -38,6 +38,9 @@ add_action( 'after_setup_theme', 'enjoy_add_woocommerce_support' );
 // Custom woocommerce
 require_once get_template_directory() . '/functions/custom-woocommerce.php';
 
+// Custom woocommerce
+require_once get_template_directory() . '/functions/ajax-woocommerce.php';
+
 // disable Gutenberg 
 add_filter('use_block_editor_for_post', '__return_false');
 
