@@ -1,6 +1,6 @@
 <?php
 // пфдключаємо скрипт
-add_action( 'wp_enqueue_scripts', 'enqueue_product_ajax_script' );
+// add_action( 'wp_enqueue_scripts', 'enqueue_product_ajax_script' );
 function enqueue_product_ajax_script() {
     if ( is_product() ) {
 /*

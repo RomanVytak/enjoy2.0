@@ -1,4 +1,4 @@
-<div class="summary entry-summary" data-pin-parrent>
+<div class="summary entry-summary loading-wrapper loading" data-pin-parrent>
   <?php
   remove_action("woocommerce_single_product_summary", "woocommerce_template_single_meta", 40);
   remove_action("woocommerce_single_product_summary", "woocommerce_template_single_price", 10);

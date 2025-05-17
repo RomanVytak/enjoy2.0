@@ -48,10 +48,12 @@ const handlePopUp = {
   },
 };
 
-export default function createProductData() {
+export default async function createProductData() {
+  const loadingWrapper = document.querySelector(".loading-wrapper");
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
-  const variations = JSON.parse(form.dataset.product_variations);
+  // const variations = JSON.parse(form.dataset.product_variations);
+  const variations = await loadProductVariations();
   const header = document.querySelector("header");
 
   const imgPopUp = document.querySelector("[data-img-popup]");
@@ -231,7 +233,13 @@ export default function createProductData() {
       return `<div class="color${
         selectedData.color == color.id ? " active" : ""
       }" ${_COLOR}="${color.id}"  title="${name}">
-        ${image_html ? image_html : img ? `<img src="${img}" alt="${name}">` : ""}
+        ${
+          image_html
+            ? image_html
+            : img
+            ? `<img src="${img}" alt="${name}">`
+            : ""
+        }
       </div>`;
     });
     wrapper_colors.innerHTML = html.join("");
@@ -656,9 +664,7 @@ export default function createProductData() {
   checkIsSelectedvariant();
   NEW_createHTMLData();
   updateProductData();
-  setTimeout(() => {
-    wrapper.classList.remove("loading");
-  }, 100);
+  setTimeout(() => loadingWrapper.classList.remove("loading"), 200);
 }
 
 function onAddedToCart() {
@@ -780,4 +786,29 @@ function createHTMLTooltip(text, icon = false) {
   return text
     ? `${wrapperStart}<span class="tooltip-text"><span class='d'>${text}</span></span>${wrapperEnd}`
     : "";
+}
+
+async function loadProductVariations() {
+  try {
+    const response = await fetch(BAMBOO.ajaxUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+      body: new URLSearchParams({
+        action: "get_product_variations_json",
+        product_id: BAMBOO.product_id,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("AJAX error loading variations.", error);
+    return null;
+  }
 }

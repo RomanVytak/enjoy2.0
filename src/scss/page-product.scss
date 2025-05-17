@@ -168,7 +168,7 @@
   .instruction-text {
     transition: opacity var(--transition);
 
-    >* {
+    > * {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -202,7 +202,8 @@
     flex-direction: column;
     gap: min-max(16, 20);
     width: 100%;
-    align-self: flex-start;
+    // align-self: flex-start;
+    position: relative;
 
     .variations_form {
       position: relative;
@@ -226,12 +227,58 @@
       }
     }
 
-    &:has(.custom-woo-data.loading) {
-
-      .woocommerce-product-instruction,
-      .variations_form {
-        pointer-events: none;
+    &.loading {
+      > * {
         opacity: 0;
+      }
+      &::before,
+      &::after {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+    }
+
+    &::after {
+      inset: 0;
+      z-index: 22;
+      background: #ebedef;
+      animation: skeleton-loading 0.8s linear infinite alternate;
+      border-radius: min-max(16, 24);
+    }
+    &::before {
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min-max(40, 60);
+      aspect-ratio: 1;
+      background: url("../img/loading.svg") center/cover no-repeat;
+      z-index: 23;
+    }
+
+    // &:has(.custom-woo-data.loading) {
+
+    //   .woocommerce-product-instruction,
+    //   .variations_form {
+    //     pointer-events: none;
+    //     opacity: 0;
+    //   }
+    // }
+
+    @keyframes skeleton-loading {
+      0% {
+        background-color: #ebedef;
+      }
+
+      100% {
+        background-color: #f8f8f9;
       }
     }
   }
@@ -240,6 +287,7 @@
     gap: min-max(10, 16);
     align-items: flex-start;
     order: -2;
+    transition: opacity var(--transition);
   }
 
   .short-description {
@@ -1061,14 +1109,14 @@
       }
     }
 
-    &.loading {
-      background: #f9f9f9;
+    // &.loading {
+    //   background: #f9f9f9;
 
-      .wrapper {
-        opacity: 0;
-        pointer-events: none;
-      }
-    }
+    //   .wrapper {
+    //     opacity: 0;
+    //     pointer-events: none;
+    //   }
+    // }
 
     .top {
       p {
@@ -1081,7 +1129,6 @@
   }
 
   .consultation-form {
-
     .screen-reader-response,
     .wpcf7-response-output {
       display: none;
@@ -1218,7 +1265,7 @@
   }
 
   .woocommerce-tabs-panel {
-    &>* {
+    & > * {
       margin-top: 1em;
 
       &:nth-child(1) {

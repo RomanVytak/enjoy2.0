@@ -30,7 +30,8 @@ function loadAssets($tpl, $load_js_after, $cache, $in_footer = true)
   wp_localize_script('index', 'BAMBOO', [
     'baseUrl' => home_url(),
     'ajaxUrl' => admin_url('admin-ajax.php'),
-    'assets'  => getAssets()
+    'assets'  => getAssets(),
+    'product_id' => get_the_ID(),
   ]);
 }
 
@@ -96,13 +97,13 @@ function bamboo_remove_needless_css()
   wp_dequeue_style('woocommerce-layout');
   wp_dequeue_style('woo-variation-swatches');
 
-  if ( is_page(472) ) {
-      wp_enqueue_style(
-          'wc-checkout-css',
-          plugins_url( 'woocommerce/assets/client/blocks/checkout.css' ),
-          array(),
-          '1.0.0'
-      );
+  if (is_page(472)) {
+    wp_enqueue_style(
+      'wc-checkout-css',
+      plugins_url('woocommerce/assets/client/blocks/checkout.css'),
+      array(),
+      '1.0.0'
+    );
   }
 }
 

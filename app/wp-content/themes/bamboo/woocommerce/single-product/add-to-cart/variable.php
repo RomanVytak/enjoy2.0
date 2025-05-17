@@ -28,7 +28,7 @@ $is_variants = isset($attributes['pa_variants']);
 
 do_action('woocommerce_before_add_to_cart_form'); ?>
 
-<div class="custom-woo-data flex-v loading" data-product-ajax>
+<div class="custom-woo-data flex-v" data-product-ajax>
 
   <?php
 
@@ -100,8 +100,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
 </div>
 
-<form class="variations_form cart" data-product-name="<?php echo esc_attr($product->get_name()); ?>" data-product-form-data action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok.
-                                                                                                                                                                                                                                                                                                                                                                              ?>">
+<form class="variations_form cart" data-product-name="<?php echo esc_attr($product->get_name()); ?>" data-product-form-data action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint($product->get_id()); ?>">
   <?php do_action('woocommerce_before_variations_form'); ?>
 
   <?php if (empty($available_variations) && false !== $available_variations) : ?>
