@@ -556,7 +556,7 @@ function customize_product_variations($variation_data, $product, $variation) {
               $term = get_term($color, 'pa_kolory');
               $color_img = get_field('photo', 'pa_kolory_'.$color);
 
-              
+
               if (!empty($color_img) && isset($color_img['url'])) {
                 $color_full_size = esc_url($color_img['url']);
               }else{
@@ -565,7 +565,7 @@ function customize_product_variations($variation_data, $product, $variation) {
 
               $variation_data['material_colors'][$color]['name']=$term->name;
               //$variation_data['material_colors'][$color]['image']=$color_img;
-              $variation_data['material_colors'][$color]['full_size']=$color_full_size;              
+              $variation_data['material_colors'][$color]['full_size']=$color_full_size;
               $variation_data['material_colors'][$color]['id']=$color;
               $variation_data['material_colors'][$color]['image_html']= isset($color_img['id']) ? wp_get_attachment_image($color_img['id']) : '';
 
@@ -622,7 +622,7 @@ function customize_product_variations($variation_data, $product, $variation) {
       }
 
     }
-    
+
 
     // Універсальне розширення для всіх атрибутів
     foreach ($variation_data['attributes'] as $attr_key => $attr_value) {

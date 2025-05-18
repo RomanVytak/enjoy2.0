@@ -125,8 +125,8 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
           <div class="wrapper_sent_nav">
             <div class="buy">
-              <img src="<?php echo getAssets('img/shares/pay_pr.svg')  ?>" alt="Приат24" title="Оплата частинами Приват24">
-              <img src="<?php echo getAssets('img/shares/pay_mono.svg')  ?>" alt="МОНО" title="Оплата частинами Монобанк">
+              <img src="<?php echo getAssets('img/payments/pay_pr.svg')  ?>" alt="Приат24" title="Оплата частинами Приват24">
+              <img src="<?php echo getAssets('img/payments/pay_mono.svg')  ?>" alt="МОНО" title="Оплата частинами Монобанк">
             </div>
             <div class="cta">
               <div class="spinner"></div>
