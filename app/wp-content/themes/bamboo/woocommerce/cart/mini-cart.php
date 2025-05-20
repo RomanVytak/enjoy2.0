@@ -54,6 +54,11 @@ do_action('woocommerce_before_mini_cart'); ?>
               <div class="custom-product__name">
                 <a href="<?php echo esc_url($product_permalink); ?>">
                   <?php echo wp_kses_post($product_name); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+                   // Вивід Custom Color, якщо він є
+    if (!empty($cart_item['custom_color'])) {
+        echo '<p>Custom Color: <strong>' . esc_html($cart_item['custom_color']) . '</strong></p>';
+    }
                   ?>
                 </a>
 

@@ -895,3 +895,45 @@ function custom_text_field_output( $field, $key, $args, $value ) {
 }
 
 
+
+// Додаємо custom data до товару в корзині
+add_filter('woocommerce_add_cart_item_data', 'add_custom_data_to_cart_item', 10, 2);
+function add_custom_data_to_cart_item($cart_item_data, $product_id) {
+    if (isset($_POST['custom_data']['color'])) {
+        $cart_item_data['custom_color'] = sanitize_text_field($_POST['custom_data']['color']);
+    }
+    return $cart_item_data;
+}
+
+// Відображаємо кастомний атрибут у замовленні
+add_action('woocommerce_checkout_create_order_line_item', 'add_custom_data_to_order_item', 10, 4);
+function add_custom_data_to_order_item($item, $cart_item_key, $values, $order) {
+    if (isset($values['custom_color'])) {
+        $item->add_meta_data('Custom Color', $values['custom_color'], true);
+    }
+}
+
+
+
+
+// кастомний колір в чекаут
+add_filter('woocommerce_get_item_data', 'display_custom_data_cart_checkout', 10, 2);
+function display_custom_data_cart_checkout($item_data, $cart_item) {
+    if (isset($cart_item['custom_color'])) {
+        $item_data[] = array(
+            'key'   => __('Custom Color', 'woocommerce'),
+            'value' => wc_clean($cart_item['custom_color']),
+            'display' => '',
+        );
+    }
+    return $item_data;
+}
+
+// кастомний колір в замовлення
+add_filter('woocommerce_order_item_display_meta_key', 'change_order_item_meta_display_name', 10, 3);
+function change_order_item_meta_display_name($display_key, $meta, $item) {
+    if ($meta->key === 'Custom Color') {
+        return __('Selected Color', 'woocommerce');
+    }
+    return $display_key;
+}

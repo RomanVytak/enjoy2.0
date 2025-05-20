@@ -3,7 +3,7 @@
 // add_action( 'wp_enqueue_scripts', 'enqueue_product_ajax_script' );
 function enqueue_product_ajax_script() {
     if ( is_product() ) {
-/*
+
         wp_enqueue_script(
             'product-variations-ajax',
             get_template_directory_uri() . '/js/product-variations.js', // або plugin_dir_url(__FILE__)
@@ -11,7 +11,7 @@ function enqueue_product_ajax_script() {
             null,
             true
         );
-*/
+
         wp_localize_script( 'product-variations-ajax', 'product_ajax_data', array(
             'ajax_url'   => admin_url( 'admin-ajax.php' ),
             'product_id' => get_the_ID(),
