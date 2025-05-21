@@ -57,7 +57,7 @@ do_action('woocommerce_before_mini_cart'); ?>
 
                    // Вивід Custom Color, якщо він є
     if (!empty($cart_item['custom_color'])) {
-        echo '<p>Custom Color: <strong>' . esc_html($cart_item['custom_color']) . '</strong></p>';
+        echo '<p>Колір: <strong>' . esc_html($cart_item['custom_color']) . '</strong></p>';
     }
                   ?>
                 </a>
