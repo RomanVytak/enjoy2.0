@@ -27,23 +27,25 @@ function woocommerce_custom_content()
 
       <?php do_action('woocommerce_before_shop_loop'); ?>
 
-      <?php //woocommerce_product_loop_start(); ?>
+      <?php //woocommerce_product_loop_start();
+      ?>
       <div class="grid w-full">
-      <?php if (wc_get_loop_prop('total')) : ?>
-        <?php while (have_posts()) : ?>
-          <?php the_post(); ?>
-          <?php
-          // wp-content/themes/bamboo/woocommerce/content-product.php
-          wc_get_template_part('content', 'product'); ?>
-        <?php endwhile; ?>
-      <?php endif; ?>
+        <?php if (wc_get_loop_prop('total')) : ?>
+          <?php while (have_posts()) : ?>
+            <?php the_post(); ?>
+            <?php
+            // wp-content/themes/bamboo/woocommerce/content-product.php
+            wc_get_template_part('content', 'product'); ?>
+          <?php endwhile; ?>
+        <?php endif; ?>
       </div>
-      <?php //woocommerce_product_loop_end(); ?>
+      <?php //woocommerce_product_loop_end();
+      ?>
 
       <?php do_action('woocommerce_after_shop_loop'); ?>
 
 
-    <?php
+<?php
     else :
       do_action('woocommerce_no_products_found');
     endif;
@@ -53,7 +55,8 @@ function woocommerce_custom_content()
 // 1-12 з 17 товарів
 add_action('woocommerce_before_shop_loop', 'enjoy_echo_product_range', 5);
 
-function enjoy_echo_product_range() {
+function enjoy_echo_product_range()
+{
   global $wp_query;
 
   $total = $wp_query->found_posts; // Загальна кількість товарів
@@ -308,11 +311,12 @@ function order_by_stock_status($posts_clauses)
 
 
 add_filter('woocommerce_pagination_args', 'custom_woocommerce_pagination_args');
-function custom_woocommerce_pagination_args($args) {
-    // Кількість сторінок, які відображаються перед і після поточної сторінки
-    $args['end_size'] = 1; // Кількість сторінок на початку і в кінці пагінації
-    $args['mid_size'] = 1; // Кількість сторінок перед і після поточної сторінки (між ними)
-    return $args;
+function custom_woocommerce_pagination_args($args)
+{
+  // Кількість сторінок, які відображаються перед і після поточної сторінки
+  $args['end_size'] = 1; // Кількість сторінок на початку і в кінці пагінації
+  $args['mid_size'] = 1; // Кількість сторінок перед і після поточної сторінки (між ними)
+  return $args;
 }
 
 /*
@@ -329,124 +333,128 @@ function woo_custom_redirect_after_purchase() {
 
 
 // fix price default variation
-add_filter( 'woocommerce_variable_sale_price_html', 'wc_custom_show_sale_price', 10, 2 );
-add_filter( 'woocommerce_variable_price_html', 'wc_custom_show_sale_price', 10, 2 );
+add_filter('woocommerce_variable_sale_price_html', 'wc_custom_show_sale_price', 10, 2);
+add_filter('woocommerce_variable_price_html', 'wc_custom_show_sale_price', 10, 2);
 
-function wc_custom_show_sale_price( $price, $product ) {
-// Main Price
-$prices = array( $product->get_variation_price( 'min', true ), $product->get_variation_price( 'max', true ) );
-$price = $prices[0] !== $prices[1] ? sprintf( __( '%1$s', 'woocommerce' ), wc_price( $prices[0] ) ) : wc_price( $prices[0] );
+function wc_custom_show_sale_price($price, $product)
+{
+  // Main Price
+  $prices = array($product->get_variation_price('min', true), $product->get_variation_price('max', true));
+  $price = $prices[0] !== $prices[1] ? sprintf(__('%1$s', 'woocommerce'), wc_price($prices[0])) : wc_price($prices[0]);
 
-// Sale Price
-$prices = array( $product->get_variation_regular_price( 'min', true ), $product->get_variation_regular_price( 'max', true ) );
-sort( $prices );
-$saleprice = $prices[0] !== $prices[1] ? sprintf( __( '%1$s', 'woocommerce' ), wc_price( $prices[0] ) ) : wc_price( $prices[0] );
+  // Sale Price
+  $prices = array($product->get_variation_regular_price('min', true), $product->get_variation_regular_price('max', true));
+  sort($prices);
+  $saleprice = $prices[0] !== $prices[1] ? sprintf(__('%1$s', 'woocommerce'), wc_price($prices[0])) : wc_price($prices[0]);
 
-if ( $price !== $saleprice ) {
-$price = '<del>' . $saleprice . '</del> <ins>' . $price . '</ins>';
-}
+  if ($price !== $saleprice) {
+    $price = '<del>' . $saleprice . '</del> <ins>' . $price . '</ins>';
+  }
 
-return $price;
+  return $price;
 }
 
 
 
 // Remove default up-sells and related products
-remove_action( 'woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15 );
+remove_action('woocommerce_after_single_product_summary', 'woocommerce_upsell_display', 15);
 
 // remove /product-category/ from url
-add_filter('request', function( $vars ) {
-	global $wpdb;
-	if( ! empty( $vars['pagename'] ) || ! empty( $vars['category_name'] ) || ! empty( $vars['name'] ) || ! empty( $vars['attachment'] ) ) {
-		$slug = ! empty( $vars['pagename'] ) ? $vars['pagename'] : ( ! empty( $vars['name'] ) ? $vars['name'] : ( !empty( $vars['category_name'] ) ? $vars['category_name'] : $vars['attachment'] ) );
-		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT t.term_id FROM $wpdb->terms t LEFT JOIN $wpdb->term_taxonomy tt ON tt.term_id = t.term_id WHERE tt.taxonomy = 'product_cat' AND t.slug = %s" ,array( $slug )));
-		if( $exists ){
-			$old_vars = $vars;
-			$vars = array('product_cat' => $slug );
-			if ( !empty( $old_vars['paged'] ) || !empty( $old_vars['page'] ) )
-				$vars['paged'] = ! empty( $old_vars['paged'] ) ? $old_vars['paged'] : $old_vars['page'];
-			if ( !empty( $old_vars['orderby'] ) )
-	 	        	$vars['orderby'] = $old_vars['orderby'];
-      			if ( !empty( $old_vars['order'] ) )
- 			        $vars['order'] = $old_vars['order'];
-		}
-	}
-	return $vars;
+add_filter('request', function ($vars) {
+  global $wpdb;
+  if (! empty($vars['pagename']) || ! empty($vars['category_name']) || ! empty($vars['name']) || ! empty($vars['attachment'])) {
+    $slug = ! empty($vars['pagename']) ? $vars['pagename'] : (! empty($vars['name']) ? $vars['name'] : (!empty($vars['category_name']) ? $vars['category_name'] : $vars['attachment']));
+    $exists = $wpdb->get_var($wpdb->prepare("SELECT t.term_id FROM $wpdb->terms t LEFT JOIN $wpdb->term_taxonomy tt ON tt.term_id = t.term_id WHERE tt.taxonomy = 'product_cat' AND t.slug = %s", array($slug)));
+    if ($exists) {
+      $old_vars = $vars;
+      $vars = array('product_cat' => $slug);
+      if (!empty($old_vars['paged']) || !empty($old_vars['page']))
+        $vars['paged'] = ! empty($old_vars['paged']) ? $old_vars['paged'] : $old_vars['page'];
+      if (!empty($old_vars['orderby']))
+        $vars['orderby'] = $old_vars['orderby'];
+      if (!empty($old_vars['order']))
+        $vars['order'] = $old_vars['order'];
+    }
+  }
+  return $vars;
 });
 
 
 // remove /product/ from url
-function wsp_remove_slug( $post_link, $post, $leavename ) {
-  if ( 'product' != $post->post_type || 'publish' != $post->post_status ) {
-      return $post_link;
+function wsp_remove_slug($post_link, $post, $leavename)
+{
+  if ('product' != $post->post_type || 'publish' != $post->post_status) {
+    return $post_link;
   }
-  $post_link = str_replace( '/product/', '/', $post_link );
+  $post_link = str_replace('/product/', '/', $post_link);
   return $post_link;
 }
-add_filter( 'post_type_link', 'wsp_remove_slug', 10, 3 );
+add_filter('post_type_link', 'wsp_remove_slug', 10, 3);
 
-function change_slug_structure( $query ) {
-  if ( ! $query->is_main_query() || 2 != count( $query->query ) || ! isset( $query->query['page'] ) ) {
-      return;
+function change_slug_structure($query)
+{
+  if (! $query->is_main_query() || 2 != count($query->query) || ! isset($query->query['page'])) {
+    return;
   }
-  if ( ! empty( $query->query['name'] ) ) {
-      $query->set( 'post_type', array( 'post', 'product', 'page' ) );
-  } elseif ( ! empty( $query->query['pagename'] ) && false === strpos( $query->query['pagename'], '/' ) ) {
-      $query->set( 'post_type', array( 'post', 'product', 'page' ) );
-      // We also need to set the name query var since redirect_guess_404_permalink() relies on it.
-      $query->set( 'name', $query->query['pagename'] );
+  if (! empty($query->query['name'])) {
+    $query->set('post_type', array('post', 'product', 'page'));
+  } elseif (! empty($query->query['pagename']) && false === strpos($query->query['pagename'], '/')) {
+    $query->set('post_type', array('post', 'product', 'page'));
+    // We also need to set the name query var since redirect_guess_404_permalink() relies on it.
+    $query->set('name', $query->query['pagename']);
   }
 }
-add_action( 'pre_get_posts', 'change_slug_structure', 99 );
+add_action('pre_get_posts', 'change_slug_structure', 99);
 
 
 // get default variation ID: wc_get_default_variation($product->get_id());
-function wc_get_default_variation( $product_id = false, $return = 'id' ) {
+function wc_get_default_variation($product_id = false, $return = 'id')
+{
   // do not use wc_get_product() to bypass some limits
-  $product = WC()->product_factory->get_product( $product_id );
+  $product = WC()->product_factory->get_product($product_id);
 
-  if ( empty( $product ) || ! $product instanceof WC_Product_Variable ) {
-      return 0;
+  if (empty($product) || ! $product instanceof WC_Product_Variable) {
+    return 0;
   }
 
-  if ( $product->has_child() ) {
-      $attributes = $product->get_default_attributes();
+  if ($product->has_child()) {
+    $attributes = $product->get_default_attributes();
 
-      if ( ! empty( $attributes ) ) {
-          $check_count      = true;
-          $attributes_count = count( $attributes );
+    if (! empty($attributes)) {
+      $check_count      = true;
+      $attributes_count = count($attributes);
 
-          // get in-stock (if enabled in wc options) and visible variations
-          $variations = $product->get_available_variations( 'objects' );
+      // get in-stock (if enabled in wc options) and visible variations
+      $variations = $product->get_available_variations('objects');
 
-          foreach ( $variations as $variation ) {
-              $variation_attributes = $variation->get_attributes();
+      foreach ($variations as $variation) {
+        $variation_attributes = $variation->get_attributes();
 
-              // check count for first time
-              // if not match, it means that user do not set default value for some variation attrs
-              if ( $check_count && $attributes_count !== count( $variation_attributes ) ) {
-                  break;
-              }
+        // check count for first time
+        // if not match, it means that user do not set default value for some variation attrs
+        if ($check_count && $attributes_count !== count($variation_attributes)) {
+          break;
+        }
 
-              // no need to check count anymore
-              $check_count = false;
+        // no need to check count anymore
+        $check_count = false;
 
-              // remove 'any' attrs (empty values)
-              $variation_attributes = array_filter( $variation_attributes );
+        // remove 'any' attrs (empty values)
+        $variation_attributes = array_filter($variation_attributes);
 
-              // add 'any' attrs with default value
-              $variation_attributes = wp_parse_args( $variation_attributes, $attributes );
+        // add 'any' attrs with default value
+        $variation_attributes = wp_parse_args($variation_attributes, $attributes);
 
-              // check is default
-              if ( $variation_attributes == $attributes ) {
-                  if ( $return === 'id' ) {
-                      return $variation->get_id();
-                  }
-
-                  return $variation;
-              }
+        // check is default
+        if ($variation_attributes == $attributes) {
+          if ($return === 'id') {
+            return $variation->get_id();
           }
+
+          return $variation;
+        }
       }
+    }
   }
 
   return 0;
@@ -455,52 +463,52 @@ function wc_get_default_variation( $product_id = false, $return = 'id' ) {
 // <form class="variations_form cart"  enctype="multipart/form-data" data-product_id="83" data-product_variations="">
 add_filter('woocommerce_available_variation', 'customize_product_variations', 10, 3);
 
-function customize_product_variations($variation_data, $product, $variation) {
-    // Приклад зміни атрибуту 'price_html'
-    //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
+function customize_product_variations($variation_data, $product, $variation)
+{
+  // Приклад зміни атрибуту 'price_html'
+  //$variation_data['price_html'] = '<span class="custom-price">Custom Price: ' . wc_price($variation->get_price()) . '</span>';
 
-    $default_variation_id = wc_get_default_variation($product->get_id());
-    if ( $default_variation_id && $variation->get_id() == $default_variation_id ) {
-      $variation_data['is_default'] = true;
-    } else {
-        $variation_data['is_default'] = false;
+  $default_variation_id = wc_get_default_variation($product->get_id());
+  if ($default_variation_id && $variation->get_id() == $default_variation_id) {
+    $variation_data['is_default'] = true;
+  } else {
+    $variation_data['is_default'] = false;
+  }
+
+  // Визначаємо ціну без знижки і знижкову ціну
+  $regular_price = (float) $variation->get_regular_price();
+  $sale_price = (float) $variation->get_sale_price();
+
+  // Якщо є знижка
+  if ($regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price) {
+    $saved = $regular_price - $sale_price;
+    $discount_percent = round(($saved / $regular_price) * 100);
+
+    $variation_data['discount_percent'] = $discount_percent;
+    $variation_data['money_saved'] = $saved;
+  } else {
+    $variation_data['discount_percent'] = 0;
+    $variation_data['money_saved'] = 0;
+  }
+
+  // Додати новий ключ у data-product_variations
+  if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
+    $sertyfikaty_slug = $variation_data['attributes']['attribute_pa_sertyfikaty'];
+
+    // Отримуємо термін за slug у таксономії pa_material
+    $sertyfikaty_term = get_term_by('slug', $sertyfikaty_slug, 'pa_sertyfikaty');
+    if ($sertyfikaty_term) {
+      $sertyfikaty_id = $sertyfikaty_term->term_id; // ID терміна
+      // додаткові дані сертифікату
+      $sertyfikaty_img = get_field('image', 'pa_sertyfikaty_' . $sertyfikaty_id);
+      $variation_data['sertyfikat_details']['id'] = $sertyfikaty_term->term_id;
+      $variation_data['sertyfikat_details']['slug'] = $sertyfikaty_term->slug;
+      $variation_data['sertyfikat_details']['name'] = $sertyfikaty_term->name;
+      $variation_data['sertyfikat_details']['image'] = $sertyfikaty_img;
     }
+  }
 
-    // Визначаємо ціну без знижки і знижкову ціну
-    $regular_price = (float) $variation->get_regular_price();
-    $sale_price = (float) $variation->get_sale_price();
-
-    // Якщо є знижка
-    if ( $regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price ) {
-        $saved = $regular_price - $sale_price;
-        $discount_percent = round( ( $saved / $regular_price ) * 100 );
-
-        $variation_data['discount_percent'] = $discount_percent;
-        $variation_data['money_saved'] = $saved;
-    } else {
-        $variation_data['discount_percent'] = 0;
-        $variation_data['money_saved'] = 0;
-    }
-
-    // Додати новий ключ у data-product_variations
-    if (isset($variation_data['attributes']['attribute_pa_sertyfikaty'])) {
-      $sertyfikaty_slug = $variation_data['attributes']['attribute_pa_sertyfikaty'];
-
-      // Отримуємо термін за slug у таксономії pa_material
-      $sertyfikaty_term = get_term_by('slug', $sertyfikaty_slug, 'pa_sertyfikaty');
-      if ($sertyfikaty_term) {
-        $sertyfikaty_id = $sertyfikaty_term->term_id; // ID терміна
-        // додаткові дані сертифікату
-        $sertyfikaty_img = get_field('image', 'pa_sertyfikaty_'.$sertyfikaty_id);
-        $variation_data['sertyfikat_details']['id']=$sertyfikaty_term->term_id;
-        $variation_data['sertyfikat_details']['slug']=$sertyfikaty_term->slug;
-        $variation_data['sertyfikat_details']['name']=$sertyfikaty_term->name;
-        $variation_data['sertyfikat_details']['image']=$sertyfikaty_img;
-      }
-
-    }
-
-    /*if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
+  /*if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
       $rozmiry_slug = $variation_data['attributes']['attribute_pa_rozmiry'];
 
       // Отримуємо термін за slug у таксономії pa_material
@@ -520,149 +528,146 @@ function customize_product_variations($variation_data, $product, $variation) {
 
     }*/
 
-    if (isset($variation_data['attributes']['attribute_pa_material'])) {
-        $material_slug = $variation_data['attributes']['attribute_pa_material'];
+  if (isset($variation_data['attributes']['attribute_pa_material'])) {
+    $material_slug = $variation_data['attributes']['attribute_pa_material'];
 
-        // Вилучаємо непотрібні дані з масиву
-        unset($variation_data['image']);
-        unset($variation_data['price_html']);
+    // Вилучаємо непотрібні дані з масиву
+    unset($variation_data['image']);
+    unset($variation_data['price_html']);
 
-        // Отримуємо термін за slug у таксономії pa_material
-        $material_term = get_term_by('slug', $material_slug, 'pa_material');
+    // Отримуємо термін за slug у таксономії pa_material
+    $material_term = get_term_by('slug', $material_slug, 'pa_material');
 
-        if ($material_term) {
-            $full_size = '';
-            $material_id = $material_term->term_id; // ID терміна
-            // додаткові дані матеріалу
-            $material_img = get_field('image', 'pa_material_'.$material_id);
-
-
-          if (!empty($material_img) && isset($material_img['url'])) {
-              $full_size = esc_url($material_img['url']);
-          }
-
-            $variation_data['material_details']['id']=$material_term->term_id;
-            $variation_data['material_details']['slug']=$material_term->slug;
-            $variation_data['material_details']['name']=$material_term->name;
-            $variation_data['material_details']['id']=$material_term->term_id;
-            $variation_data['material_details']['description'] = esc_html(term_description($material_term->term_id, 'pa_material'));
-            // $variation_data['material_details']['image']=$material_img;
-            $variation_data['material_details']['full_size']=$full_size;
-            $variation_data['material_details']['image_html']= isset($material_img['id']) ? wp_get_attachment_image($material_img['id']) : '';
-            $variation_data['material_details']['video']=get_field('video', 'pa_material_'.$material_id);
-
-            $colors = get_field('colors', 'pa_material_'.$material_id);
-            foreach($colors as $color){
-              $term = get_term($color, 'pa_kolory');
-              $color_img = get_field('photo', 'pa_kolory_'.$color);
+    if ($material_term) {
+      $full_size = '';
+      $material_id = $material_term->term_id; // ID терміна
+      // додаткові дані матеріалу
+      $material_img = get_field('image', 'pa_material_' . $material_id);
 
 
-              if (!empty($color_img) && isset($color_img['url'])) {
-                $color_full_size = esc_url($color_img['url']);
-              }else{
-                $color_full_size ='';
-              }
-
-              $variation_data['material_colors'][$color]['name']=$term->name;
-              //$variation_data['material_colors'][$color]['image']=$color_img;
-              $variation_data['material_colors'][$color]['full_size']=$color_full_size;
-              $variation_data['material_colors'][$color]['id']=$color;
-              $variation_data['material_colors'][$color]['image_html']= isset($color_img['id']) ? wp_get_attachment_image($color_img['id']) : '';
-
-            }
-
-            $options = get_field('options', 'pa_material_'.$material_id);
-            $i=0;
-            if (!empty($options) && is_array($options)) {
-              foreach($options as $option){
-                $variation_data['material_details']['options'][$i]=$option;
-                $i++;
-              }
-            }
-        }
-
-    }
-
-    if (isset($variation_data['dimensions'])){
-      $volume = get_post_meta($variation->get_id(), '_volume', true);
-      if ( $volume ) {
-          $variation_data['dimensions']['volume'] = $volume;
+      if (!empty($material_img) && isset($material_img['url'])) {
+        $full_size = esc_url($material_img['url']);
       }
-    }
-    if (isset($variation_data)){
-      $dimensions_description = get_post_meta($variation->get_id(), '_dimensions_description', true);
-      if ( $dimensions_description ) {
-          $variation_data['dimensions_description'] = $dimensions_description;
-      }
-    }
+
+      $variation_data['material_details']['id'] = $material_term->term_id;
+      $variation_data['material_details']['slug'] = $material_term->slug;
+      $variation_data['material_details']['name'] = $material_term->name;
+      $variation_data['material_details']['id'] = $material_term->term_id;
+      $variation_data['material_details']['description'] = esc_html(term_description($material_term->term_id, 'pa_material'));
+      // $variation_data['material_details']['image']=$material_img;
+      $variation_data['material_details']['full_size'] = $full_size;
+      $variation_data['material_details']['image_html'] = isset($material_img['id']) ? wp_get_attachment_image($material_img['id']) : '';
+      $variation_data['material_details']['video'] = get_field('video', 'pa_material_' . $material_id);
+
+      $colors = get_field('colors', 'pa_material_' . $material_id);
+      foreach ($colors as $color) {
+        $term = get_term($color, 'pa_kolory');
+        $color_img = get_field('photo', 'pa_kolory_' . $color);
 
 
-
-    // Додати новий ключ у data-product_variations
-    if (isset($variation_data['attributes']['attribute_pa_variants'])) {
-      $variants_slug = $variation_data['attributes']['attribute_pa_variants'];
-
-      // Отримуємо термін за slug у таксономії pa_material
-      $variants_term = get_term_by('slug', $variants_slug, 'pa_variants');
-      if ($variants_term) {
-        $variants_id = $variants_term->term_id; // ID терміна
-        // додаткові дані матеріалу
-        $variants_img = get_field('image', 'pa_variants_'.$variants_id);
-        $variation_data['variants_details']['id']=$variants_term->term_id;
-        $variation_data['variants_details']['slug']=$variants_term->slug;
-        $variation_data['variants_details']['name']=$variants_term->name;
-        // $variation_data['variants_details']['image']=$variants_img;
-        if ( isset( $variants_img['id'] ) && absint( $variants_img['id'] ) > 0 ) {
-            $variation_data['variants_details']['image_html'] = wp_get_attachment_image( $variants_img['id'] );
+        if (!empty($color_img) && isset($color_img['url'])) {
+          $color_full_size = esc_url($color_img['url']);
         } else {
-            $variation_data['variants_details']['image_html'] = ''; // або запасне зображення
+          $color_full_size = '';
         }
-        $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_'.$variants_id);
-        // $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
+
+        $variation_data['material_colors'][$color]['name'] = $term->name;
+        //$variation_data['material_colors'][$color]['image']=$color_img;
+        $variation_data['material_colors'][$color]['full_size'] = $color_full_size;
+        $variation_data['material_colors'][$color]['id'] = $color;
+        $variation_data['material_colors'][$color]['image_html'] = isset($color_img['id']) ? wp_get_attachment_image($color_img['id']) : '';
       }
 
+      $options = get_field('options', 'pa_material_' . $material_id);
+      $i = 0;
+      if (!empty($options) && is_array($options)) {
+        foreach ($options as $option) {
+          $variation_data['material_details']['options'][$i] = $option;
+          $i++;
+        }
+      }
     }
+  }
+
+  if (isset($variation_data['dimensions'])) {
+    $volume = get_post_meta($variation->get_id(), '_volume', true);
+    if ($volume) {
+      $variation_data['dimensions']['volume'] = $volume;
+    }
+  }
+  if (isset($variation_data)) {
+    $dimensions_description = get_post_meta($variation->get_id(), '_dimensions_description', true);
+    if ($dimensions_description) {
+      $variation_data['dimensions_description'] = $dimensions_description;
+    }
+  }
 
 
-    // Універсальне розширення для всіх атрибутів
-    foreach ($variation_data['attributes'] as $attr_key => $attr_value) {
-      // Перевіряємо, чи це користувацький атрибут (таксономія)
-      if (strpos($attr_key, 'attribute_pa_') === 0) {
-          $taxonomy = str_replace('attribute_', '', $attr_key); // наприклад pa_material
-          $term = get_term_by('slug', $attr_value, $taxonomy);
 
-          if ($term) {
-              $term_id = $term->term_id;
+  // Додати новий ключ у data-product_variations
+  if (isset($variation_data['attributes']['attribute_pa_variants'])) {
+    $variants_slug = $variation_data['attributes']['attribute_pa_variants'];
 
-              // Базові дані терміна
-              $variation_data['attributes_details'][$taxonomy] = [
-                  'id'    => $term_id,
-                  'slug'  => $term->slug,
-                  'name'  => $term->name,
-                  'description' => term_description($term_id, $taxonomy),
-              ];
+    // Отримуємо термін за slug у таксономії pa_material
+    $variants_term = get_term_by('slug', $variants_slug, 'pa_variants');
+    if ($variants_term) {
+      $variants_id = $variants_term->term_id; // ID терміна
+      // додаткові дані матеріалу
+      $variants_img = get_field('image', 'pa_variants_' . $variants_id);
+      $variation_data['variants_details']['id'] = $variants_term->term_id;
+      $variation_data['variants_details']['slug'] = $variants_term->slug;
+      $variation_data['variants_details']['name'] = $variants_term->name;
+      // $variation_data['variants_details']['image']=$variants_img;
+      if (isset($variants_img['id']) && absint($variants_img['id']) > 0) {
+        $variation_data['variants_details']['image_html'] = wp_get_attachment_image($variants_img['id']);
+      } else {
+        $variation_data['variants_details']['image_html'] = ''; // або запасне зображення
+      }
+      $variation_data['variants_details']['title'] = get_field('title', 'pa_variants_' . $variants_id);
+      // $variation_data['variants_details']['description'] = esc_html(term_description($variants_term->term_id, 'pa_print'));
+    }
+  }
 
-              // Якщо є ACF-зображення (припускаємо, що воно називається 'image')
-              $img = get_field('image', $taxonomy . '_' . $term_id);
-              if (!empty($img) && isset($img['url'])) {
-                  $variation_data['attributes_details'][$taxonomy]['image'] = esc_url($img['url']);
-                  $variation_data['attributes_details'][$taxonomy]['image_html'] = isset($img['id']) ? wp_get_attachment_image($img['id']) : '';
-              }
 
-              // Якщо є додаткові поля (опціонально: додай свої назви ACF-полів)
-              /* $acf_fields = ['title', 'video', 'colors', 'options']; // додавай, що хочеш
+  // Універсальне розширення для всіх атрибутів
+  foreach ($variation_data['attributes'] as $attr_key => $attr_value) {
+    // Перевіряємо, чи це користувацький атрибут (таксономія)
+    if (strpos($attr_key, 'attribute_pa_') === 0) {
+      $taxonomy = str_replace('attribute_', '', $attr_key); // наприклад pa_material
+      $term = get_term_by('slug', $attr_value, $taxonomy);
+
+      if ($term) {
+        $term_id = $term->term_id;
+
+        // Базові дані терміна
+        $variation_data['attributes_details'][$taxonomy] = [
+          'id'    => $term_id,
+          'slug'  => $term->slug,
+          'name'  => $term->name,
+          'description' => term_description($term_id, $taxonomy),
+        ];
+
+        // Якщо є ACF-зображення (припускаємо, що воно називається 'image')
+        $img = get_field('image', $taxonomy . '_' . $term_id);
+        if (!empty($img) && isset($img['url'])) {
+          $variation_data['attributes_details'][$taxonomy]['image'] = esc_url($img['url']);
+          $variation_data['attributes_details'][$taxonomy]['image_html'] = isset($img['id']) ? wp_get_attachment_image($img['id']) : '';
+        }
+
+        // Якщо є додаткові поля (опціонально: додай свої назви ACF-полів)
+        /* $acf_fields = ['title', 'video', 'colors', 'options']; // додавай, що хочеш
               foreach ($acf_fields as $field) {
                   $acf_value = get_field($field, $taxonomy . '_' . $term_id);
                   if (!empty($acf_value)) {
                       $variation_data['attributes_details'][$taxonomy][$field] = $acf_value;
                   }
               }*/
-          }
       }
     }
+  }
 
 
-    return $variation_data;
+  return $variation_data;
 }
 
 // replace product title
@@ -676,27 +681,21 @@ function enjoy_woocommerce_single_title()
   echo '<h1 class="product-title roboto-38">';
   echo esc_html($post->post_title); // Вивід заголовка
   echo '</h1>';
-  if (function_exists('get_field')) {
-    $rows = get_field('promo');
-    $i = 0;
-    if ($rows) {
-      foreach ($rows as $row) {
-        if ($i == 0) {
-          echo '<div class="promo-box">';
-          if ($row['url']) {
-            echo '<a href="' . $row['url'] . '">';
-          }
-          echo '<div class="custom-pr-sale">';
+  if (function_exists('get_field') && get_field('promo')) {
+    $row = get_field('promo');
+    $name = $row['name'] ?? false;
+    $ico = $row['ico'] == 'no' ? false : $row['ico'] ?? false;
+    $url = $row['url'] ?? false;
 
-          echo '<span>' . $row['name'] . '</span>';
-          echo '</div>';
-          if ($row['url']) {
-            echo '</a>';
-          }
-          echo '</div>';
-        }
-        $i++;
-      }
+    if ($name || $ico) {
+      echo '<div class="promo-box">';
+      echo $url ? '<a href="' . $url . '">' : '';
+      echo '<div class="custom-pr-sale">';
+      echo $ico ? '<img src="' . getAssets('img/shares/') . $ico . '.svg">' : '';
+      echo $name ? '<span>' . $name . '</span>' : '';
+      echo '</div>';
+      echo $url ? '</a>' : '';
+      echo '</div>';
     }
   }
   echo '</div>';
@@ -706,7 +705,8 @@ function enjoy_woocommerce_single_title()
 remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_excerpt', 20);
 
 add_action('woocommerce_single_product_summary', 'enjoy_replace_excerpt_with_content', 20);
-function enjoy_replace_excerpt_with_content() {
+function enjoy_replace_excerpt_with_content()
+{
   global $post;
 
   if (!empty($post->post_content)) {
@@ -725,16 +725,17 @@ function enjoy_replace_excerpt_with_content() {
 }
 
 // переклад сортувалки
-add_filter( 'woocommerce_catalog_orderby', 'custom_woocommerce_catalog_orderby' );
-function custom_woocommerce_catalog_orderby( $sortby ) {
-    $sortby['menu_order'] = 'Сортування за замовчуванням';
-    $sortby['popularity'] = 'За популярністю';
-    $sortby['rating'] = 'За середньою оцінкою';
-    $sortby['date'] = 'Спочатку нові';
-    $sortby['price'] = 'За ціною: від дешевих';
-    $sortby['price-desc'] = 'За ціною: від дорогих';
+add_filter('woocommerce_catalog_orderby', 'custom_woocommerce_catalog_orderby');
+function custom_woocommerce_catalog_orderby($sortby)
+{
+  $sortby['menu_order'] = 'Сортування за замовчуванням';
+  $sortby['popularity'] = 'За популярністю';
+  $sortby['rating'] = 'За середньою оцінкою';
+  $sortby['date'] = 'Спочатку нові';
+  $sortby['price'] = 'За ціною: від дешевих';
+  $sortby['price-desc'] = 'За ціною: від дорогих';
 
-    return $sortby;
+  return $sortby;
 }
 
 
@@ -779,41 +780,41 @@ add_action('woocommerce_product_meta_end', function() {
 
 
 // Кастомні поля обʼєм і опис розмірів для варіантів
-add_action('woocommerce_variation_options_dimensions', function($loop, $variation_data, $variation) {
+add_action('woocommerce_variation_options_dimensions', function ($loop, $variation_data, $variation) {
   // Обʼєм
   woocommerce_wp_text_input([
-      'id' => 'volume[' . $loop . ']',
-      'label' => __('Об\'єм (cm³)', 'woocommerce'),
-      'desc_tip' => true,
-      'description' => __('Enter the volume for this variation.', 'woocommerce'),
-      'wrapper_class' => 'form-row form-row-first',
-      'value' => get_post_meta($variation->ID, '_volume', true),
-      'type' => 'number',
-      'custom_attributes' => [
-          'step' => 'any',
-          'min'  => '0',
-      ],
+    'id' => 'volume[' . $loop . ']',
+    'label' => __('Об\'єм (cm³)', 'woocommerce'),
+    'desc_tip' => true,
+    'description' => __('Enter the volume for this variation.', 'woocommerce'),
+    'wrapper_class' => 'form-row form-row-first',
+    'value' => get_post_meta($variation->ID, '_volume', true),
+    'type' => 'number',
+    'custom_attributes' => [
+      'step' => 'any',
+      'min'  => '0',
+    ],
   ]);
 
   // Опис розмірів
   woocommerce_wp_text_input([
-      'id' => 'dimensions_description[' . $loop . ']',
-      'label' => __('Опис розмірів', 'woocommerce'),
-      'desc_tip' => true,
-      'description' => __('Введіть для кого підійде.', 'woocommerce'),
-      'wrapper_class' => 'form-row form-row-last',
-      'value' => get_post_meta($variation->ID, '_dimensions_description', true),
-      'type' => 'text',
+    'id' => 'dimensions_description[' . $loop . ']',
+    'label' => __('Опис розмірів', 'woocommerce'),
+    'desc_tip' => true,
+    'description' => __('Введіть для кого підійде.', 'woocommerce'),
+    'wrapper_class' => 'form-row form-row-last',
+    'value' => get_post_meta($variation->ID, '_dimensions_description', true),
+    'type' => 'text',
   ]);
 }, 10, 3);
 
 // Збереження полів
-add_action('woocommerce_save_product_variation', function($variation_id, $i) {
-  if ( isset($_POST['volume'][$i]) ) {
-      update_post_meta($variation_id, '_volume', wc_clean($_POST['volume'][$i]));
+add_action('woocommerce_save_product_variation', function ($variation_id, $i) {
+  if (isset($_POST['volume'][$i])) {
+    update_post_meta($variation_id, '_volume', wc_clean($_POST['volume'][$i]));
   }
-  if ( isset($_POST['dimensions_description'][$i]) ) {
-      update_post_meta($variation_id, '_dimensions_description', wc_clean($_POST['dimensions_description'][$i]));
+  if (isset($_POST['dimensions_description'][$i])) {
+    update_post_meta($variation_id, '_dimensions_description', wc_clean($_POST['dimensions_description'][$i]));
   }
 }, 10, 2);
 
@@ -840,80 +841,83 @@ add_action('admin_menu', 'remove_menus');
 add_filter('woocommerce_checkout_fields', 'custom_override_checkout_fields');
 function custom_override_checkout_fields($fields)
 {
-    // Прибираємо непотрібні білінг-поля
-    unset($fields['billing']['billing_country']);
-    unset($fields['billing']['billing_address_2']);
-    unset($fields['billing']['billing_city']);
-    unset($fields['billing']['billing_postcode']);
-    unset($fields['billing']['billing_state']);
+  // Прибираємо непотрібні білінг-поля
+  unset($fields['billing']['billing_country']);
+  unset($fields['billing']['billing_address_2']);
+  unset($fields['billing']['billing_city']);
+  unset($fields['billing']['billing_postcode']);
+  unset($fields['billing']['billing_state']);
 
-    // Прибираємо поле коментарів до замовлення
-    unset($fields['order']['order_comments']);
+  // Прибираємо поле коментарів до замовлення
+  unset($fields['order']['order_comments']);
 
-    // Прибираємо всі поля доставки
-    unset($fields['shipping']);
+  // Прибираємо всі поля доставки
+  unset($fields['shipping']);
 
-    // Кастомізація білінг-полів
-    $fields['billing']['billing_first_name']['placeholder'] = 'Ім’я';
-    $fields['billing']['billing_first_name']['label'] = 'Ім’я';
+  // Кастомізація білінг-полів
+  $fields['billing']['billing_first_name']['placeholder'] = 'Ім’я';
+  $fields['billing']['billing_first_name']['label'] = 'Ім’я';
 
-    $fields['billing']['billing_last_name']['placeholder'] = 'Прізвище';
-    $fields['billing']['billing_last_name']['label'] = 'Прізвище';
+  $fields['billing']['billing_last_name']['placeholder'] = 'Прізвище';
+  $fields['billing']['billing_last_name']['label'] = 'Прізвище';
 
-    $fields['billing']['billing_email']['placeholder'] = 'E-mail';
-    $fields['billing']['billing_email']['label'] = 'E-mail';
-    $fields['billing']['billing_email']['required'] = false;
+  $fields['billing']['billing_email']['placeholder'] = 'E-mail';
+  $fields['billing']['billing_email']['label'] = 'E-mail';
+  $fields['billing']['billing_email']['required'] = false;
 
-    $fields['billing']['billing_phone']['placeholder'] = 'Номер телефону';
-    $fields['billing']['billing_phone']['label'] = 'Номер телефону';
+  $fields['billing']['billing_phone']['placeholder'] = 'Номер телефону';
+  $fields['billing']['billing_phone']['label'] = 'Номер телефону';
 
-    $fields['billing']['billing_address_1']['placeholder'] = 'Доставка (номер відділення/індекс, або ж адреса для курʼєрської доставки)';
-    $fields['billing']['billing_address_1']['label'] = 'Доставка (номер відділення/індекс, або ж адреса для курʼєрської доставки)';
-    $fields['billing']['billing_address_1']['required'] = false;
+  $fields['billing']['billing_address_1']['placeholder'] = 'Доставка (номер відділення/індекс, або ж адреса для курʼєрської доставки)';
+  $fields['billing']['billing_address_1']['label'] = 'Доставка (номер відділення/індекс, або ж адреса для курʼєрської доставки)';
+  $fields['billing']['billing_address_1']['required'] = false;
 
-    $fields['billing']['billing_company']['placeholder'] = 'Коментар';
-    $fields['billing']['billing_company']['label'] = 'Коментар';
-    $fields['billing']['billing_company']['required'] = false;
+  $fields['billing']['billing_company']['placeholder'] = 'Коментар';
+  $fields['billing']['billing_company']['label'] = 'Коментар';
+  $fields['billing']['billing_company']['required'] = false;
 
-    return $fields;
+  return $fields;
 }
 
 // зміна поля в чекауті
-add_filter( 'woocommerce_form_field', 'custom_text_field_output', 10, 4 );
+add_filter('woocommerce_form_field', 'custom_text_field_output', 10, 4);
 
-function custom_text_field_output( $field, $key, $args, $value ) {
-    // Повна заміна HTML
-    $field = sprintf(
-        '<div class="wc-block-components-text-input is-active">
+function custom_text_field_output($field, $key, $args, $value)
+{
+  // Повна заміна HTML
+  $field = sprintf(
+    '<div class="wc-block-components-text-input is-active">
             <label for="%1$s">%2$s</label><input type="text" name="%1$s" id="%1$s" class="form-control" value="%3$s" />
         </div>',
-        esc_attr( $key ),
-        esc_html( $args['label'] ),
-        esc_attr( $value )
-    );
-    return $field;
+    esc_attr($key),
+    esc_html($args['label']),
+    esc_attr($value)
+  );
+  return $field;
 }
 
 
 
 // Додаємо custom data до товару в корзині
 add_filter('woocommerce_add_cart_item_data', 'add_custom_data_to_cart_item', 10, 2);
-function add_custom_data_to_cart_item($cart_item_data, $product_id) {
-    if (isset($_POST['custom_data']['color'])) {
-        $term = get_term($_POST['custom_data']['color']);
-        if (!is_wp_error($term) && $term) {                
-          $cart_item_data['custom_color'] = sanitize_text_field($term->name);
-        }
+function add_custom_data_to_cart_item($cart_item_data, $product_id)
+{
+  if (isset($_POST['custom_data']['color'])) {
+    $term = get_term($_POST['custom_data']['color']);
+    if (!is_wp_error($term) && $term) {
+      $cart_item_data['custom_color'] = sanitize_text_field($term->name);
     }
-    return $cart_item_data;
+  }
+  return $cart_item_data;
 }
 
 // Відображаємо кастомний атрибут у замовленні
 add_action('woocommerce_checkout_create_order_line_item', 'add_custom_data_to_order_item', 10, 4);
-function add_custom_data_to_order_item($item, $cart_item_key, $values, $order) {
-    if (isset($values['custom_color'])) {
-        $item->add_meta_data('Колір', $values['custom_color'], true);
-    }
+function add_custom_data_to_order_item($item, $cart_item_key, $values, $order)
+{
+  if (isset($values['custom_color'])) {
+    $item->add_meta_data('Колір', $values['custom_color'], true);
+  }
 }
 
 
@@ -921,21 +925,23 @@ function add_custom_data_to_order_item($item, $cart_item_key, $values, $order) {
 
 // кастомний колір в чекаут
 add_filter('woocommerce_get_item_data', 'display_custom_data_cart_checkout', 10, 2);
-function display_custom_data_cart_checkout($item_data, $cart_item) {
-    if (isset($cart_item['custom_color'])) {
-        $item_data[] = array(
-            'key'   => __('Колір', 'woocommerce'),
-            'value' => wc_clean($cart_item['custom_color']),
-            'display' => '',
-        );
-    }
-    return $item_data;
+function display_custom_data_cart_checkout($item_data, $cart_item)
+{
+  if (isset($cart_item['custom_color'])) {
+    $item_data[] = array(
+      'key'   => __('Колір', 'woocommerce'),
+      'value' => wc_clean($cart_item['custom_color']),
+      'display' => '',
+    );
+  }
+  return $item_data;
 }
 // кастомний колір в замовлення
 add_filter('woocommerce_order_item_display_meta_key', 'change_order_item_meta_display_name', 10, 3);
-function change_order_item_meta_display_name($display_key, $meta, $item) {
-    if ($meta->key === 'Колір') {
-        return __('Selected Color', 'woocommerce');
-    }
-    return $display_key;
+function change_order_item_meta_display_name($display_key, $meta, $item)
+{
+  if ($meta->key === 'Колір') {
+    return __('Selected Color', 'woocommerce');
+  }
+  return $display_key;
 }

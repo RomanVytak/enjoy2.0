@@ -15,13 +15,13 @@
 
   .container {
     height: clamp(64px, px2vw(64), 85px);
-    padding: 0 min-max(16, 40);
+    padding: 0 min-max(16, 50);
     gap: min-max(18, 30);
     justify-content: space-between;
   }
 
   &-burger {
-    margin-left: min-max(16, 40);
+    margin-left: min-max(16, 50);
 
     @include mq-min-1024 {
       display: none;
