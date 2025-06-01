@@ -70,6 +70,7 @@
 
 
           // Якщо це варіативний товар, додаємо зображення варіантів
+          /*
           if ($product && $product->is_type('variable')) {
             $available_variations = $product->get_children(); // Отримує всі варіанти
 
@@ -94,7 +95,7 @@
                 }
             }
           }
-
+          */
           ?>
         </div>
 
@@ -114,7 +115,7 @@
           $html = get_custom_image_html($post_thumbnail_id, true);
           echo apply_filters('woocommerce_single_product_image_thumbnail_html', $html, $post_thumbnail_id); // phpcs:disable WordPress.XSS.EscapeOutput.OutputNotEscaped
           do_action('woocommerce_product_thumbnails');
-
+/*
           foreach ($available_variations as $variation_id) {
             $variation = wc_get_product($variation_id);
 
@@ -134,7 +135,7 @@
                 echo $variation_image_html;
                 echo '</div>';
             }
-        }
+        }*/
           ?>
         </div>
       </div>
