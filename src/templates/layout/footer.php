@@ -15,6 +15,11 @@
         <?php if (!empty($phphone_2one)) { ?><a href="<?php echo phoneToLink($phone_2) ?>"><?php echo $phone_2; ?></a><?php } ?>
       </div>
     </div>
+    <div class="footer-dev">
+      <a href="https://www.plumpix.io/" target="_blank">
+        created by <span>plumpix</span>
+      </a>
+    </div>
 
     <div class="socials">
       <?php renderComponent("socials")  ?>

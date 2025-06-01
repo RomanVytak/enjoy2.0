@@ -8,23 +8,15 @@
 
   .container {
     position: relative;
-    padding: 50px 16px;
-    gap: min-max(24, 75);
+    padding: 50px min-max(16, 50);
+    column-gap: min-max(24, 75);
+    flex-wrap: wrap;
 
     @include mq-max-768 {
       flex-direction: column;
       align-items: center;
       text-align: center;
-    }
-  }
-
-  a {
-    @include on-hover {
-      color: var(--orange-2);
-    }
-    &[aria-current] {
-      color: var(--orange-2);
-      pointer-events: none;
+      gap: 24px;
     }
   }
 
@@ -43,5 +35,36 @@
 
   &-navs {
     gap: 24px;
+
+    a {
+      @include on-hover {
+        color: var(--orange-2);
+      }
+      &[aria-current] {
+        color: var(--orange-2);
+        pointer-events: none;
+      }
+    }
+  }
+  &-dev {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 24px;
+
+    a {
+      color: #ffffff4d;
+      font-size: min-max(12, 14);
+
+      span {
+        transition: var(--transition);
+      }
+
+      @include on-hover {
+        span {
+          color: var(--orange-2);
+        }
+      }
+    }
   }
 }

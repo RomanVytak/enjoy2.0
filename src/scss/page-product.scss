@@ -173,7 +173,7 @@
   .instruction-text {
     transition: opacity var(--transition);
 
-    >* {
+    > * {
       margin-top: 1em;
 
       &:nth-child(1) {
@@ -233,7 +233,10 @@
     }
 
     &.loading {
-      >* {
+      max-height: 80vh;
+      overflow: hidden;
+
+      > * {
         opacity: 0;
       }
 
@@ -446,7 +449,7 @@
     gap: 8px;
     border-radius: min-max(16, 24);
     transition: background-color var(--transition);
-    order: -1;
+    // order: -1;
 
     .wrapper {
       display: flex;
@@ -1144,7 +1147,6 @@
   }
 
   .consultation-form {
-
     .screen-reader-response,
     .wpcf7-response-output {
       display: none;
@@ -1281,7 +1283,7 @@
   }
 
   .woocommerce-tabs-panel {
-    &>* {
+    & > * {
       margin-top: 1em;
 
       &:nth-child(1) {
