@@ -3,6 +3,8 @@ const _MATERIAL = "data-material";
 const _COLOR = "data-color";
 const _SERT = "data-vars";
 let activePopup = null;
+let gallery = document.querySelector(".woocommerce-gallery");
+let activeGalleryID = null;
 
 const _SIZES = {
   height: "Висота %% см",
@@ -10,6 +12,7 @@ const _SIZES = {
   length: "Глибина %% см",
   volume: "Об'єм %% л",
 };
+const variationsGallery = {};
 
 function onEscPress(e) {
   if (e.key === "Escape") {
@@ -60,6 +63,7 @@ export default async function createProductData() {
   const videoPopUp = document.querySelector("[data-video-popup]");
   const imgWrapper = imgPopUp.querySelector("[data-img]");
   const videoWrapper = videoPopUp.querySelector("[data-video]");
+  gallery = document.querySelector(".woocommerce-gallery");
 
   console.log(variations);
 
@@ -469,8 +473,8 @@ export default async function createProductData() {
   };
 
   const updateProductData = () => {
-    let filteredVariations = [...variations];
-    filteredVariations = filterData(filteredVariations, selectedData);
+    let filtered = [...variations];
+    filtered = filterData(filtered, selectedData);
 
     // check if all selected data is valid
     const options = Object.entries(dataArrays);
@@ -478,12 +482,12 @@ export default async function createProductData() {
     const isValid = options.every(
       (opt) => !opt[1].length || selectedData[opt[0]]
     );
-    showVariatorPrice(
-      isValid && filteredVariations.length == 1,
-      filteredVariations[0]
-    );
+    const variation = filtered.length == 1 ? filtered[0] : null;
 
-    NEW_updateFilteredVar(filteredVariations);
+    variation && loadVariationGallery(variation?.variation_id);
+    showVariatorPrice(isValid || variation, variation);
+
+    NEW_updateFilteredVar(filtered);
   };
 
   const handleSelectData = (e) => {
@@ -720,7 +724,7 @@ function onAddedToCart() {
 }
 
 function slideGallerySliderToVarID(var_id) {
-  const slider = window.thumbsSlider;
+  const slider = window.lgSwiper;
   if (!slider || !var_id) return;
   const slides = [...slider.slides];
   const slideIndex = slides.findIndex((s) => s.dataset?.id == var_id);
@@ -811,4 +815,56 @@ async function loadProductVariations() {
     console.error("AJAX error loading variations.", error);
     return null;
   }
+}
+
+function loadVariationGallery(variationId) {
+  if (activeGalleryID == variationId) return;
+  const savedData = variationsGallery[variationId];
+  gallery.classList.add("loading");
+  activeGalleryID = variationId;
+
+  if (savedData) {
+    updateGallerySlider(savedData);
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("action", "get_variation_images_html");
+  formData.append("variation_id", variationId);
+
+  fetch(BAMBOO.ajaxUrl, {
+    method: "POST",
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((response) => {
+      if (response.success) {
+        variationsGallery[variationId] = response.data.html;
+        updateGallerySlider(response.data.html);
+      } else {
+        console.error("Помилка:", response.data);
+      }
+    })
+    .catch((err) => {
+      console.error("AJAX fail", err);
+      gallery.classList.remove("loading");
+    });
+}
+
+function updateGallerySlider(data) {
+  updateSlider(window.lgSwiper, data);
+  updateSlider(window.smSwiper, data);
+
+  setTimeout(() => {
+    gallery.classList.remove("loading");
+    window?.lgSwiper?.update?.();
+    window?.smSwiper?.update?.();
+  }, 300);
+}
+function updateSlider(slider, data) {
+  if (!slider) return;
+  const swiperWrapper = slider.wrapperEl;
+  if (!swiperWrapper) return;
+
+  swiperWrapper.innerHTML = data;
 }

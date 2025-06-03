@@ -2,7 +2,7 @@
 function loadVariationGallery(variationId) {
   jQuery.ajax({
     type: 'POST',
-    url: product_ajax_data.ajax_url,
+    url: woocommerce_params.ajax_url,
     data: {
       action: 'get_variation_images_html',
       variation_id: variationId

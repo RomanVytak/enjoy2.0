@@ -89,6 +89,7 @@
     .swiper {
       width: 100%;
       position: relative;
+      transition: opacity var(--transition);
 
       &-slide {
         display: flex;
@@ -153,7 +154,7 @@
           aspect-ratio: 1;
           overflow: hidden;
           cursor: pointer;
-          transition: var(--transition);
+          transition: opacity var(--transition);
           opacity: 0.5;
 
           &-thumb-active {
@@ -164,6 +165,31 @@
             pointer-events: none;
           }
         }
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min-max(40, 60);
+      aspect-ratio: 1;
+      background: url("../img/loading.svg") center/cover no-repeat;
+      z-index: 23;
+      opacity: 0;
+      transition: opacity var(--transition);
+      pointer-events: none;
+    }
+
+    &.loading {
+      * {
+        opacity: 0.5;
+        pointer-events: none !important;
+      }
+      &::before {
+        opacity: 1;
       }
     }
   }

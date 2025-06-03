@@ -90,7 +90,7 @@ function get_variation_images_html() {
         //print_r($raw);
         // Перетворюємо в масив чисел
         $image_ids = array_map('intval', explode(',', $raw));
-        
+
         foreach ($image_ids as $image_id) {
             if ($image_id && !in_array($image_id, $used_ids) && wp_attachment_is_image($image_id)) {
                 echo '<div class="swiper-slide image obj-contain" data-id="' . $variation_id . '">';

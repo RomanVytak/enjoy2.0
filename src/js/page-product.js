@@ -62,7 +62,8 @@ const thumbsGallarySlider = () => {
   });
 
 
-  window.thumbsSlider = swiper_LG;
+  window.lgSwiper = swiper_LG;
+  window.smSwiper = swiper;
 };
 
 const pinBuyButton = () => {
