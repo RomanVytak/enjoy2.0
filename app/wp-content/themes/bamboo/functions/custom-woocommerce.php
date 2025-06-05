@@ -639,8 +639,10 @@ function customize_product_variations($variation_data, $product, $variation)
       if (!in_array($taxonomy, ['pa_material', 'pa_rozmiry'])) {
         if ($term) {
           $term_id = $term->term_id;
+          
           $variation_data['custom_attributes'][$taxonomy]['test'] = $attr_value;
           $variation_data['custom_attributes'][$taxonomy]['test_2'] = $attr_key;
+
           // Базові дані терміна
           $variation_data['custom_attributes'][$taxonomy] = [
             'id'    => $term_id,
