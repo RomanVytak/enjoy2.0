@@ -636,32 +636,34 @@ function customize_product_variations($variation_data, $product, $variation)
       $taxonomy = str_replace('attribute_', '', $attr_key); // наприклад pa_material
       $term = get_term_by('slug', $attr_value, $taxonomy);
 
-      if ($term) {
-        $term_id = $term->term_id;
+      if (!in_array($taxonomy, ['pa_material', 'pa_rozmiry'])) {
+        if ($term) {
+          $term_id = $term->term_id;
 
-        // Базові дані терміна
-        $variation_data['attributes_details'][$taxonomy] = [
-          'id'    => $term_id,
-          'slug'  => $term->slug,
-          'name'  => $term->name,
-          'description' => term_description($term_id, $taxonomy),
-        ];
+          // Базові дані терміна
+          $variation_data['custom_attributes'][$taxonomy] = [
+            'id'    => $term_id,
+            'slug'  => $term->slug,
+            'name'  => $term->name,
+            'description' => term_description($term_id, $taxonomy),
+          ];
 
-        // Якщо є ACF-зображення (припускаємо, що воно називається 'image')
-        $img = get_field('image', $taxonomy . '_' . $term_id);
-        if (!empty($img) && isset($img['url'])) {
-          $variation_data['attributes_details'][$taxonomy]['image'] = esc_url($img['url']);
-          $variation_data['attributes_details'][$taxonomy]['image_html'] = isset($img['id']) ? wp_get_attachment_image($img['id']) : '';
+          // Якщо є ACF-зображення (припускаємо, що воно називається 'image')
+          $img = get_field('image', $taxonomy . '_' . $term_id);
+          if (!empty($img) && isset($img['url'])) {
+            $variation_data['custom_attributes'][$taxonomy]['image'] = esc_url($img['url']);
+            $variation_data['custom_attributes'][$taxonomy]['image_html'] = isset($img['id']) ? wp_get_attachment_image($img['id']) : '';
+          }
+
+          // Якщо є додаткові поля (опціонально: додай свої назви ACF-полів)
+          /* $acf_fields = ['title', 'video', 'colors', 'options']; // додавай, що хочеш
+                foreach ($acf_fields as $field) {
+                    $acf_value = get_field($field, $taxonomy . '_' . $term_id);
+                    if (!empty($acf_value)) {
+                        $variation_data['custom_attributes'][$taxonomy][$field] = $acf_value;
+                    }
+                }*/
         }
-
-        // Якщо є додаткові поля (опціонально: додай свої назви ACF-полів)
-        /* $acf_fields = ['title', 'video', 'colors', 'options']; // додавай, що хочеш
-              foreach ($acf_fields as $field) {
-                  $acf_value = get_field($field, $taxonomy . '_' . $term_id);
-                  if (!empty($acf_value)) {
-                      $variation_data['attributes_details'][$taxonomy][$field] = $acf_value;
-                  }
-              }*/
       }
     }
   }
