@@ -639,12 +639,14 @@ function customize_product_variations($variation_data, $product, $variation)
       if (!in_array($taxonomy, ['pa_material', 'pa_rozmiry'])) {
         if ($term) {
           $term_id = $term->term_id;
-          
-          $variation_data['custom_attributes'][$taxonomy]['test'] = $attr_value;
-          $variation_data['custom_attributes'][$taxonomy]['test_2'] = $attr_key;
 
+          // Отримуємо назву атрибута
+          $taxonomy_obj = get_taxonomy($taxonomy);
+          $taxonomy_label = $taxonomy_obj ? $taxonomy_obj->labels->singular_name : $taxonomy;
+          
           // Базові дані терміна
           $variation_data['custom_attributes'][$taxonomy] = [
+            'title' => $taxonomy_label,
             'id'    => $term_id,
             'slug'  => $term->slug,
             'name'  => $term->name,
