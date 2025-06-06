@@ -629,6 +629,33 @@ function customize_product_variations($variation_data, $product, $variation)
   }
 
 
+
+    // Додати новий ключ у data-product_variations
+  if (isset($variation_data['attributes']['attribute_pa_rozmiry'])) {
+    $t_id = $product->get_id();
+    $rows = get_field('product_types', $t_id);
+    if( $rows ) {
+         $t=1;
+        foreach( $rows as $row ) {
+          $type_img = $row['img'];
+
+
+          if (!empty($type_img) && isset($type_img['url'])) {
+            $type_full_size = esc_url($type_img['url']);
+          } else {
+            $type_full_size = '';
+          }
+
+          $variation_data['product_types'][$t]['name'] = $term->name;
+          $variation_data['product_types'][$t]['full_size'] = $type_full_size;
+          $variation_data['product_types'][$t]['image_html'] = isset($type_img['id']) ? wp_get_attachment_image($type_img['id']) : '';
+          
+         $t++;
+        }
+      }
+  }
+
+
   // Універсальне розширення для всіх атрибутів
   foreach ($variation_data['attributes'] as $attr_key => $attr_value) {
     // Перевіряємо, чи це користувацький атрибут (таксономія)
