@@ -943,6 +943,13 @@ function add_custom_data_to_cart_item($cart_item_data, $product_id)
       $cart_item_data['custom_color'] = sanitize_text_field($term->name);
     }
   }
+  if (isset($_POST['custom_data']['type'])) {
+    $term = get_term($_POST['custom_data']['type']);
+    if (!is_wp_error($term) && $term) {
+      $cart_item_data['custom_type'] = sanitize_text_field($term->name);
+    }
+  }
+
   return $cart_item_data;
 }
 
@@ -952,6 +959,9 @@ function add_custom_data_to_order_item($item, $cart_item_key, $values, $order)
 {
   if (isset($values['custom_color'])) {
     $item->add_meta_data('Колір', $values['custom_color'], true);
+  }
+  if (isset($values['custom_type'])) {
+    $item->add_meta_data('Тип', $values['custom_type'], true);
   }
 }
 
@@ -969,6 +979,13 @@ function display_custom_data_cart_checkout($item_data, $cart_item)
       'display' => '',
     );
   }
+  if (isset($cart_item['custom_type'])) {
+    $item_data[] = array(
+      'key'   => __('Тип', 'woocommerce'),
+      'value' => wc_clean($cart_item['custom_type']),
+      'display' => '',
+    );
+  }
   return $item_data;
 }
 // кастомний колір в замовлення
@@ -977,6 +994,9 @@ function change_order_item_meta_display_name($display_key, $meta, $item)
 {
   if ($meta->key === 'Колір') {
     return __('Selected Color', 'woocommerce');
+  }
+  if ($meta->key === 'Тип') {
+    return __('Selected Type', 'woocommerce');
   }
   return $display_key;
 }
