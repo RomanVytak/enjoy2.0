@@ -664,7 +664,7 @@ function customize_product_variations($variation_data, $product, $variation)
       $taxonomy = str_replace('attribute_', '', $attr_key); // наприклад pa_material
       $term = get_term_by('slug', $attr_value, $taxonomy);
 
-      if (!in_array($taxonomy, ['pa_material', 'pa_rozmiry'])) {
+      if (!in_array($taxonomy, ['pa_material', 'pa_rozmiry', 'pa_variants'])) {
         if ($term) {
           $term_id = $term->term_id;
 
