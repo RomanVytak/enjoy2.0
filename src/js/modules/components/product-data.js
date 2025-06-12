@@ -2,6 +2,7 @@ const _SIZE = "data-size";
 const _MATERIAL = "data-material";
 const _COLOR = "data-color";
 const _SERT = "data-vars";
+const _TYPE = "data-type";
 let activePopup = null;
 let gallery = document.querySelector(".woocommerce-gallery");
 let activeGalleryID = null;
@@ -74,6 +75,7 @@ export default async function createProductData() {
     "input[name='attribute_pa_material']"
   );
   const input_color = form.querySelector("input[name='custom_data[color]']");
+  const input_type = form.querySelector("input[name='custom_data[type]']");
   const input_variation_id = form.querySelector("input[name='variation_id']");
   const input_product_id = form.querySelector("input[name='product_id']");
 
@@ -93,7 +95,11 @@ export default async function createProductData() {
 
   const wrapper_price = form.querySelector("[data-custom-price]");
 
-  const wrapper_variants = wrapper.querySelector("[data-variants]");
+  const variants_wrapper = wrapper.querySelector("[data-variants-wrapper]");
+  const variantChild = variants_wrapper.children[0];
+  const variantChildClone = variantChild.cloneNode(true);
+  variantChild.remove();
+  const wrapper_attributes = wrapper.querySelector("[data-attrs]");
 
   const mobileTooltip = document.querySelector(".mobile-text-tooltip");
 
@@ -118,6 +124,9 @@ export default async function createProductData() {
   let selectedVariation = null;
   let activeMaterialID = {};
   let activeVideo = null;
+  const customAttributes = {};
+  const productTypes = [];
+  let selectedProductType = null;
 
   form.removeAttribute("data-product_variations");
 
@@ -272,25 +281,27 @@ export default async function createProductData() {
     });
     wrapper_sizes.innerHTML = html.join("");
   };
-  const createVarians = () => {
-    const variants = dataArrays.variant;
-    wrapper_variants.innerHTML = "";
-
+  const createVarians = (variants, attr) => {
     if (!variants?.length) {
-      wrapper_variants.parentElement.remove();
       return;
     }
+    const newVariant = variantChildClone.cloneNode(true);
+    const wrapper_variants = newVariant.querySelector("[data-variants]");
+
+    wrapper_variants.innerHTML = "";
+
+    variants_wrapper.classList.remove("none");
 
     const html = variants.map((s) => {
       const sert = s;
-      const id = sert.id;
       const name = sert.name;
+      const id = sert.id || name;
       // const image = s.image;
       // const src = image?.sizes?.thumbnail || image?.url || image?.icon || "";
 
       return `<div class="size ${
         selectedData.variant == id ? " active" : ""
-      }" ${_SERT}="${id}">
+      }" ${attr}="${id}">
         <div class='icon'>
           ${s.image_html}
         </div>
@@ -298,6 +309,32 @@ export default async function createProductData() {
       </div>`;
     });
     wrapper_variants.innerHTML = html.join("");
+    variants_wrapper.append(newVariant);
+  };
+  const createAttributes = () => {
+    const html_element = wrapper_attributes.children[0];
+
+    const array = Object.entries(customAttributes);
+
+    array.forEach(([key, value]) => {
+      const clone = html_element.cloneNode(true);
+      const title = clone.querySelector("[data-title]");
+      const valueText = clone.querySelector("[data-value]");
+      const input = clone.querySelector("[data-name]");
+
+      title.innerHTML = `${value.title}${createHTMLTooltip(
+        value.description,
+        true
+      )}`;
+      input.name = `attribute_${key}`;
+      input.setAttribute("data-name", value.slug);
+      valueText.innerHTML = value.name;
+      setTimeout(() => handleTooltip(clone), 100);
+      clone.addEventListener("change", handleAttributeChange);
+      wrapper_attributes.append(clone);
+    });
+
+    html_element.remove();
   };
 
   const showVariatorPrice = (boo, variation) => {
@@ -388,6 +425,8 @@ export default async function createProductData() {
       const colors = Object.values(variation?.material_colors || {});
       const size = variation?.attributes?.attribute_pa_rozmiry;
       const variants = variation?.variants_details;
+      const custom_attributes = variation?.custom_attributes || null;
+      const product_types = variation?.product_types || null;
 
       if (material) {
         material.colors = colors;
@@ -402,14 +441,38 @@ export default async function createProductData() {
       if (variants) {
         getVars(dataArrays.variant, variants);
       }
+      if (custom_attributes) {
+        Object.entries(custom_attributes).forEach(([key, value]) => {
+          if (customAttributes[key]) {
+            return;
+          }
+          selectedData.attributs = {
+            ...selectedData.attributs,
+            [`attribute_${key}`]: {
+              checked: false,
+              name: value.slug,
+            },
+          };
+          customAttributes[key] = value;
+        });
+      }
+      if (product_types) {
+        Object.values(product_types).forEach((value) => {
+          getVars(productTypes, value, "name");
+        });
+      }
     });
 
     wrapper_materials && createMaterials();
     wrapper_colors && createColors();
     wrapper_sizes && createSizes();
-    wrapper_variants && createVarians();
+    createVarians(dataArrays.variant, _SERT);
 
-    [_MATERIAL, _COLOR, _SIZE, _SERT].forEach(NEW_getElementsByAttr);
+    // TODO - create product types
+    createVarians(productTypes, _TYPE);
+    createAttributes();
+
+    [_MATERIAL, _COLOR, _SIZE, _SERT, _TYPE].forEach(NEW_getElementsByAttr);
   };
 
   const NEW_updateFilteredVar = (filtered) => {
@@ -483,7 +546,6 @@ export default async function createProductData() {
       (opt) => !opt[1].length || selectedData[opt[0]]
     );
     const variation = filtered.length == 1 ? filtered[0] : null;
-
     variation && loadVariationGallery(variation?.variation_id);
     showVariatorPrice(isValid || variation, variation);
 
@@ -492,7 +554,7 @@ export default async function createProductData() {
 
   const handleSelectData = (e) => {
     const element = e.target;
-    const arr = [_SIZE, _MATERIAL, _COLOR, _SERT];
+    const arr = [_SIZE, _MATERIAL, _COLOR, _SERT, _TYPE];
     let needUpdateData = true;
 
     const hasAnyAttribute = arr.some((attr) => element.hasAttribute(attr));
@@ -528,6 +590,7 @@ export default async function createProductData() {
               // clear selected color
               selectedData.color = null;
               color_name.innerHTML = "";
+              input_color.value = "";
             }
           }
 
@@ -546,9 +609,34 @@ export default async function createProductData() {
           if (isActive) return;
           selectedData.variant = value;
           break;
+        case _TYPE:
+          if (isActive) return;
+          const children = htmlElements[_TYPE];
+          children.forEach((child) => {
+            child.classList.toggle(
+              "active",
+              child.getAttribute(_TYPE) == value
+            );
+          });
+          selectedProductType = value;
+          input_type.value = value;
+          needUpdateData = false;
+          break;
       }
     });
     needUpdateData && updateProductData();
+  };
+  const handleAttributeChange = (e) => {
+    const element = e.target;
+    selectedData.attributs = {
+      ...selectedData.attributs,
+      [element.name]: {
+        checked: element.checked,
+        name: element.dataset.name,
+      },
+    };
+
+    updateProductData();
   };
 
   const handleAddToCart = () => {
@@ -732,6 +820,7 @@ function slideGallerySliderToVarID(var_id) {
 }
 
 function filterData(data, selectedData) {
+  const attributs = selectedData?.attributs || null;
   const strategies = {
     color: (variation, key) => {
       const colors = Object.values(variation.material_colors || {});
@@ -743,13 +832,22 @@ function filterData(data, selectedData) {
     variant: (variation, key) => variation.variants_details?.id == key,
   };
 
-  const object = Object.entries(selectedData).reduce(
-    (filtered, [type, key]) => {
-      const fn = strategies[type];
-      return fn && key ? filtered.filter((v) => fn(v, key)) : filtered;
-    },
-    data
-  );
+  let object = Object.entries(selectedData).reduce((filtered, [type, key]) => {
+    const fn = strategies[type];
+    return fn && key ? filtered.filter((v) => fn(v, key)) : filtered;
+  }, data);
+
+  if (attributs) {
+    Object.entries(attributs).forEach(([key, value]) => {
+      object = object.filter((v) => {
+        const attribute = v.attributes[key];
+        return value.checked
+          ? attribute == value.name
+          : attribute != value.name;
+      });
+    });
+  }
+
   return object;
 }
 
@@ -775,8 +873,8 @@ function getColors(array, colors) {
     }
   });
 }
-function getVars(array, data) {
-  if (!array.some((m) => m?.id === data?.id)) {
+function getVars(array, data, id = "id") {
+  if (!array.some((m) => m?.[id] === data?.[id])) {
     array.push(data);
   }
 }

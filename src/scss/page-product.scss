@@ -169,7 +169,7 @@
     }
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       left: 50%;
       top: 50%;
@@ -244,6 +244,7 @@
 
     .custom-woo-data {
       width: 100%;
+      z-index: 1;
 
       &.pinned {
         position: fixed;
@@ -489,6 +490,20 @@
       &-attrs {
         gap: 8px;
         width: 100%;
+
+        &.none {
+          display: none;
+        }
+
+        &[data-attrs] {
+          .wrapper {
+            @include mq-min-1024 {
+              &:hover {
+                z-index: 1;
+              }
+            }
+          }
+        }
       }
 
       &:not(:has(> *)) {

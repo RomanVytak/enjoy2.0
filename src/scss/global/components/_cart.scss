@@ -153,12 +153,12 @@
       flex-direction: column;
 
       .var {
-        display: flex;
-        gap: 4px;
         color: #7b7b7b;
 
         * {
           font-size: min-max(12, 13);
+          display: inline-block;
+          margin-right: 4px;
         }
       }
     }

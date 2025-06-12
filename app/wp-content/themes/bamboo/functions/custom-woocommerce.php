@@ -650,7 +650,7 @@ function customize_product_variations($variation_data, $product, $variation)
           $variation_data['product_types'][$t]['description'] = $row['description'];
           $variation_data['product_types'][$t]['full_size'] = $type_full_size;
           $variation_data['product_types'][$t]['image_html'] = isset($type_img['id']) ? wp_get_attachment_image($type_img['id']) : '';
-          
+
          $t++;
         }
       }
@@ -671,7 +671,7 @@ function customize_product_variations($variation_data, $product, $variation)
           // Отримуємо назву атрибута
           $taxonomy_obj = get_taxonomy($taxonomy);
           $taxonomy_label = $taxonomy_obj ? $taxonomy_obj->labels->singular_name : $taxonomy;
-          
+
           // Базові дані терміна
           $variation_data['custom_attributes'][$taxonomy] = [
             'title' => $taxonomy_label,

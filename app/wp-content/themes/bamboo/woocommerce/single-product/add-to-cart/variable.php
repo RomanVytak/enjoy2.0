@@ -71,15 +71,18 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
       <div class="description" data-size-description></div>
     </div>
   </div>
-
-  <div class="wrapper">
-    <div class="wrapper_sertyfikat">
-      <div class="top">
-        <p class="roboto-16-sb wrapper-name">Варіанти</p>
+  <div class="wrapper-attrs flex-v none" data-variants-wrapper>
+    <div class="wrapper">
+      <div class="wrapper_sertyfikat">
+        <div class="top">
+          <p class="roboto-16-sb wrapper-name">Варіанти</p>
+        </div>
+        <div class="variations" data-variants></div>
       </div>
-      <div class="variations" data-variants></div>
     </div>
   </div>
+
+
 
   <div class="wrapper-attrs flex-v" data-attrs>
     <div class="wrapper">
@@ -114,6 +117,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
     <input type="hidden" name="quantity" value="1">
     <input type="hidden" name="product_id" value="<?php echo absint($product->get_id()); ?>">
     <input type="hidden" name="custom_data[color]">
+    <input type="hidden" name="custom_data[type]">
     <input type="hidden" name="variation_id" value="">
 
 
