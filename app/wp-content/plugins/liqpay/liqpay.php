@@ -28,7 +28,7 @@ function woocommerce_init() {
             $this->id = 'liqpay';
             $this->has_fields = false;
             $this->method_title = __('liqPay', 'woocommerce');
-            $this->method_description = __('Платежная система LiqPay', 'woocommerce');
+            $this->method_description = __('Платіжна система LiqPay', 'woocommerce');
             $this->init_form_fields();
             $this->init_settings();
             $this->public_key = $this->get_option('public_key');
@@ -74,7 +74,7 @@ function woocommerce_init() {
 
         public function admin_options() { ?>
 
-            <h3><?php _e('Платежная система LiqPay', 'woocommerce'); ?></h3>
+            <h3><?php _e('Платіжна система LiqPay', 'woocommerce'); ?></h3>
 
             <?php if ($this->is_valid_for_use()) { ?>
                 <table class="form-table"><?php $this->generate_settings_html(); ?></table>
@@ -82,7 +82,7 @@ function woocommerce_init() {
 
                 <div class="inline error">
                     <p>
-                        <strong><?php _e('Шлюз отключен', 'woocommerce'); ?></strong>: <?php _e('Liqpay не поддерживает валюты Вашего магазина.', 'woocommerce'); ?>
+                        <strong><?php _e('Шлюз відключений', 'woocommerce'); ?></strong>: <?php _e('Liqpay не підримує валюту Вашого магазину.', 'woocommerce'); ?>
                     </p>
                 </div>
 
@@ -94,30 +94,30 @@ function woocommerce_init() {
 
             $this->form_fields = array(
                 'enabled'     => array(
-                    'title'   => __('Включить/Выключить', 'woocommerce'),
+                    'title'   => __('Увімкнути/Вимкнути', 'woocommerce'),
                     'type'    => 'checkbox',
-                    'label'   => __('Включить', 'woocommerce'),
+                    'label'   => __('Увімкнути', 'woocommerce'),
                     'default' => 'yes',
                 ),
                 'title'       => array(
                     'title'       => __('Заголовок', 'woocommerce'),
                     'type'        => 'textarea',
-                    'description' => __('Заголовок, который отображается на странице оформления заказа', 'woocommerce'),
+                    'description' => __('Заголовок, який показується на сторінці оформлення замовлення', 'woocommerce'),
                     'default'     => __('LiqPay'),
                     'desc_tip'    => true,
                 ),
                 'description' => array(
-                    'title'       => __('Описание', 'woocommerce'),
+                    'title'       => __('Опис', 'woocommerce'),
                     'type'        => 'textarea',
-                    'description' => __('Описание, которое отображается на странице оформления заказа', 'woocommerce'),
-                    'default'     => __('Оплатить с помощью платежной системы LiqPay::Pay with LiqPay payment system', 'woocommerce'),
+                    'description' => __('Опис, який показується на сторінці оформлення замовлення', 'woocommerce'),
+                    'default'     => __('Оплатити через систему LiqPay::Pay with LiqPay payment system', 'woocommerce'),
                     'desc_tip'    => true,
                 ),
                 'pay_message' => array(
-                    'title'       => __('Сообщение перед оплатой', 'woocommerce'),
+                    'title'       => __('Повідомлення перед оплатою', 'woocommerce'),
                     'type'        => 'textarea',
-                    'description' => __('Сообщение перед оплатой', 'woocommerce'),
-                    'default'     => __('Благодарим Вас за Ваш заказ, для продолжения нажмите кнопку ниже::Thank you for your order, click the button'),
+                    'description' => __('Повідомлення перед оплатою', 'woocommerce'),
+                    'default'     => __('Дякуємо Вам за замовлення, для продовження натисніть кнопку нижче::Thank you for your order, click the button'),
                     'desc_tip'    => true,
                 ),
                 'public_key'  => array(
@@ -244,84 +244,8 @@ function woocommerce_init() {
 
 
 $line_items = $order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'line_item' ) );		
-$d_total=0;
-$item_price=0;
-$rro_items = [];
-foreach ( $line_items as $item_id => $item ) {
 	
-	if ( $metadata = $order->has_meta( $item_id ) ) {
-			foreach ( $metadata as $meta ) {
-					$term = '';
-					$d_price = '';
-					$с_price = '';
-					$s_a = '';
-					// Get attribute data
-					if ( taxonomy_exists( wc_sanitize_taxonomy_name( $meta['meta_key'] ) ) ) {
-						$term               = get_term_by( 'slug', $meta['meta_value'], wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
-						$meta['meta_key']   = wc_attribute_label( wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
-						$meta['meta_value'] = isset( $term->name ) ? $term->name : $meta['meta_value'];
-						
-					} else {
-						$meta['meta_key']   = wc_attribute_label( $meta['meta_key'], $_product );
-					}
-					
-					/* SIZE */
-					if($term->taxonomy=='pa_rozmiry'){ 
-						$size = $meta['meta_value'];
-					}
-					
-					/* НАПОВНЮВАЧ */
-					if($term->taxonomy=='pa_napovnyuvach'){			
-						$t_id = $term->term_id;
-						$term_meta = get_option( "taxonomy_$t_id" );
-						if($size=='S'){$d_price=$term_meta['price_s']; $d_price_echo="<br>(+$d_price грн.)";}
-						if($size=='M'){$d_price=$term_meta['price_m']; $d_price_echo="<br>(+$d_price грн.)";}
-						if($size=='L'){$d_price=$term_meta['price_l']; $d_price_echo="<br>(+$d_price грн.)";}					
-            if($size=='XL'){$d_price=$term_meta['price_xl']; $d_price_echo="<br>(+$d_price грн.)";}
-            if($size=='XS'){$d_price=$term_meta['price_xs']; $d_price_echo="<br>(+$d_price грн.)";}
-					}
-					else{
-						$d_price='';
-						$d_price_echo='';
-					}
-					
-					/* ЧОХОЛ */
-					if($term->taxonomy=='pa_cover'){					
-						$t_id = $term->term_id;
-						$term_meta = get_option( "taxonomy_$t_id" );
-						if($size=='S'){$с_price=$term_meta['price_s']; $с_price_echo="<br>(+$с_price грн.)";}
-						if($size=='M'){$с_price=$term_meta['price_m']; $с_price_echo="<br>(+$с_price грн.)";}
-						if($size=='L'){$с_price=$term_meta['price_l']; $с_price_echo="<br>(+$с_price грн.)";}					
-            if($size=='XL'){$с_price=$term_meta['price_xl']; $с_price_echo="<br>(+$с_price грн.)";}
-            if($size=='XS'){$с_price=$term_meta['price_xs']; $с_price_echo="<br>(+$с_price грн.)";}
-					}
-					else{
-						$с_price='';
-						$с_price_echo='';
-					}
-					
-					
-					$s_a = ($d_price+$с_price)*$item['item_meta']['_qty'][0];
-					$d_total=$d_total+$s_a;
-					
-					$i_p = $d_price+$с_price;
-					$item_price = $item_price+$i_p;
-			}
-	}
-	
-	
-	$item_main_price = $item['item_meta']['_line_total'][0]/$item['item_meta']['_qty'][0]+$item_price;
-	$items_cost = $item_main_price * $item['item_meta']['_qty'][0];
-	// convert to integer
-	$item_qty = $item['item_meta']['_qty'][0] + 0;
-	/*$rro_items[] = [
-						'amount' => $item_qty,
-						'price' => $item_main_price,
-						'cost' => $items_cost,
-						'id' => 2217726
-					];*/
-}		
-$order_total = $order->get_total()+$d_total;
+$order_total = $order->get_total();
 
 	$rro_items[] = [
 						'amount' => 1,
@@ -394,11 +318,11 @@ event: 'checkout',
                 $order = new WC_Order($order_id);
 
                 if ($status == 'success' || ($status == 'sandbox' && $this->sandbox == 'yes')) {
-                    $order->update_status($this->status, __('Заказ оплачен (оплата получена)', 'woocommerce'));
-                    $order->add_order_note(__('Клиент оплатил свой заказ', 'woocommerce'));
+                    $order->update_status($this->status, __('Замовлення оплачено (оплата отримана)', 'woocommerce'));
+                    $order->add_order_note(__('Покупець оплатив своє замовлення', 'woocommerce'));
                     $woocommerce->cart->empty_cart();
                 } else {
-                    $order->update_status('failed', __('Оплата не была получена', 'woocommerce'));
+                    $order->update_status('failed', __('Оплату не отримано', 'woocommerce'));
 					
 					//WC()->mailer()->get_emails()['WC_Email_Cancelled_Order']->trigger( $order_id );
 					

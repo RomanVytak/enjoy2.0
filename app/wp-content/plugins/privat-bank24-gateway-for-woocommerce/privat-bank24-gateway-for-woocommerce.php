@@ -355,68 +355,9 @@ function plugin_privatbank() {
 			//$password = '75bef16bfdce4d0e9c0ad5a19b9940df'; 
 
 $line_items = $order->get_items( apply_filters( 'woocommerce_admin_order_item_types', 'line_item' ) );		
-$d_total=0;
-foreach ( $line_items as $item_id => $item ) {
-	if ( $metadata = $order->has_meta( $item_id ) ) {
-			foreach ( $metadata as $meta ) {
-					$term = '';
-					$d_price = '';
-					$с_price = '';
-					$s_a = '';
-					// Get attribute data
-					if ( taxonomy_exists( wc_sanitize_taxonomy_name( $meta['meta_key'] ) ) ) {
-						$term               = get_term_by( 'slug', $meta['meta_value'], wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
-						$meta['meta_key']   = wc_attribute_label( wc_sanitize_taxonomy_name( $meta['meta_key'] ) );
-						$meta['meta_value'] = isset( $term->name ) ? $term->name : $meta['meta_value'];
-						
-					} else {
-						$meta['meta_key']   = wc_attribute_label( $meta['meta_key'], $_product );
-					}
-					
-					
-					//SIZE 
-					if($term->taxonomy=='pa_rozmiry'){ 
-						$size = $meta['meta_value'];
-					}
-					
-					//НАПОВНЮВАЧ
-					if($term->taxonomy=='pa_napovnyuvach'){			
-						$t_id = $term->term_id;
-						$term_meta = get_option( "taxonomy_$t_id" );
-						if($size=='S'){$d_price=$term_meta['price_s']; $d_price_echo="<br>(+$d_price грн.)";}
-						if($size=='M'){$d_price=$term_meta['price_m']; $d_price_echo="<br>(+$d_price грн.)";}
-						if($size=='L'){$d_price=$term_meta['price_l']; $d_price_echo="<br>(+$d_price грн.)";}					
-            if($size=='XL'){$d_price=$term_meta['price_xl']; $d_price_echo="<br>(+$d_price грн.)";}
-            if($size=='XS'){$d_price=$term_meta['price_xs']; $d_price_echo="<br>(+$d_price грн.)";}
-					}
-					else{
-						$d_price='';
-						$d_price_echo='';
-					}
-					
-					//ЧОХОЛ 
-					if($term->taxonomy=='pa_cover'){					
-						$t_id = $term->term_id;
-						$term_meta = get_option( "taxonomy_$t_id" );
-						if($size=='S'){$с_price=$term_meta['price_s']; $с_price_echo="<br>(+$с_price грн.)";}
-						if($size=='M'){$с_price=$term_meta['price_m']; $с_price_echo="<br>(+$с_price грн.)";}
-						if($size=='L'){$с_price=$term_meta['price_l']; $с_price_echo="<br>(+$с_price грн.)";}					
-            if($size=='XL'){$с_price=$term_meta['price_xl']; $с_price_echo="<br>(+$с_price грн.)";}
-            if($size=='XS'){$с_price=$term_meta['price_xs']; $с_price_echo="<br>(+$с_price грн.)";}
-					}
-					else{
-						$с_price='';
-						$с_price_echo='';
-					}
-					
-					
-					$s_a = ($d_price+$с_price)*$item['item_meta']['_qty'][0];
-					$d_total=$d_total+$s_a;
-			}
-	}
-}		
+	
 			//$amount_q = $order->get_total();
-			$amount_q = $order->get_total()+$d_total;
+			$amount_q = $order->get_total();
 			if($amount_q>10000){
 				// $partsCount = $this->month;
 				$partsCount = '5';
@@ -631,12 +572,12 @@ foreach ( $line_items as $item_id => $item ) {
 			
 			$order = new WC_Order($order_id);
 			if($json_q['paymentState']=='SUCCESS'){
-				$order->update_status('processing', __('Заказ оплачен (оплата получена)', 'woocommerce'));
-                    $order->add_order_note(__('Клиент оплатил свой заказ', 'woocommerce'));
+				$order->update_status('processing', __('Замовлення оплачене (оплата отримана)', 'woocommerce'));
+                    $order->add_order_note(__('Покупець оплатив своє замовлення', 'woocommerce'));
                     $woocommerce->cart->empty_cart();
 			}
 			else{
-				$order->update_status('failed', __('Оплата не была получена', 'woocommerce'));
+				$order->update_status('failed', __('Оплата не отримана', 'woocommerce'));
 			}
 
         }
