@@ -3,6 +3,7 @@ $product_id = get_sub_field('product');
 $product = wc_get_product($product_id);
 
 $type = get_row_layout();
+if ($product) {
 
 $product_cats = wp_get_post_terms($product->get_id(), 'product_cat');
 if (! empty($product_cats) && ! is_wp_error($product_cats)) {
@@ -53,3 +54,4 @@ $color = get_field('product_color', 'product_cat_' . $product_category_id);
     </div>
   </div>
 </a>
+<?php }?>
