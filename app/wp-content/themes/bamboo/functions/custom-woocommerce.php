@@ -571,7 +571,7 @@ function customize_product_variations($variation_data, $product, $variation)
           $color_full_size = '';
         }
 
-        $variation_data['material_colors'][$color]['name'] = $term->name;
+        $variation_data['material_colors'][$color]['name'] = $term ? $term->name : '';
         //$variation_data['material_colors'][$color]['image']=$color_img;
         $variation_data['material_colors'][$color]['full_size'] = $color_full_size;
         $variation_data['material_colors'][$color]['id'] = $color;
