@@ -6,8 +6,8 @@
   "testServerPath": "",
   "url": {
     "local": "http://enjoy.loc",
-    "staging": "https://",
-    "production": "https://"
+    "staging": "https://enjoy.globegs.com",
+    "production": "https://enjoy.ua"
   },
   "dbPrefix": "bb_",
   "dbCollate": "utf8mb4_unicode_520_ci",
