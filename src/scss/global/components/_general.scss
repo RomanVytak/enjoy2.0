@@ -35,6 +35,7 @@ section {
 .w-full {
   width: 100%;
 }
+
 .h-full {
   height: 100%;
 }
@@ -43,6 +44,7 @@ section {
 .flex {
   display: flex;
 }
+
 .flex-v {
   @include flex(column);
 }
@@ -62,9 +64,11 @@ section {
 .v-center {
   align-items: center;
 }
+
 .h-center {
   justify-content: center;
 }
+
 .h-between {
   justify-content: space-between;
 }
@@ -122,7 +126,7 @@ li {
 }
 
 .icon {
-  width: min-max(var(--icon), 24);
+  width: var(--icon);
   aspect-ratio: 1;
   flex: none;
   transition: var(--transition);
@@ -151,6 +155,7 @@ li {
       }
     }
   }
+
   &_trash {
     mask: url("../img/trash.svg") center/cover no-repeat;
     background-color: #2b3f6c;
@@ -170,6 +175,7 @@ li {
       background-color: #2b3f6c;
     }
   }
+
   &_tell {
     mask: url("../img/call.svg") center/cover no-repeat;
     background-color: #054f78;
@@ -178,25 +184,31 @@ li {
       background-color: #2b3f6c;
     }
   }
+
   &_instagram {
     mask: url("../img/socials/instagram.svg") center/cover no-repeat;
   }
+
   &_facebook {
     mask: url("../img/socials/facebook.svg") center/cover no-repeat;
   }
+
   &_sale {
     background: url("../img/sale.svg") center/cover no-repeat;
   }
+
   &_play {
     width: min-max(50, 120);
     background: url("../img/play.svg") center/cover no-repeat;
   }
+
   &_arrow {
     --arrow: var(--orange-2);
     width: 32px;
     mask: url("../img/arrow.svg") center/cover no-repeat;
     background-color: var(--arrow);
   }
+
   &_arrow_s {
     --arrow: var(--orange-2);
     mask: url("../img/arrow_2.svg") center/cover no-repeat;
@@ -206,12 +218,14 @@ li {
       transform: rotateY(180deg);
     }
   }
+
   &_plus {
     width: 24px;
     aspect-ratio: 1;
     flex: none;
     background: url("../img/plus.svg") center/cover no-repeat;
   }
+
   &_minus {
     width: 24px;
     aspect-ratio: 1;
@@ -229,6 +243,7 @@ li {
     width: 24px;
     display: flex;
     background-color: var(--white);
+
     @include on-hover {
       background-color: var(--orange-2);
     }

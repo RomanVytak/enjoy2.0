@@ -4,7 +4,7 @@
 @include font-face("Roboto Bold", "Roboto-Bold-700", 700);
 @include font-face("Roboto Condensed SemiBold", "RobotoCondensed-SemiBold", 600);
 @include font-face("Roboto Condensed Medium", "RobotoCondensed-Medium-500", 500);
-@include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 70);
+@include font-face("Roboto Condensed Bold", "RobotoCondensed-Bold-70", 700);
 
 p {
   @include roboto-16;
