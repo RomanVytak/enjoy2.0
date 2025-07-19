@@ -20,15 +20,15 @@ This repository contains a modern, modular WordPress theme developed by **PlumPi
 
 ## 📁 Folder Structure
 
-src/
-├── fonts/ # Custom fonts
-├── img/ # Images
-├── js/ # JavaScript modules
-├── scss/ # SCSS partials and global styles
-└── templates/ # PHP template structure
-├── components/
-├── layout/
-├── pages/
+src/  
+├── fonts/ # Custom fonts  
+├── img/ # Images  
+├── js/ # JavaScript modules  
+├── scss/ # SCSS partials and global styles  
+└── templates/ # PHP template structure  
+├── components/  
+├── layout/  
+├── pages/  
 └── sections/
 
 All source code is compiled into a WordPress-ready theme using Gulp and Webpack.
