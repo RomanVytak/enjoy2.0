@@ -56,5 +56,5 @@ However, feel free to explore, fork, or adapt it for your own workflows.
 Need a custom WordPress solution or want to collaborate?
 
 **PlumPix**  
-🌐 [Add your website or contact info here]
+🌐 [PlumPix](https://www.plumpix.io/)
 
