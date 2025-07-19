@@ -17,5 +17,5 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
-    'BambooCore\\' => array($baseDir . '/app/wp-content/themes/bamboo/BambooCore'),
+    'BambooCore\\' => array($baseDir . '/app/wp-content/themes/enjoy/BambooCore'),
 );

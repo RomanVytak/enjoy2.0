@@ -34,7 +34,7 @@ function woocommerce_custom_content()
           <?php while (have_posts()) : ?>
             <?php the_post(); ?>
             <?php
-            // wp-content/themes/bamboo/woocommerce/content-product.php
+            // wp-content/themes/enjoy/woocommerce/content-product.php
             wc_get_template_part('content', 'product'); ?>
           <?php endwhile; ?>
         <?php endif; ?>

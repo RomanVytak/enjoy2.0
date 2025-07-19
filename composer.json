@@ -18,7 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "BambooCore\\" : "app/wp-content/themes/bamboo/BambooCore"
+      "BambooCore\\" : "app/wp-content/themes/enjoy/BambooCore"
     }
   }
 }

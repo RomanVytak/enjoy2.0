@@ -11,7 +11,7 @@ add_action('send_headers', 'add_security_headers');
 
 
 // Replace WP default login error messages
-function bamboo_custom_login_err_messages($error)
+function enjoy_custom_login_err_messages($error)
 {
   // we will override only the above errors and not anything else
   if (is_int(strpos($error, 'The password you entered for')) || is_int(strpos($error, 'Invalid username'))) {
@@ -20,7 +20,7 @@ function bamboo_custom_login_err_messages($error)
 
   return $error;
 }
-add_filter('login_errors', 'bamboo_custom_login_err_messages');
+add_filter('login_errors', 'enjoy_custom_login_err_messages');
 
 if (function_exists('local_debug')) {
   local_debug();

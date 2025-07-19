@@ -53,9 +53,9 @@ $categories = [
 <section class="products">
   <div class="container">
 
-    
+
       <?php
-      // wp-content/themes/bamboo/functions/custom-woocommerce.php
+      // wp-content/themes/enjoy/functions/custom-woocommerce.php
       woocommerce_custom_content();
       ?>
 

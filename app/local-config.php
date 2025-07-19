@@ -77,7 +77,7 @@ function setupConfig(string $environment): void
     // More system configurations...
     define('WP_MEMORY_LIMIT', ini_get('memory_limit'));
     define('CONCATENATE_SCRIPTS', false);
-    define('WP_DEFAULT_THEME', 'bamboo');
+    define('WP_DEFAULT_THEME', 'enjoy');
     define('CORE_UPGRADE_SKIP_NEW_BUNDLED', true);
     define('DISALLOW_FILE_EDIT', true);
     define('WP_POST_REVISIONS', false);

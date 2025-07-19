@@ -2,12 +2,12 @@
 function custom_post_types() {
     // Register Banner Post Type
     $labels = array(
-        'name'                  => _x( 'Banners', 'Post Type General Name', 'bamboo' ),
-        'singular_name'         => _x( 'Banner', 'Post Type Singular Name', 'bamboo' ),
-        'menu_name'             => __( 'Банери на головну', 'bamboo' ),
-        'name_admin_bar'        => __( 'Banner', 'bamboo' ),
-        'archives'              => __( 'Banner Archives', 'bamboo' ),
-        'attributes'            => __( 'Banner Attributes', 'bamboo' ),
+        'name'                  => _x( 'Banners', 'Post Type General Name', 'enjoy' ),
+        'singular_name'         => _x( 'Banner', 'Post Type Singular Name', 'enjoy' ),
+        'menu_name'             => __( 'Банери на головну', 'enjoy' ),
+        'name_admin_bar'        => __( 'Banner', 'enjoy' ),
+        'archives'              => __( 'Banner Archives', 'enjoy' ),
+        'attributes'            => __( 'Banner Attributes', 'enjoy' ),
         'parent_item_colon'     => __( 'Parent Banner:', 'bamboo' ),
         'all_items'             => __( 'All Banners', 'bamboo' ),
         'add_new_item'          => __( 'Add New Banner', 'bamboo' ),

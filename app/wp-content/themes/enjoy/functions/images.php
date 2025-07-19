@@ -30,8 +30,8 @@ function delete_intermediate_image_sizes($sizes)
 }
 
 // Custom images sizes
-// add_action('after_setup_theme', 'bamboo_add_image_sizes');
-function bamboo_add_image_sizes()
+// add_action('after_setup_theme', 'enjoy_add_image_sizes');
+function enjoy_add_image_sizes()
 {
     if (function_exists('add_image_size')) {
 

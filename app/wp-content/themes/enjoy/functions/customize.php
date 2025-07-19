@@ -20,7 +20,7 @@ function customizeTheme()
     ]);
 
     // Load textdomain
-    // load_theme_textdomain('bamboo', get_template_directory() . '/languages');
+    // load_theme_textdomain('enjoy', get_template_directory() . '/languages');
 }
 
 // Custom admin logo
