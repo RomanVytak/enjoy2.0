@@ -26,10 +26,10 @@ src/
 ├── js/ # JavaScript modules  
 ├── scss/ # SCSS partials and global styles  
 └── templates/ # PHP template structure  
-├── components/  
-├── layout/  
-├── pages/  
-└── sections/
+├── components/ # PHP template structure  
+├── layout/ # PHP template structure  
+├── pages/ # PHP template structure  
+└── sections/ # PHP template structure
 
 All source code is compiled into a WordPress-ready theme using Gulp and Webpack.
 
