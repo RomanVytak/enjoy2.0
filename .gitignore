@@ -15,8 +15,7 @@ node_modules/
 # ENV
 .env
 .env.*
-!.env.loc
-!.env.local
+.env.local
 
 # Sass env
 src/scss/common/_env.scss
@@ -41,7 +40,6 @@ app/.well-known/
 !/app/wp-content/uploads/**/*.svg
 
 wp-admin-pass.txt
-
 
 # Other
 *.log
