@@ -4,8 +4,6 @@ This repository contains a modern, modular WordPress theme developed by **PlumPi
 
 > ⚠️ **Note:** This project is actively developed and continuously maintained by our team.
 
----
-
 ## 🚀 Tech Stack
 
 - **WordPress** with **WooCommerce**
@@ -20,8 +18,6 @@ This repository contains a modern, modular WordPress theme developed by **PlumPi
 - **PostCSS** + **Autoprefixer** + **cssnano** for CSS optimization
 - **Babel** for JavaScript transpilation
 
----
-
 ## 📁 Folder Structure
 
 src/
@@ -35,18 +31,7 @@ src/
 ├── pages/
 └── sections/
 
-
 All source code is compiled into a WordPress-ready theme using Gulp and Webpack.
-
----
-
-## 📦 Scripts
-
-```bash
-yarn create-app   # Initialize a new app (one-time setup)
-yarn start        # Install dependencies and run Gulp start
-yarn dev          # Start development mode (watch tasks)
-yarn build        # Build project for production
 
 ## 🧠 Features
 
@@ -57,20 +42,14 @@ yarn build        # Build project for production
 - Built-in support for responsive images and SVG optimization  
 - Custom CLI prompts for initial project setup  
 
----
-
 ## 🔧 Customization & Maintenance
 
 The project is designed to be **easy to maintain and extend**, making it ideal for long-term support, team collaboration, and scalable WordPress development.
-
----
 
 ## 💡 Contributions
 
 This repository is not currently accepting public contributions.  
 However, feel free to explore, fork, or adapt it for your own workflows.
-
----
 
 ## 📬 Contact
 
