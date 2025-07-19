@@ -6,6 +6,7 @@ const _TYPE = "data-type";
 let activePopup = null;
 let gallery = document.querySelector(".woocommerce-gallery");
 let activeGalleryID = null;
+const loadingWrapper = document.querySelector(".loading-wrapper");
 
 const _SIZES = {
   height: "Висота %% см",
@@ -53,7 +54,6 @@ const handlePopUp = {
 };
 
 export default async function createProductData() {
-  const loadingWrapper = document.querySelector(".loading-wrapper");
   const form = document.querySelector("[data-product-form-data]");
   if (!form) return;
   // const variations = JSON.parse(form.dataset.product_variations);
@@ -919,6 +919,7 @@ function loadVariationGallery(variationId) {
   if (activeGalleryID == variationId) return;
   const savedData = variationsGallery[variationId];
   gallery.classList.add("loading");
+  loadingWrapper.classList.add("ajax-loading");
   activeGalleryID = variationId;
 
   if (savedData) {
@@ -946,6 +947,7 @@ function loadVariationGallery(variationId) {
     .catch((err) => {
       console.error("AJAX fail", err);
       gallery.classList.remove("loading");
+      loadingWrapper.classList.remove("ajax-loading");
     });
 }
 
@@ -955,6 +957,7 @@ function updateGallerySlider(data) {
 
   setTimeout(() => {
     gallery.classList.remove("loading");
+    loadingWrapper.classList.remove("ajax-loading");
     window?.lgSwiper?.update?.();
     window?.smSwiper?.update?.();
   }, 300);

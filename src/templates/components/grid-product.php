@@ -45,12 +45,9 @@ $color = get_field('product_color', 'product_cat_' . $product_category_id);
     <?php } ?>
   </div>
   <div class="product-item-info info flex h-between w-full">
-    <p><?php echo get_the_title($product_id); ?></p>
+    <div><?php echo get_the_title($product_id); ?></div>
     <div class="price">
-      <p>
         <?php echo $product->get_price_html(); ?>
-      </p>
-
     </div>
   </div>
 </a>

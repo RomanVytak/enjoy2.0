@@ -139,8 +139,6 @@
         .swiper-slide {
           aspect-ratio: 1;
           overflow: hidden;
-          border-radius: min-max(20, 32);
-          border: 1px solid var(--gray-minus-1);
 
           @include mq-max-768 {
             max-height: 400px;
@@ -274,6 +272,13 @@
       }
     }
 
+    &.ajax-loading {
+      cursor: progress;
+      * {
+        pointer-events: none;
+      }
+    }
+
     &::before,
     &::after {
       content: "";
@@ -336,7 +341,7 @@
   }
 
   .short-description {
-    color: var(--gray-minus-2);
+    color: var(--blackC4);
   }
 
   .product-attributes {
@@ -388,7 +393,7 @@
         @include roboto-16-B;
         min-width: min-max(100, 150);
         height: min-max(30, 40);
-        border: 1px solid var(--gray-minus-1);
+        border: 1px solid var(--blackC4);
         border-radius: min-max(8, 12);
         display: flex;
         align-items: center;
@@ -452,7 +457,6 @@
       del {
         order: 2;
         margin-left: 0.5em;
-        color: var(--gray-minus-2);
       }
 
       ins {
