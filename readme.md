@@ -2,7 +2,7 @@
 
 This repository contains a modern, modular WordPress theme developed by **PlumPix**, powered by Gulp, Webpack, SCSS, and Babel. All source files are located in the `src/` directory and compiled into a clean, optimized WordPress theme ready for production.
 
-> ⚠️ **Note:** This project is actively developed and continuously maintained by our team.
+> 🚧 **This project is currently under development**. Some features, content, and styles may be incomplete or subject to change.
 
 ## 🚀 Tech Stack
 
