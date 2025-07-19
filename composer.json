@@ -1,5 +1,5 @@
 {
-  "name": "bambuk/composer",
+  "name": "plumpix/composer",
   "description": "description",
   "minimum-stability": "stable",
   "license": "proprietary",
@@ -8,8 +8,8 @@
   },
   "authors": [
     {
-      "name": "Bambuk Dev Team",
-      "email": "dev@bambus.com.ua"
+      "name": "PlumPix",
+      "email": "ask@plumpix.io"
     }
   ],
   "require": {

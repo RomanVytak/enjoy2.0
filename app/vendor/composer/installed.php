@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'bambuk/composer',
+        'name' => 'plumpix/composer',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
         'reference' => '6ccc9eecc3e76875b9266ee2075dab08f0ec7964',
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        'bambuk/composer' => array(
+        'plumpix/composer' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
             'reference' => '6ccc9eecc3e76875b9266ee2075dab08f0ec7964',

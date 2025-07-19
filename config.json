@@ -3,10 +3,10 @@
   "themeName": "enjoy",
   "appBase": "app",
   "srcBase": "src",
-  "testServerPath": "/home/bambuky/bambus.com.ua/tests",
+  "testServerPath": "",
   "url": {
     "local": "http://enjoy.loc",
-    "staging": "https://tests.bambus.com.ua/enjoy",
+    "staging": "https://",
     "production": "https://"
   },
   "dbPrefix": "bb_",

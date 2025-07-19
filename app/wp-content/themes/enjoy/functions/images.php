@@ -1,9 +1,9 @@
 <?php
 
 // Remove quality loss for images
-add_filter( 'jpeg_quality', 'bambukLovesHighQuality' );
-add_filter( 'wp_editor_set_quality', 'bambukLovesHighQuality' );
-function bambukLovesHighQuality( $quality ) {
+add_filter( 'jpeg_quality', 'enjoyLovesHighQuality' );
+add_filter( 'wp_editor_set_quality', 'enjoyLovesHighQuality' );
+function enjoyLovesHighQuality( $quality ) {
     return 100;
 }
 

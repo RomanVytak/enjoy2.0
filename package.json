@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "main": "gulpfile.js",
-  "author": "Bambuk studio",
+  "author": "PlumPix",
   "scripts": {
     "create-app": "yarn && gulp create-app",
     "start": "yarn && gulp start",
