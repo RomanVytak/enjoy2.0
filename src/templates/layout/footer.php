@@ -17,7 +17,7 @@
     </div>
     <div class="footer-dev">
       <a href="https://www.plumpix.io/" target="_blank">
-        created by <span>plumpix</span>
+        created by <span>PlumPix</span>
       </a>
     </div>
 
