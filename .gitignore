@@ -16,8 +16,8 @@ node_modules/
 .env
 .env.*
 .env.local
-!.env.local.example
-!.env.example
+!.env.local.sample
+!.env.sample
 
 # Sass env
 src/scss/common/_env.scss
