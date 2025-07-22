@@ -7,7 +7,7 @@
   @include use-font(var(--roboto-b), min-max(42, 48), 700, 110%);
 }
 @mixin roboto-38-B {
-  @include use-font(var(--roboto-con-b), min-max(32, 38), 700, 110%);
+  @include use-font(var(--roboto-con-b), min-max(26, 30), 700, 110%); // was 32, 38
 }
 @mixin roboto-16-B {
   @include use-font(var(--roboto-con-b), min-max(var(--size-sm), 16), 700, 140%);
