@@ -194,5 +194,4 @@ $color = get_field('product_color', 'product_cat_' . $product_category_id);
     </div>
 
   </div>
-
 </div>
