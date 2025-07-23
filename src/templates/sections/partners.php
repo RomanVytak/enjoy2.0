@@ -94,7 +94,6 @@ $list = [
   [
     'icon' => 'tesla.png',
   ],
-
 ]
 ?>
 

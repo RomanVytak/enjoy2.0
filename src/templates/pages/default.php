@@ -5,7 +5,7 @@ get_header();
 renderSection('default/content');
 renderSection('home/builder');
 renderSection('partnership');
-renderSection('cooperate');
 renderSection('partners');
+renderSection('cooperate');
 
 get_footer();
