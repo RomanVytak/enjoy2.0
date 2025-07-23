@@ -1,5 +1,7 @@
 # Ignore all
 /*
+app/wp-content/themes/enjoy/acf-json/
+
 
 # exclude this folders
 !app/wp-content/themes/enjoy
