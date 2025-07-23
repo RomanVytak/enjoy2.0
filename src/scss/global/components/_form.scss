@@ -4,7 +4,6 @@ form {
   row-gap: min-max(16, 24);
   width: 100%;
 
-
   label {
     display: flex;
     flex-direction: column;
@@ -86,8 +85,8 @@ form {
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: flex-end;
     position: relative;
+    gap: 5px;
   }
 
   &.submitting {
@@ -104,10 +103,20 @@ form {
       }
     }
   }
+
+  &.failed,
+  &.invalid {
+    .wpcf7-response-output {
+      color: var(--orange-2);
+    }
+  }
+}
+.wpcf7-response-output {
+  max-width: 400px;
+  font-size: 14px;
 }
 
 .screen-reader-response,
-.wpcf7-response-output,
 .hidden-fields-container,
 .wpcf7-spinner {
   display: none !important;

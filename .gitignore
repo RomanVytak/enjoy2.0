@@ -1,50 +1,10 @@
-# Editors config
-.idea
-*.sublime*
-.vscode
+# Ignore all
+/*
+app/wp-content/themes/enjoy/acf-json/
 
-# Packages
-node_modules/
 
-# Backup
-.backup/
+# exclude this folders
+!app/wp-content/themes/enjoy
 
-# DB migrations
-.migrations/
-
-# ENV
-.env
-.env.*
-.env.local
-!.env.local.sample
-!.env.sample
-
-# Sass env
-src/scss/common/_env.scss
-
-# Timestamp
-app/wp-content/themes/*/.timestamp
-
-# Theme assets
-app/wp-content/themes/*/assets/
-app/wp-content/themes/*/templates/
-
-# Wordpress
-app/wp-content/upgrade/
-app/wp-content/cache/
-app/wp-content/wflogs/
-app/wp-content/w3tc-config/
-app/wp-content/webp-express/
-app/wp-content/uploads-webpc/
-app/wp-content/aiowps_backups/
-app/wp-content/advanced-cache.php
-app/.well-known/
-!/app/wp-content/uploads/**/*.svg
-
-wp-admin-pass.txt
-
-# Other
-*.log
-*.tmp
-.DS_Store
-Thumbs.db
+# exclude folder content
+!app/wp-content/themes/enjoy/**

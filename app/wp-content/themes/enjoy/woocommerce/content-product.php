@@ -99,10 +99,12 @@ $color = get_field('product_color', 'product_cat_' . $product_category_id);
       </div>
     </a>
   </div>
+
   <a href="<?php echo esc_url(get_permalink($product->get_id())); ?>" class="product-item-info flex-v">
     <p class="name roboto-38"><?php echo $product->get_name(); ?></p>
     <p class="category roboto-16-sb"><?php echo $product_category; ?></p>
   </a>
+
   <div class="product-item-price flex-v">
     <div class="flex w-full h-between">
       <p class="data-price">
@@ -194,5 +196,4 @@ $color = get_field('product_color', 'product_cat_' . $product_category_id);
     </div>
 
   </div>
-
 </div>

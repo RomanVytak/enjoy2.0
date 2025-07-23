@@ -15,7 +15,7 @@
 
   .text-content {
     .content {
-      margin-top: min-max(20, 30);
+      margin-top: min-max(26, 40);
 
       & > * {
         margin: 1em 0;
@@ -41,8 +41,6 @@
       }
     }
   }
-
-
 
   @include mq-max-1024 {
     .container {
