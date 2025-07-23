@@ -25,7 +25,7 @@
   "copyAssets": "atlas|avi|mp4|ogv|ogg|webm",
   "images": {
     "inputTypes": "png|jpg|jpeg|heif|tiff|webp|gif",
-    "outputTypes": "webp",
+    "outputTypes": ["webp","png"],
     "skipConvert": "gif|webp",
     "sizes": [],
     "development": {
