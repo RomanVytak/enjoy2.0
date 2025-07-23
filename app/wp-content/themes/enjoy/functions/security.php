@@ -22,8 +22,8 @@ function enjoy_custom_login_err_messages($error)
 }
 add_filter('login_errors', 'enjoy_custom_login_err_messages');
 
-if (function_exists('local_debug')) {
-  local_debug();
+if (function_exists('local_debug') && wp_get_environment_type() === 'local') {
+ local_debug();
 }
 
 

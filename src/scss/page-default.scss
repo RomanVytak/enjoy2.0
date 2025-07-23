@@ -1,5 +1,6 @@
 @import "common";
 @import "./sections/builder";
+@import "./global/components/form";
 
 .single-page {
   padding: 60px min-max(16, 50);
@@ -1608,6 +1609,106 @@ section.page-order-received {
       }
       &--home {
         width: 100%;
+      }
+    }
+  }
+}
+
+section.partnership {
+  .container {
+    padding: min-max(50, 100) min-max(16, 50);
+    align-items: center;
+    text-align: center;
+    gap: min-max(40, 60);
+    // gap: min-max(24, 40);
+  }
+
+  .grid {
+    @include grid(4, min-max(24, 40), 40px);
+    max-width: min-max(1200, 1360);
+    width: 100%;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: min-max(24, 32);
+      color: #5e5e5e;
+
+      img {
+        width: min-max(65, 73);
+        height: auto;
+      }
+    }
+
+    @include mq-max-1024 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include mq-max-640 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+section.cooperate {
+  .container {
+    padding: min-max(50, 100) min-max(16, 50);
+    align-items: center;
+    gap: min-max(40, 60);
+
+    &-title {
+      text-align: center;
+    }
+  }
+
+  .feedback-form {
+    max-width: min-max(800, 1000);
+    width: 100%;
+  }
+
+  form {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: min-max(16, 32);
+
+    label {
+      @include mq-min-768 {
+        width: calc(50% - min-max(10, 20));
+      }
+    }
+    .full {
+      width: 100%;
+    }
+  }
+}
+section.partners {
+  background: var(--footer);
+  .container {
+    padding: min-max(50, 100) min-max(16, 50);
+    align-items: center;
+    text-align: center;
+    gap: min-max(40, 60);
+    color: var(--white);
+  }
+
+  .grid {
+    max-width: min-max(800, 1000);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: min-max(32, 40) min-max(5, 10);
+
+    .item {
+      display: flex;
+      width: min-max(140, 190);
+      justify-content: center;
+
+      img {
+        max-height: 60px;
+        max-width: 65%;
       }
     }
   }

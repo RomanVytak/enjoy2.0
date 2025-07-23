@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="feedback-form">
+    <div class="feedback-form" data-form>
       <?php echo do_shortcode('[contact-form-7 id="39c16fe"]'); ?>
     </div>
   </div>

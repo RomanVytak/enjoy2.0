@@ -146,6 +146,11 @@ export default async function createProductData() {
       icon.addEventListener("mouseenter", () => {
         handleTooltipHover(tooltip, icon);
       });
+      // for tablet and mobile
+      icon.addEventListener("touchstart", (e) => {
+        if (window.innerWidth < 769) return;
+        handleTooltipHover(tooltip, icon);
+      });
     });
   };
 

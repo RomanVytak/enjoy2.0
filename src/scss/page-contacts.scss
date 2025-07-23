@@ -1,4 +1,5 @@
 @import "common";
+@import "./global/components/form";
 
 .feedback {
   padding: 60px min-max(16, 50);
@@ -41,118 +42,7 @@
     }
   }
 
-  form {
-    display: flex;
-    flex-direction: column;
-    row-gap: min-max(16, 24);
-    width: 100%;
 
-    label {
-      display: flex;
-      flex-direction: column;
-      gap: min-max(4, 6);
-      position: relative;
-      width: 100%;
-
-      p {
-        font-size: 16px;
-        font-family: var(--roboto-r);
-        font-weight: 400;
-        color: #4c5c66;
-      }
-
-      .wpcf7-form-control-wrap {
-        display: flex;
-        width: 100%;
-        border: 1px solid #adb6c4;
-        border-radius: min-max(12, 16);
-        overflow: hidden;
-      }
-
-      .wpcf7-not-valid-tip {
-        position: absolute;
-        left: 0;
-        top: 100%;
-        margin-top: min-max(2, 4);
-        color: var(--orange-2);
-        font-size: 12px;
-      }
-
-      &:has(.wpcf7-not-valid-tip) {
-        .wpcf7-form-control-wrap {
-          border-color: var(--orange-2);
-        }
-      }
-      &:has(input:focus) {
-        .wpcf7-form-control-wrap {
-          border-color: #182856;
-        }
-      }
-    }
-
-    input,
-    textarea {
-      background: transparent;
-      border: none;
-      outline: none;
-      padding: min-max(10, 14) min-max(14, 20);
-      font-size: min-max(16, 18);
-      font-family: var(--roboto-r);
-      font-weight: 400;
-      width: 100%;
-      resize: none;
-
-      &::placeholder {
-        color: #8199af;
-      }
-    }
-
-    .on-submit {
-      background-color: var(--orange-2);
-      color: var(--white);
-      padding: 12px min-max(16, 24);
-      border-radius: min-max(12, 16);
-      font-family: var(--roboto-m);
-      font-weight: 500;
-      font-size: min-max(16, 18);
-      transition: var(--transition);
-      min-width: min-max(200, 250);
-      justify-content: center;
-
-      @include mq-max-768 {
-        width: 100%;
-      }
-    }
-
-    .cta {
-      display: flex;
-      width: 100%;
-      align-items: center;
-      justify-content: flex-end;
-      position: relative;
-    }
-
-    &.submitting {
-      .spinner {
-        opacity: 1;
-      }
-
-      .on-submit {
-        background-color: #4c5c66;
-        pointer-events: none;
-
-        @include mq-max-768 {
-          width: calc(100% - 30px);
-        }
-      }
-    }
-  }
-
-  .screen-reader-response,
-  .wpcf7-response-output,
-  .wpcf7-spinner {
-    display: none !important;
-  }
 
   @include mq-max-1024 {
     .container {

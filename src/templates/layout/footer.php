@@ -53,3 +53,5 @@
     </div>
   </div>
 <?php  }  ?>
+
+<?php renderComponent("popup")  ?>
