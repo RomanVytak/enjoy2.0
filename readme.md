@@ -4,6 +4,13 @@ This repository contains a modern, modular WordPress theme developed by **PlumPi
 
 > 🚧 **This project is currently under development**. Some features, content, and styles may be incomplete or subject to change.
 
+## ⚙️ Gulp Config Folder Notice
+
+> 🚧 The `.gulp/` folder containing custom Gulp task configurations is **not included** in this repository (excluded from version control).  
+If you need access to it or want to set up the build system correctly, please contact us directly:
+
+📬 **Email:** [roman.vytak@gmail.com](mailto:roman.vytak@gmail.com)
+
 ## 🚀 Tech Stack
 
 - **WordPress** with **WooCommerce**
