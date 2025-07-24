@@ -2,9 +2,11 @@
 /*
 app/wp-content/themes/enjoy/acf-json/
 
-
 # exclude this folders
 !app/wp-content/themes/enjoy
 
 # exclude folder content
 !app/wp-content/themes/enjoy/**
+
+# .gulp
+.gulp/
