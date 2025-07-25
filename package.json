@@ -5,10 +5,13 @@
   "main": "gulpfile.js",
   "author": "PlumPix",
   "scripts": {
-    "create-app": "yarn && gulp create-app",
     "start": "yarn && gulp start",
     "dev": "gulp",
-    "build": "gulp build"
+    "build": "gulp build",
+    "theme-to-staging": "gulp build && gulp deploy --to staging --src theme",
+    "db-from-staging": "gulp db:migrate --from staging --to local",
+    "db-to-staging": "gulp db:migrate --from local --to staging"
+
   },
   "dependencies": {
     "gsap": "^3.12.7",

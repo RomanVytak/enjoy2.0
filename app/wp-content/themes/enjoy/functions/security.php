@@ -22,9 +22,14 @@ function enjoy_custom_login_err_messages($error)
 }
 add_filter('login_errors', 'enjoy_custom_login_err_messages');
 
-if (function_exists('local_debug') && wp_get_environment_type() === 'local') {
- local_debug();
+
+if (function_exists('local_debug')) {
+  $host = $_SERVER['HTTP_HOST'] ?? '';
+  if (strpos($host, 'globegs') !== false || wp_get_environment_type() === 'local') {
+    local_debug();
+  }
 }
+
 
 
 // Remove service meta tags in html
