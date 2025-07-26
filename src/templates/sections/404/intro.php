@@ -9,7 +9,7 @@
       <div class="smile flex"></div>
     </div>
     <div class="container-key flex obj-cover">
-      <img src="<?php echo assets("img/temp/home-intro.webp")  ?> " alt="">
+      <img src="<?php echo assets("img/temp/home-intro.jpg")  ?> " alt="">
     </div>
   </div>
 </section>
